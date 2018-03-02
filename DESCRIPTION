@@ -11,7 +11,8 @@ Imports:
     rlang,
     purrr,  
     tibble,
-    tidyr
+    tidyr,
+    progress
 Suggests:
     dbplyr,
     testthat,

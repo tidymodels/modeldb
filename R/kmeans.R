@@ -1,18 +1,30 @@
 #' @export
-simple_kmeans <- function(df,..., centers = 3, max_repeats = 100){
+simple_kmeans <- function(df,..., centers = 3, max_repeats = 100, 
+                          initial_kmeans = NULL, safeguard = TRUE){
   
   vars <- exprs(...)
   
+  
+  
   df <- df %>%
-    select(!!! vars)
+    select(!!! vars) %>%
+    filter_all(all_vars(!is.na(.)))
   
-  centroids <- df %>%
-    head(centers) %>%
-    collect()
+  if(!is.null(initial_kmeans)){
+    centroids <- initial_kmeans
+  } else {
+    centroids <- df %>%
+      head(centers) %>%
+      collect()
+  }
   
-  pb <- progress::progress_bar$new(total = max_repeats)
+  pb <- progress::progress_bar$new(
+    format = paste0(" Cycle :current of " , max_repeats, " max. [:bar] [:var][:elapsed]"),
+    total = max_repeats, clear = TRUE, width= 80)
+  
   for(iteration in 1:max_repeats){
-    pb$tick()
+    
+    
     prev_centroids <- centroids
     
     new_centroids <- calculate_centers(df, centroids, centers)
@@ -22,6 +34,12 @@ simple_kmeans <- function(df,..., centers = 3, max_repeats = 100){
       summarise_all("mean", na.rm = TRUE) %>%
       select(-center) %>%
       collect()
+    
+    if(safeguard) current_kmeans <<- centroids
+    
+    variance <- (round(abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids), digits = 4)*100)
+    
+    pb$tick(tokens = list(var = variance))
     
     if(all(prev_centroids == centroids)) break()
     
@@ -70,6 +88,7 @@ calculate_centers <- function(df, center_df, centers){
   df %>%
     mutate(!!! km)  %>%
     mutate(center = !! comp) %>%
+    filter(!is.na(center)) %>%
     select(-contains("center_")) 
 }
 
