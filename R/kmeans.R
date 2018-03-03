@@ -1,48 +1,75 @@
+#' Simple kmeans routine that works in-database
+#'
+#' It uses 'tidyeval' and 'dplyr' to run multiple cycles of kmean
+#' calculations, expressed in dplyr formulas until an the optimal
+#' centers are found.
+#'
+#' @param df A Local or remote data frame
+#' @param ... A list of variables to be used in the kmeans algorithm
+#' @param centers The number of centers. Defaults to 3.
+#' @param max_repeats The maximum number of cycles to run. Defaults to 100.
+#' @param initial_kmeans A local dataframe with initial centroid values. Defaults to NULL.
+#' @param safeguard Updates a variable called current_kmeans in every cycle. It defaults to TRUE.
+#'
+#' @details
+#' #' Because each cycle is an indiependent 'dplyr' operation, or SQL operation if using a remote source,
+#' the latest centroid data frame is saved to the parent environment in case the process needs to be
+#' canceled and then restarted at a later point.  Passing the `current_kmeans` as the `initial_kmeans`
+#' will allow the operation to pick up where it left off.  The creation of `current_means` is dependent
+#' on the `safeguard` argument to be set to TRUE.
+#'
+#' @examples
+#' library(dplyr)
+#'
+#' x <- mtcars %>%
+#' simple_kmeans(mpg, qsec, wt)
+#' x$centers
+#'
 #' @export
-simple_kmeans <- function(df,..., centers = 3, max_repeats = 100, 
-                          initial_kmeans = NULL, safeguard = TRUE){
-  
+simple_kmeans <- function(df,
+                          ...,
+                          centers = 3,
+                          max_repeats = 100,
+                          initial_kmeans = NULL,
+                          safeguard = TRUE) {
   vars <- exprs(...)
-  
-  
-  
   df <- df %>%
     select(!!! vars) %>%
     filter_all(all_vars(!is.na(.)))
-  
-  if(!is.null(initial_kmeans)){
+
+  if (!is.null(initial_kmeans)) {
     centroids <- initial_kmeans
   } else {
     centroids <- df %>%
       head(centers) %>%
       collect()
   }
-  
   pb <- progress::progress_bar$new(
-    format = paste0(" Cycle :current of " , max_repeats, " max. [:bar] [:var][:elapsed]"),
-    total = max_repeats, clear = TRUE, width= 80)
-  
-  for(iteration in 1:max_repeats){
-    
-    
+    format = paste0(
+      " Cycle :current of ", max_repeats, " max. [:bar] [:var][:elapsed]"
+      ),
+    total = max_repeats, clear = TRUE, width = 80
+  )
+
+  for (iteration in 1:max_repeats) {
     prev_centroids <- centroids
-    
     new_centroids <- calculate_centers(df, centroids, centers)
-    
-    centroids <- new_centroids  %>%
+
+    centroids <- new_centroids %>%
       group_by(center) %>%
       summarise_all("mean", na.rm = TRUE) %>%
       select(-center) %>%
       collect()
-    
-    if(safeguard) current_kmeans <<- centroids
-    
-    variance <- (round(abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids), digits = 4)*100)
-    
+
+    if (safeguard) current_kmeans <<- centroids
+    variance <- (
+      round(
+        abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids),
+        digits = 4
+      ) * 100
+    )
     pb$tick(tokens = list(var = variance))
-    
-    if(all(prev_centroids == centroids)) break()
-    
+    if (all(prev_centroids == centroids)) break()
   }
   list(
     tbl = new_centroids,
@@ -50,45 +77,50 @@ simple_kmeans <- function(df,..., centers = 3, max_repeats = 100,
   )
 }
 
-calculate_centers <- function(df, center_df, centers){
+calculate_centers <- function(df, center_df, centers) {
   center_names <- paste0("center_", 1:centers)
   fields <- length(colnames(df))
-  
+
   f_dist <- center_df %>%
     imap(~{
-      map2(.x, .y, function(x,y)expr((!!x) - (!!sym(y))))
-    }) 
-  
-  f_inside <- function(center){
+      map2(
+        .x, .y,
+        function(x, y) expr((!! x) - (!! sym(y)))
+      )
+    })
+
+  f_inside <- function(center) {
     1:fields %>%
       map(~{
-        f <- pluck(f_dist, .x, center) 
-        expr(((!!f) * (!!f)))
+        f <- pluck(f_dist, .x, center)
+        expr(((!! f) * (!! f)))
       }) %>%
-      reduce(function(l,r) expr((!!l ) + (!! r)))
+      reduce(function(l, r) expr((!! l) + (!! r)))
   }
-  
+
   km <- 1:centers %>%
     map(~expr(sqrt(!! f_inside(.x)))) %>%
     set_names(center_names)
-  
+
   all <- center_names %>%
     map(~{
-      comp <- map2(.x, center_names, function(x,y) 
-        if(x !=y){ expr((!! sym(x)) <  (!!sym(y)))} else {expr((!!sym(x)) >= (!!sym(y)))
+      comp <- map2(.x, center_names, function(x, y)
+        if (x != y) {
+          expr((!! sym(x)) < (!! sym(y)))
+        } else {
+          expr((!! sym(x)) >= (!! sym(y)))
         }) %>%
-        reduce(function(l,r) expr((!!l) & (!!r))) 
+        reduce(function(l, r) expr((!! l) & (!! r)))
       c(comp, .x) %>%
-        reduce(function(l,r) expr((!!l) ~ !!(r)))
+        reduce(function(l, r) expr((!! l) ~ !! (r)))
     }) %>%
-    flatten() 
-  
+    flatten()
+
   comp <- expr(case_when(!!! all))
-  
+
   df %>%
-    mutate(!!! km)  %>%
+    mutate(!!! km) %>%
     mutate(center = !! comp) %>%
     filter(!is.na(center)) %>%
-    select(-contains("center_")) 
+    select(-contains("center_"))
 }
-
