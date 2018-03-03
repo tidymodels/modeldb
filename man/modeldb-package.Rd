@@ -4,9 +4,9 @@
 \name{modeldb-package}
 \alias{modeldb}
 \alias{modeldb-package}
-\title{modeldb: Fix models inside the database}
+\title{modeldb: Fit models inside the database}
 \description{
-Fix models inside the database
+Uses 'dplyr' and 'tidyeval' to enable model fitting inside the database.
 }
 \seealso{
 Useful links:

@@ -9,14 +9,15 @@
 #' @param centers The number of centers. Defaults to 3.
 #' @param max_repeats The maximum number of cycles to run. Defaults to 100.
 #' @param initial_kmeans A local dataframe with initial centroid values. Defaults to NULL.
-#' @param safeguard Updates a variable called current_kmeans in every cycle. It defaults to TRUE.
+#' @param safeguard_file Each cycle will update a file specified in this argument 
+#' with the current centers.  Defaults to 'kmeans.csv'. Pass NULL if no file is 
+#' desired.
 #'
 #' @details
 #' #' Because each cycle is an indiependent 'dplyr' operation, or SQL operation if using a remote source,
 #' the latest centroid data frame is saved to the parent environment in case the process needs to be
 #' canceled and then restarted at a later point.  Passing the `current_kmeans` as the `initial_kmeans`
-#' will allow the operation to pick up where it left off.  The creation of `current_means` is dependent
-#' on the `safeguard` argument to be set to TRUE.
+#' will allow the operation to pick up where it left off. 
 #'
 #' @examples
 #' library(dplyr)
@@ -31,7 +32,7 @@ simple_kmeans <- function(df,
                           centers = 3,
                           max_repeats = 100,
                           initial_kmeans = NULL,
-                          safeguard = TRUE) {
+                          safeguard_file = "kmeans.csv") {
   vars <- exprs(...)
   df <- df %>%
     select(!!! vars) %>%
@@ -56,12 +57,12 @@ simple_kmeans <- function(df,
     new_centroids <- calculate_centers(df, centroids, centers)
 
     centroids <- new_centroids %>%
-      group_by(center) %>%
+      group_by(.data$center) %>%
       summarise_all("mean", na.rm = TRUE) %>%
-      select(-center) %>%
+      select(-.data$center) %>%
       collect()
 
-    if (safeguard) current_kmeans <<- centroids
+    if (!is.null(safeguard_file)) write.csv(centroids, safeguard_file) 
     variance <- (
       round(
         abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids),
@@ -89,10 +90,10 @@ calculate_centers <- function(df, center_df, centers) {
       )
     })
 
-  f_inside <- function(center) {
+  f_inside <- function(curr_center) {
     1:fields %>%
       map(~{
-        f <- pluck(f_dist, .x, center)
+        f <- pluck(f_dist, .x, curr_center)
         expr(((!! f) * (!! f)))
       }) %>%
       reduce(function(l, r) expr((!! l) + (!! r)))
@@ -121,6 +122,6 @@ calculate_centers <- function(df, center_df, centers) {
   df %>%
     mutate(!!! km) %>%
     mutate(center = !! comp) %>%
-    filter(!is.na(center)) %>%
+    filter(!is.na(.data$center)) %>%
     select(-contains("center_"))
 }

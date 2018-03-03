@@ -9,6 +9,7 @@
 #' @import rlang
 #' @importFrom tibble tibble
 #' @importFrom utils head
+#' @importFrom utils write.csv
 #' @import tidyr
 #' @import tibble
 #' @keywords internal

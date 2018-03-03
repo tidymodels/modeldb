@@ -1,7 +1,7 @@
 Package: modeldb
 Version: 0.0.0.9000
-Title: Fix models inside the database
-Description: Fix models inside the database
+Title: Fit models inside the database
+Description: Uses 'dplyr' and 'tidyeval' to enable model fitting inside the database.  
 Authors@R:
     person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
 Depends:

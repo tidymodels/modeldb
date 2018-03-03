@@ -5,7 +5,7 @@
 \title{Simple kmeans routine that works in-database}
 \usage{
 simple_kmeans(df, ..., centers = 3, max_repeats = 100,
-  initial_kmeans = NULL, safeguard = TRUE)
+  initial_kmeans = NULL, safeguard_file = "kmeans.csv")
 }
 \arguments{
 \item{df}{A Local or remote data frame}
@@ -18,7 +18,9 @@ simple_kmeans(df, ..., centers = 3, max_repeats = 100,
 
 \item{initial_kmeans}{A local dataframe with initial centroid values. Defaults to NULL.}
 
-\item{safeguard}{Updates a variable called current_kmeans in every cycle. It defaults to TRUE.}
+\item{safeguard_file}{Each cycle will update a file specified in this argument 
+with the current centers.  Defaults to 'kmeans.csv'. Pass NULL if no file is 
+desired.}
 }
 \description{
 It uses 'tidyeval' and 'dplyr' to run multiple cycles of kmean
@@ -29,8 +31,7 @@ centers are found.
 #' Because each cycle is an indiependent 'dplyr' operation, or SQL operation if using a remote source,
 the latest centroid data frame is saved to the parent environment in case the process needs to be
 canceled and then restarted at a later point.  Passing the `current_kmeans` as the `initial_kmeans`
-will allow the operation to pick up where it left off.  The creation of `current_means` is dependent
-on the `safeguard` argument to be set to TRUE.
+will allow the operation to pick up where it left off.
 }
 \examples{
 library(dplyr)
