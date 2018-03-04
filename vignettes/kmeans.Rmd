@@ -10,9 +10,10 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(tidyverse)
+library(dplyr)
 library(purrr)
 library(rlang)
+library(readr)
 library(nycflights13)
 ```
 
@@ -21,7 +22,7 @@ library(nycflights13)
 In this example, a simple `RSQlite` database will be use to load the `flights` data from the `nycflights13` library.
 
 ```{r}
-library(tidyverse)
+library(dplyr)
 
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
 RSQLite::initExtension(con)
@@ -104,6 +105,8 @@ km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE
 ```
 
 ```{r, fig.width=10, fig.height=10}
+library(ggplot2)
+
 km$tbl %>%
   plot_kmeans(dep_time, distance)
 ```

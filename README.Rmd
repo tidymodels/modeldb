@@ -17,6 +17,7 @@ library(tidyverse)
 library(purrr)
 library(rlang)
 library(nycflights13)
+library(ggplot2)
 ```
 
 ## Kmeans Clustering
@@ -106,6 +107,8 @@ km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE
 ```
 
 ```{r, fig.width=10, fig.height=10}
+library(ggplot2)
+
 km$tbl %>%
   plot_kmeans(dep_time, distance)
 ```

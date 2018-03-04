@@ -1,13 +1,14 @@
 ## ----setup, include=FALSE------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
-library(tidyverse)
+library(dplyr)
 library(purrr)
 library(rlang)
+library(readr)
 library(nycflights13)
 
 ## ------------------------------------------------------------------------
-library(tidyverse)
+library(dplyr)
 
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
 RSQLite::initExtension(con)
@@ -41,6 +42,8 @@ km <- db_flights %>%
 km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE
 
 ## ---- fig.width=10, fig.height=10----------------------------------------
+library(ggplot2)
+
 km$tbl %>%
   plot_kmeans(dep_time, distance)
 
