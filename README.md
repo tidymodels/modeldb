@@ -1,6 +1,8 @@
 modeldb
 ================
 
+[![Build Status](https://travis-ci.org/edgararuiz/modeldb.svg?branch=master)](https://travis-ci.org/edgararuiz/modeldb)
+
 Uses ‘dplyr’ and ‘tidyeval’ to enable model fitting inside the database.
 It currently supports only **Kmeans Clustering**.
 
