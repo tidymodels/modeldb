@@ -57,12 +57,13 @@ simple_kmeans <- function(df,
     new_centroids <- calculate_centers(df, centroids, centers)
 
     centroids <- new_centroids %>%
-      group_by(.data$center) %>%
+      group_by(center) %>%
       summarise_all("mean", na.rm = TRUE) %>%
-      select(-.data$center) %>%
+      select(-center) %>%
       collect()
 
-    if (!is.null(safeguard_file)) write.csv(centroids, safeguard_file) 
+    if (!is.null(safeguard_file)) write.csv(centroids, safeguard_file, row.names = FALSE) 
+    
     variance <- (
       round(
         abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids),
@@ -94,7 +95,7 @@ calculate_centers <- function(df, center_df, centers) {
     1:fields %>%
       map(~{
         f <- pluck(f_dist, .x, curr_center)
-        expr(((!! f) * (!! f)))
+        expr((((!! f)) * ((!! f))))
       }) %>%
       reduce(function(l, r) expr((!! l) + (!! r)))
   }
@@ -122,6 +123,6 @@ calculate_centers <- function(df, center_df, centers) {
   df %>%
     mutate(!!! km) %>%
     mutate(center = !! comp) %>%
-    filter(!is.na(.data$center)) %>%
+    filter(!is.na(center)) %>%
     select(-contains("center_"))
 }
