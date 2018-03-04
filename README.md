@@ -4,7 +4,14 @@ modeldb
 Uses ‘dplyr’ and ‘tidyeval’ to enable model fitting inside the database.
 It currently supports only **Kmeans Clustering**.
 
-## Example setup
+## Kmeans Clustering
+
+- [KMeans function](#kmeans-function)
+- [Under the hood](#under-the-hood)
+- [Safeguards for long running jobs](#safeguards-for-long-running-jobs)
+- [Visualizations](#visualizations)
+
+### Example setup
 
 In this example, a simple `RSQlite` database will be use to load the
 `flights` data from the `nycflights13` library.
@@ -18,7 +25,7 @@ RSQLite::initExtension(con)
 db_flights <- copy_to(con, nycflights13::flights, "flights")
 ```
 
-## Running Kmeans clustering
+### KMeans function
 
 The function `simple_kmeans()` can use with local data, or a remote
 table, such as the `db_flights` variable that is a pointer to the
@@ -107,7 +114,7 @@ dbplyr::remote_query(km$tbl)
     ## WHERE (NOT(((`dep_time`) IS NULL)) AND NOT(((`distance`) IS NULL))))))
     ## WHERE (NOT(((`center`) IS NULL)))
 
-## Under the hood
+### Under the hood
 
 The `simple_kmeans()` function uses `dplyr` and ‘tidyeval’ to run the
 KMeans algorithm. This means that when combined with `dbplyr`, the
@@ -123,7 +130,7 @@ consecutive SQL statement to see if there was any variance. Effectively,
 this approach uses R not only as translation layer, but also as an
 orchestration layer.
 
-## Safeguards for long running jobs
+### Safeguards for long running jobs
 
 The`simple_kmeans()` approach of using multiple and consecutive SQL
 queries to find the optimal centers, additionally, in KMeans clustering,
@@ -165,7 +172,7 @@ km <- db_flights %>%
 The second run took 7 cycles to complete, which adds up to the 17 cycles
 that it initially took in the first example at the top of this article.
 
-## Visualizations
+### Visualizations
 
 Because visualizing a large amount of data may be both compute intensive
 and visually challenging. The `modeldb` package offers a helper function
