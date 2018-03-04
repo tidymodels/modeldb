@@ -4,6 +4,7 @@
 #' @import tibble
 #' @import dplyr
 #' @import rlang
+#' @import readr
 #' @importFrom purrr map2
 #' @importFrom purrr map
 #' @importFrom purrr map_df

@@ -13,7 +13,8 @@ Imports:
     tibble,
     tidyr,
     progress,
-    ggplot2
+    ggplot2,
+    readr
 Suggests:
     dbplyr,
     testthat,
