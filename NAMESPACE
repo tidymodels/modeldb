@@ -3,6 +3,7 @@
 export(plot_kmeans)
 export(simple_kmeans)
 export(simple_linear_regression)
+export(two_variable_regression)
 import(dplyr)
 import(ggplot2)
 import(readr)
