@@ -23,7 +23,8 @@
 #' library(dplyr)
 #'
 #' x <- mtcars %>%
-#' simple_kmeans(mpg, qsec, wt)
+#'   simple_kmeans(mpg, qsec, wt)
+#'   
 #' x$centers
 #'
 #' @export

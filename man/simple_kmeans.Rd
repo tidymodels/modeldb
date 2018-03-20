@@ -37,7 +37,8 @@ will allow the operation to pick up where it left off.
 library(dplyr)
 
 x <- mtcars \%>\%
-simple_kmeans(mpg, qsec, wt)
+  simple_kmeans(mpg, qsec, wt)
+  
 x$centers
 
 }
