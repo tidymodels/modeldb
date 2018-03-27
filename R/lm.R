@@ -105,3 +105,86 @@ simple_linear_regression <- function(df, x, y, output = "parsedmodel"){
   }
   model
 }
+
+#' @export
+mlr <- function(df, ..., y_var, sample_size){
+  
+  y_var <- enexpr(y_var)
+  
+  x_vars <- exprs(...)
+  
+  
+  ind_f <- function(x1, x2, n) {
+    x1 <- enexpr(x1)
+    x2 <- enexpr(x2)
+    expr(sum(!! x1 * !! x2, na.rm = TRUE) - ((sum(!! x1, na.rm = TRUE) * sum(!! x2, na.rm = TRUE)) / !! n))
+  }
+  
+  all_vars <- c(x_vars, y_var)
+  
+  all <- all_vars %>%
+    map(~{
+      y <- .x
+      all_vars %>%
+        map(~ind_f(!! .x, !! y, sample_size))
+    }) %>%
+    flatten()
+  
+  nm <- all_vars %>%
+    map(~{
+      y <- .x
+      all_vars %>%
+        map(~paste0(.x, "_", y))
+    }) %>%
+    flatten()
+  
+  all <- set_names(all, nm)
+  
+  all_means <- all_vars %>%
+    map(~expr(mean(!! .x, na.rm = TRUE))) %>%
+    set_names(~ paste0("mean_", all_vars))
+  
+  all <- c(all, all_means)
+  
+  ests <- df %>%
+    summarise(
+      !!! all
+    ) %>%
+    collect()
+  
+  xm <- ests %>%
+    select(
+      -contains(expr_text(y_var)),
+      -contains("mean_")
+    ) %>%
+    map_dbl(~.x) %>%
+    matrix(nrow = length(x_vars))
+  
+  ym <- ests %>%
+    select(contains(expr_text(y_var))) %>%
+    select(1:length(x_vars)) %>%
+    map_dbl(~.x) %>%
+    matrix(nrow = length(x_vars))
+  
+  coefs <- as.numeric(solve(xm, ym))
+  
+  ic <- seq_len(length(x_vars)) %>%
+    map(~expr((!! coefs[.x] * !! ests[, paste0("mean_", expr_text(x_vars[[.x]]))])))
+  
+  intercept <- c(ests[, paste0("mean_", expr_text(y_var))], ic) %>%
+    reduce(function(l, r) expr(!! l - !! r)) %>%
+    eval() %>%
+    pull()
+  
+  tibble(
+    var = x_vars %>% map_chr(~expr_text(.x)),
+    val = coefs
+  ) %>%
+    bind_rows(
+      tibble(
+        var = "Intercept",
+        val = intercept
+      )
+    )
+}
+

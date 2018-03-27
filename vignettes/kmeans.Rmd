@@ -2,7 +2,7 @@
 title: "KMeans Clustering"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{randomForest}
+  %\VignetteIndexEntry{kmeans}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
