@@ -106,12 +106,20 @@ simple_linear_regression <- function(df, x, y, output = "parsedmodel"){
   model
 }
 
+#' @rdname two_variable_regression
 #' @export
 mlr <- function(df, ..., y_var, sample_size){
   
   y_var <- enexpr(y_var)
   
   x_vars <- exprs(...)
+  
+  if(length(x_vars) == 0){
+    x_vars <- df %>% 
+      select(- !! y_var) %>% 
+      colnames() %>% 
+      syms()
+  }
   
   
   ind_f <- function(x1, x2, n) {
@@ -173,8 +181,9 @@ mlr <- function(df, ..., y_var, sample_size){
   
   intercept <- c(ests[, paste0("mean_", expr_text(y_var))], ic) %>%
     reduce(function(l, r) expr(!! l - !! r)) %>%
-    eval() %>%
-    pull()
+    eval() 
+  
+  if("tbl_sql" %in% class(df)) intercept <-  pull(intercept)
   
   tibble(
     var = x_vars %>% map_chr(~expr_text(.x)),

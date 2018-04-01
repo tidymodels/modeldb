@@ -3,11 +3,14 @@
 \name{two_variable_regression}
 \alias{two_variable_regression}
 \alias{simple_linear_regression}
+\alias{mlr}
 \title{Linear Regression functions}
 \usage{
 two_variable_regression(df, y, x1, x2, output = "parsedmodel")
 
 simple_linear_regression(df, x, y, output = "parsedmodel")
+
+mlr(df, ..., y_var, sample_size)
 }
 \arguments{
 \item{df}{A Local or remote data frame}
