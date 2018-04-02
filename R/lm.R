@@ -108,7 +108,7 @@ simple_linear_regression <- function(df, x, y, output = "parsedmodel"){
 
 #' @rdname two_variable_regression
 #' @export
-mlr <- function(df, ..., y_var, sample_size){
+mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE){
   
   y_var <- enexpr(y_var)
   
@@ -121,6 +121,9 @@ mlr <- function(df, ..., y_var, sample_size){
       syms()
   }
   
+  if(is.null(sample_size) & auto_count){
+    sample_size <- pull(tally(df))
+  }
   
   ind_f <- function(x1, x2, n) {
     x1 <- enexpr(x1)
