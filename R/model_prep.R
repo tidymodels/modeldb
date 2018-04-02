@@ -12,8 +12,6 @@ add_dummy_variables <- function(df, x, values = c(),
       group_by(!! x) %>% 
       summarise() %>% 
       pull()
-  } else {
-    stop("No list of values was provided, and auto_values is set to FALSE")
   }
   
  vals <- values %>%
