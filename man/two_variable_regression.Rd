@@ -10,7 +10,7 @@ two_variable_regression(df, y, x1, x2, output = "parsedmodel")
 
 simple_linear_regression(df, x, y, output = "parsedmodel")
 
-mlr(df, ..., y_var, sample_size)
+mlr(df, ..., y_var, sample_size = NULL, auto_count = FALSE)
 }
 \arguments{
 \item{df}{A Local or remote data frame}

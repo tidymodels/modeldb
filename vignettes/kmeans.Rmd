@@ -60,9 +60,6 @@ head(km$tbl, 10)
 dbplyr::remote_query(km$tbl)
 ```
 
-
-
-
 ## Under the hood
 
 The `simple_kmeans()` function uses `dplyr` and 'tidyeval' to run the KMeans algorithm.  This means that when combined with `dbplyr`, the routines can be run inside a database.  
@@ -73,7 +70,7 @@ Unlike other packages that use this same methodology, such as `dbplot` and `tidy
 
 The`simple_kmeans()` approach of using multiple and consecutive SQL queries to find the optimal centers, additionally, in KMeans clustering, it matters the order in which the each set of centers is passed.  This creates an imperative to find a way to cache the current centers used in a long running job, in case the job is canceled or fails.  Starting from the centers that were calculated last, will mean that re-starting the job will not being from "0", but from a more advanced, read closer, set of centers.  
 
-The safeguard implemented in this function is trough a file, called *kmeans.csv*.  Each cycle will update the file.  The file name can be changed by modifying the `safeguard_file` argument. Setting the argument to NULL will turn off the safeguard.
+The safeguard implemented in this function is trough a file, called *kmeans.csv*.  Each cycle will update the file.  The file name can be changed by modifying the `safeguard_file` argument. Setting the argument to NULL will turn off the safeguard.  The file will be saved to the temporary directory of the R session.. 
 
 In this example we will set the `max_repats` to 10, so as to artificially avoid finding the optimal means
 ```{r}
@@ -85,7 +82,7 @@ In the next run, the "kmeans.csv" file is passed as the `initial_kmeans` argumen
 
 ```{r}
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance, initial_kmeans = read_csv("kmeans.csv"))
+  simple_kmeans(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
 ```
 
 The second run took 7 cycles to complete, which adds up to the 17 cycles that it initially took in the first example at the top of this article.
