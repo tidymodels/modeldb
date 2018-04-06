@@ -36,7 +36,7 @@ km <- db_flights %>%
 
 ## ------------------------------------------------------------------------
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance, initial_kmeans = read_csv("kmeans.csv"))
+  simple_kmeans(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
 
 ## ------------------------------------------------------------------------
 km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE

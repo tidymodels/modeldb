@@ -63,7 +63,11 @@ simple_kmeans <- function(df,
       select(-center) %>%
       collect()
 
-    if (!is.null(safeguard_file)) write.csv(centroids, safeguard_file, row.names = FALSE) 
+    if (!is.null(safeguard_file)){ 
+      sfg <- file.path(tempdir(), safeguard_file)
+      write.csv(centroids, sfg, row.names = FALSE) 
+    }
+    
     
     variance <- (
       round(
