@@ -1,3 +1,17 @@
+#' @export
+as_parsed_model <- function(df, model_type = "lm") {
+  df <- tidyr::gather(df, var, val)
+  td <- start_parse(model_type = model_type)
+  for (i in seq_len(nrow(df))) {
+    td <- td %>%
+      add_term(
+        df$var[i],
+        df$val[i]
+      )
+  }
+  td
+}
+
 start_parse <- function(model_type = "lm") {
   bind_rows(
     tibble(
@@ -38,16 +52,4 @@ add_term <- function(df, names, estimate) {
 
 get_marker <- function() "{{:}}"
 
-#' @export
-tidypredict_parser <- function(df, model_type = "lm") {
-  df <- tidyr::gather(df, var, val)
-  td <- start_parse(model_type = model_type)
-  for (i in seq_len(nrow(df))) {
-    td <- td %>%
-      add_term(
-        df$var[i],
-        df$val[i]
-      )
-  }
-  td
-}
+
