@@ -1,27 +1,30 @@
 #' Linear Regression functions
 #'
-#' It uses 'tidyeval' and 'dplyr' to to apply the a simple
-#' linear regression formula with one or two independent
-#' variables
+#' It uses 'tidyeval' and 'dplyr' to create a linear
+#' regression model.
 #'
 #' @param df A Local or remote data frame
-#' @param y Dependent variable
-#' @param x1 First independent variable
-#' @param x2 Second independent variable
-#' @param output The format of the output. Defaults to a 'tidypredict' parsed model
+#' @param y_var Dependent variable
+#' @param sample_size Prevents a table count. It is only used for models 
+#' with three or more independent variables
+#' @param auto_count Serves as a safeguard in case sample_size is not
+#' passed inadvertently.  Defaults to FALSE.  If it is ok for the
+#' function to count how many records are in the sample, then set to
+#' TRUE.  It is only used for models with three or more independent variables
 #'
-#' @details
-#' It currently only works with continous dependent variables,
-#' no support for categorical variables yet.
+#' @details 
+#' 
+#' The linear_regression() function only calls one of three unexported functions. 
+#' The function used is determined by the number of independent variables.  This is
+#' so any model of one or two variables can use a simplier formula, which in turn
+#' will have less SQL overhead.
 #'
 #' @examples
 #' library(dplyr)
-#'
+#' 
 #' mtcars %>%
-#'   two_variable_regression(mpg, wt, qsec)
-#'
-#' mtcars %>%
-#'   simple_linear_regression(mpg, wt)
+#'   select(mpg, wt, qsec) %>%
+#'   linear_regression(mpg)
 #'
 #' @export
 linear_regression <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){

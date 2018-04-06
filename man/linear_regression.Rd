@@ -4,35 +4,37 @@
 \alias{linear_regression}
 \title{Linear Regression functions}
 \usage{
-linear_regression(df, y_var = NULL, sample_size = NULL)
+linear_regression(df, y_var = NULL, sample_size = NULL,
+  auto_count = FALSE)
 }
 \arguments{
 \item{df}{A Local or remote data frame}
 
-\item{y}{Dependent variable}
+\item{y_var}{Dependent variable}
 
-\item{x1}{First independent variable}
+\item{sample_size}{Prevents a table count. It is only used for models 
+with three or more independent variables}
 
-\item{x2}{Second independent variable}
-
-\item{output}{The format of the output. Defaults to a 'tidypredict' parsed model}
+\item{auto_count}{Serves as a safeguard in case sample_size is not
+passed inadvertently.  Defaults to FALSE.  If it is ok for the
+function to count how many records are in the sample, then set to
+TRUE.  It is only used for models with three or more independent variables}
 }
 \description{
-It uses 'tidyeval' and 'dplyr' to to apply the a simple
-linear regression formula with one or two independent
-variables
+It uses 'tidyeval' and 'dplyr' to create a linear
+regression model.
 }
 \details{
-It currently only works with continous dependent variables,
-no support for categorical variables yet.
+The linear_regression() function only calls one of three unexported functions. 
+The function used is determined by the number of independent variables.  This is
+so any model of one or two variables can use a simplier formula, which in turn
+will have less SQL overhead.
 }
 \examples{
 library(dplyr)
 
 mtcars \%>\%
-  two_variable_regression(mpg, wt, qsec)
-
-mtcars \%>\%
-  simple_linear_regression(mpg, wt)
+  select(mpg, wt, qsec) \%>\%
+  linear_regression(mpg)
 
 }
