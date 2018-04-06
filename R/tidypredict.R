@@ -1,3 +1,18 @@
+#' Create a parsed_model table
+#'
+#' Converts the output of linear_regression() to tidypredict readable output
+#'
+#' @param df A Local or remote data frame
+#' @param model_type the value passed to the model type. Defaults to 'lm'
+#'
+#' @examples
+#' library(dplyr)
+#' 
+#' mtcars %>%
+#'   select(mpg, wt) %>%
+#'   linear_regression(mpg) %>%
+#'   as_parsed_model()
+#'
 #' @export
 as_parsed_model <- function(df, model_type = "lm") {
   df <- tidyr::gather(df, var, val)
