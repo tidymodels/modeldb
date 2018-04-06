@@ -24,6 +24,38 @@
 #'   simple_linear_regression(mpg, wt)
 #'
 #' @export
+linear_regression <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){
+  y_var <- enexpr(y_var)
+  col_names <- colnames(df)
+  n_cols <- length(col_names)
+  x_vars <- col_names[col_names != expr_text(y_var)]
+  
+  if(n_cols == 2){
+    m <- simple_linear_regression(
+      df = df,
+      x = !! sym(x_vars[1]),
+      y = !! y_var
+    )
+  }
+  if(n_cols == 3){
+    m <- two_variable_regression(
+      df = df,
+      y = !! y_var,
+      x1 = !! sym(x_vars[1]),
+      x2 = !! sym(x_vars[2])
+    )
+  }
+  if(n_cols > 3){
+    m <- mlr(
+      df = df,
+      y_var = !! y_var,
+      sample_size = sample_size,
+      auto_count = auto_count
+    )
+  }
+  m
+}
+
 two_variable_regression <- function(df, y, x1, x2) {
   y <- enexpr(y)
   x1 <- enexpr(x1)
@@ -90,8 +122,12 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
       syms()
   }
 
-  if (is.null(sample_size) & auto_count) {
-    sample_size <- pull(tally(df))
+  if (is.null(sample_size)) {
+    if(auto_count){
+      sample_size <- pull(tally(df))  
+    } else {
+      stop("No sample size provided, and auto_count is set to FALSE") 
+    }
   }
 
   ind_f <- function(x1, x2, n) {
