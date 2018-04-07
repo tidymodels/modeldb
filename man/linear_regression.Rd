@@ -2,7 +2,7 @@
 % Please edit documentation in R/lm.R
 \name{linear_regression}
 \alias{linear_regression}
-\title{Linear Regression functions}
+\title{Fits a Linear Regression model}
 \usage{
 linear_regression(df, y_var = NULL, sample_size = NULL,
   auto_count = FALSE)

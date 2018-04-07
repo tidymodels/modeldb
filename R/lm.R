@@ -1,4 +1,4 @@
-#' Linear Regression functions
+#' Fits a Linear Regression model
 #'
 #' It uses 'tidyeval' and 'dplyr' to create a linear
 #' regression model.
@@ -86,9 +86,6 @@ two_variable_regression <- function(df, y, x1, x2) {
     collect()
 }
 
-
-#' @rdname two_variable_regression
-#' @export
 simple_linear_regression <- function(df, x, y) {
   x <- enexpr(x)
   y <- enexpr(y)
@@ -112,8 +109,6 @@ simple_linear_regression <- function(df, x, y) {
     collect()
 }
 
-#' @rdname two_variable_regression
-#' @export
 mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   y_var <- enexpr(y_var)
   x_vars <- exprs(...)
