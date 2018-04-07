@@ -2,9 +2,8 @@ modeldb
 ================
 
 -   [Installation](#installation)
--   [Intro](#intro)
-    -   [Linear regression](#linear-regression)
-    -   [K-means](#k-means)
+-   [Linear regression](#linear-regression)
+-   [K Means clustering](#k-means-clustering)
 -   [Supported models](#supported-models)
 
 Fit models inside the database. **`modeldb` works with several databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
@@ -22,10 +21,8 @@ Install the development version using `devtools` as follows:
 devtools::install_github("edgararuiz/modeldb")
 ```
 
-Intro
------
-
-### Linear regression
+Linear regression
+-----------------
 
 An easy way to try out the package is by creating a temporary SQLite database, and loading `mtcars` to it
 
@@ -50,7 +47,8 @@ tbl(con, "mtcars") %>%
 
 The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the `Linear Regression` article to learn more about how to use `linear_regression()`
 
-### K-means
+K Means clustering
+------------------
 
 To use the `simple_kmeans()` function, simply pipe the database back end table to the function. This returns a list object that contains two items:
 
