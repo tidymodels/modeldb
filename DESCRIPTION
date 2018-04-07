@@ -24,7 +24,8 @@ Suggests:
     RSQLite, 
     methods,
     DBI,
-    tidypredict
+    tidypredict,
+    dbplot
 License: GPL-3
 URL: https://github.com/edgararuiz/modeldb
 BugReports: https://github.com/edgararuiz/modeldb/issues
