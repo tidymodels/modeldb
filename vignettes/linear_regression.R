@@ -11,13 +11,14 @@ library(modeldb)
 library(tidypredict)
 
 ## ------------------------------------------------------------------------
+# Open a database connection
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
 RSQLite::initExtension(con)
 
-## ------------------------------------------------------------------------
 library(dplyr)
+# Copy data to the database
 db_flights <- copy_to(con, nycflights13::flights, "flights")
-
+# Create a simple sample
 db_sample <- db_flights %>%
   filter(!is.na(arr_time)) %>%
   head(20000) 
@@ -89,6 +90,6 @@ db_flights %>%
   add_dummy_variables(origin, values = origins) %>%
   tidypredict_to_column(parsed)
 
-## ------------------------------------------------------------------------
+## ---- echo = FALSE-------------------------------------------------------
 dbDisconnect(con)
 

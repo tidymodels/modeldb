@@ -70,15 +70,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
+<div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>The <code>linear_regression()</code> function can be used to fit this kind of model inside a database. It uses <code>dplyr</code> programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.</p>
+</div>
 <div id="example-setup" class="section level2">
 <h2>Example setup</h2>
-<p>A lightweight SQLite database will be used for this article.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)
-RSQLite<span class="op">::</span><span class="kw">initExtension</span>(con)</code></pre></div>
-<p>Copy the <code>flights</code> data set to the new connection, and use <code>head()</code> to prepare a simple sample.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>)
+<p>A lightweight SQLite database will be used for this article. Additionally, a sample data set is created.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Open a database connection</span>
+con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)
+RSQLite<span class="op">::</span><span class="kw">initExtension</span>(con)
 
+<span class="kw">library</span>(dplyr)
+<span class="co"># Copy data to the database</span>
+db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>)
+<span class="co"># Create a simple sample</span>
 db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(arr_time)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">20000</span>) </code></pre></div>
@@ -90,7 +96,7 @@ db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span
 <span class="st">  </span><span class="kw">select</span>(arr_delay, dep_delay, distance) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">linear_regression</span>(arr_delay)</code></pre></div>
 <pre><code>## # A tibble: 1 x 3
-##   dep_delay distance intercept
+##   dep_delay distance Intercept
 ##       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 ## 1      1.00 -0.00337    -0.659</code></pre>
 </div>
@@ -130,7 +136,7 @@ origins</code></pre></div>
 <span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">linear_regression</span>(arr_delay)</code></pre></div>
 <pre><code>## # A tibble: 1 x 3
-##   origin_JFK origin_LGA intercept
+##   origin_JFK origin_LGA Intercept
 ##        &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
 ## 1      -10.6      -7.79      9.62</code></pre>
 </div>
@@ -153,7 +159,7 @@ origins</code></pre></div>
 <span class="st">  </span><span class="kw">select</span>(arr_delay, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">linear_regression</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</code></pre></div>
 <pre><code>## # A tibble: 1 x 2
-##   distanceXarr_time intercept
+##   distanceXarr_time Intercept
 ##               &lt;dbl&gt;     &lt;dbl&gt;
 ## 1       -0.00000197      6.77</code></pre>
 <p>A more typical model would also include the two original variables:</p>
@@ -224,7 +230,6 @@ parsed</code></pre></div>
 ## 10        8.      558           551949.         0.         1.  -6.11 
 ## # ... with more rows</code></pre>
 <p>For database write-back strategies, please refer to this page in the <code>tidypredict</code> website: <a href="https://tidypredict.netlify.com/articles/sql/" class="uri">https://tidypredict.netlify.com/articles/sql/</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dbDisconnect</span>(con)</code></pre></div>
 </div>
 
 

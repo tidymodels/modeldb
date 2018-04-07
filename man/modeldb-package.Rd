@@ -6,7 +6,7 @@
 \alias{modeldb-package}
 \title{modeldb: Fit models inside the database}
 \description{
-Uses 'dplyr' and 'tidyeval' to enable model fitting inside the database.
+Uses 'dplyr' and 'tidyeval' to enable model fitting inside the database. It currently supports KMeans and linear regression models.
 }
 \seealso{
 Useful links:

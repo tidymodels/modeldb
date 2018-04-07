@@ -24,21 +24,23 @@ library(modeldb)
 library(tidypredict)
 ```
 
+## Intro
+
+The `linear_regression()` function can be used to fit this kind of model inside a database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+
 ## Example setup
 
-A lightweight SQLite database will be used for this article.
+A lightweight SQLite database will be used for this article.  Additionally, a sample data set is created.
 
 ```{r}
+# Open a database connection
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
 RSQLite::initExtension(con)
-```
 
-Copy the `flights` data set to the new connection, and use `head()` to prepare a simple sample. 
-
-```{r}
 library(dplyr)
+# Copy data to the database
 db_flights <- copy_to(con, nycflights13::flights, "flights")
-
+# Create a simple sample
 db_sample <- db_flights %>%
   filter(!is.na(arr_time)) %>%
   head(20000) 
@@ -161,7 +163,7 @@ db_flights %>%
 
 For database write-back strategies, please refer to this page in the `tidypredict` website: https://tidypredict.netlify.com/articles/sql/
 
-```{r}
+```{r, echo = FALSE}
 dbDisconnect(con)
 ```
 
