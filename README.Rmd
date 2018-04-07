@@ -6,3 +6,80 @@ output:
     toc_depth: 3
 ---
 
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(modeldb)
+```
+
+Fit models inside the database. **`modeldb` works with several databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
+
+- K-means clustering
+
+- Linear regression
+
+## Installation
+
+Install the development version using `devtools` as follows:
+```{r, eval = FALSE}
+devtools::install_github("edgararuiz/modeldb")
+```
+
+## Intro
+
+### Linear regression
+
+An easy way to try out the package is by creating a temporary SQLite database, and loading `mtcars` to it
+
+```{r}
+con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
+RSQLite::initExtension(con)
+dplyr::copy_to(con, mtcars)
+```
+
+```{r}
+library(dplyr)
+
+tbl(con, "mtcars") %>%
+  select(wt, mpg, qsec) %>%
+  linear_regression(wt)
+```
+
+The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the `Linear Regression` article to learn more about how to use `linear_regression()`
+
+### K-means
+
+To use the `simple_kmeans()` function, simply pipe the database back end table to the function.  This returns a list object that contains two items:
+
+- A sql query table with the final center assignment
+- A local table with the information about the centers
+
+```{r}
+km <- tbl(con, "mtcars") %>%
+  simple_kmeans(mpg, wt)
+
+km$centers
+```
+
+To preview the record level center assignment use the `tbl` item
+
+```{r}
+head(km$tbl)
+```
+
+The SQL statement from `tbl` can be extracted using `dbplyr`'s `remote_query()`
+
+```{r}
+dbplyr::remote_query(km$tbl)
+```
+
+More information can be found in the `KMeans Clustering` article.
+
+## Supported models
+
+The following R models are currently supported. For more info please review the corresponding vignette:
+
+- [Linear Regression](http://modeldb.netlify.com/articles/linear_regression/) - `linear_regression()`
+- [K-means clustering](http://modeldb.netlify.com/articles/kmeans/) - `simple_kmenas()`
+
+
