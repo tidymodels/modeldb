@@ -22,23 +22,26 @@ library(nycflights13)
 library(DBI)
 library(modeldb)
 library(tidypredict)
+library(dbplot)
 ```
+
+## Intro
+
+The `linear_regression()` function can be used to fit this kind of model inside a database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
 
 ## Example setup
 
-A lightweight SQLite database will be used for this article.
+A lightweight SQLite database will be used for this article.  Additionally, a sample data set is created.
 
 ```{r}
+# Open a database connection
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
 RSQLite::initExtension(con)
-```
 
-Copy the `flights` data set to the new connection, and use `head()` to prepare a simple sample. 
-
-```{r}
 library(dplyr)
+# Copy data to the database
 db_flights <- copy_to(con, nycflights13::flights, "flights")
-
+# Create a simple sample
 db_sample <- db_flights %>%
   filter(!is.na(arr_time)) %>%
   head(20000) 
@@ -149,7 +152,28 @@ library(tidypredict)
 tidypredict_sql(parsed, dbplyr::simulate_dbi())
 ```
 
-Actually running predictions can be done by simply taking the same piped data transformations and terminating them into `tidypredict_to_column()` 
+### Visualize results
+
+Consider using `dbplot_raster()`, from the `dbplot` package, together with `tidypredict` to get an idea of the model's performance.  The `dbplot` package pushes the calculation of the plot back to the database, so it will make it easier to view results of a really large sample.  The `tidypredict_to_column()` function will calculate the prediction inside the database and return a new variable called `fit`.
+
+SQLite does not support `min()` and `max()` so in the example there is a `collect()` step, please remove that step when working with a more sophisticated database back end.
+
+```{r, fig.width = 8, fig.height = 5}
+library(dbplot)
+
+db_sample %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
+  add_dummy_variables(origin, values = origins) %>%
+  tidypredict_to_column(parsed) %>%
+  select(fit, arr_delay) %>%
+  collect() %>%   # <----- This step is only needed if working with SQLite!
+  dbplot_raster(fit, arr_delay, resolution = 50)
+```
+
+### Predicitions outside the sample
+
+Running predictions can be done by simply taking the same piped data transformations, starting with a different `tbl_sql()` variable, such as `db_flights`,  and terminating them into `tidypredict_to_column()` 
 
 ```{r}
 db_flights %>%
@@ -159,9 +183,9 @@ db_flights %>%
   tidypredict_to_column(parsed)
 ```
 
-For database write-back strategies, please refer to this page in the `tidypredict` website: https://tidypredict.netlify.com/articles/sql/
+For database write-back strategies, also know at "operatioinalizing" or "productionizing", please refer to this page in the `tidypredict` website: https://tidypredict.netlify.com/articles/sql/
 
-```{r}
+```{r, echo = FALSE}
 dbDisconnect(con)
 ```
 

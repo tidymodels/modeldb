@@ -80,9 +80,9 @@ two_variable_regression <- function(df, y, x1, x2) {
       !!x2 := ((x1x * x2y) - (all * x1y)) / ((x1x * x2x) - (all * all))
     ) %>%
     mutate(
-      intercept = my - (!!x1 * mx1) - (!!x2 * mx2)
+      Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)
     ) %>%
-    select(!!x1, !!x2, intercept) %>%
+    select(!!x1, !!x2, Intercept) %>%
     collect()
 }
 
@@ -103,9 +103,9 @@ simple_linear_regression <- function(df, x, y) {
       !!x := ((n * sxy) - (sx * sy)) / ((n * sxx) - (sx * sx))
     ) %>%
     mutate(
-      intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)
+      Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)
     ) %>%
-    select(!!x, intercept) %>%
+    select(!!x, Intercept) %>%
     collect()
 }
 
@@ -185,11 +185,11 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   ic <- seq_len(length(x_vars)) %>%
     map(~ expr((!!coefs[.x] * !!ests[, paste0("mean_", expr_text(x_vars[[.x]]))])))
 
-  intercept <- c(ests[, paste0("mean_", expr_text(y_var))], ic) %>%
+  Intercept <- c(ests[, paste0("mean_", expr_text(y_var))], ic) %>%
     reduce(function(l, r) expr(!!l - !!r)) %>%
     eval()
 
-  if ("tbl_sql" %in% class(df)) intercept <- pull(intercept)
+  if ("tbl_sql" %in% class(df)) Intercept <- pull(Intercept)
 
   bind_rows(
     tibble(
@@ -198,7 +198,7 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
     ),
     tibble(
       var = "Intercept",
-      val = intercept
+      val = Intercept
     )
   ) %>%
     spread(var, val)

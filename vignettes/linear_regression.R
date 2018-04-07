@@ -9,15 +9,17 @@ library(nycflights13)
 library(DBI)
 library(modeldb)
 library(tidypredict)
+library(dbplot)
 
 ## ------------------------------------------------------------------------
+# Open a database connection
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
 RSQLite::initExtension(con)
 
-## ------------------------------------------------------------------------
 library(dplyr)
+# Copy data to the database
 db_flights <- copy_to(con, nycflights13::flights, "flights")
-
+# Create a simple sample
 db_sample <- db_flights %>%
   filter(!is.na(arr_time)) %>%
   head(20000) 
@@ -82,6 +84,18 @@ library(tidypredict)
 
 tidypredict_sql(parsed, dbplyr::simulate_dbi())
 
+## ---- fig.width = 8, fig.height = 5--------------------------------------
+library(dbplot)
+
+db_sample %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
+  add_dummy_variables(origin, values = origins) %>%
+  tidypredict_to_column(parsed) %>%
+  select(fit, arr_delay) %>%
+  collect() %>%   # <----- This step is only needed if working with SQLite!
+  dbplot_raster(fit, arr_delay, resolution = 50)
+
 ## ------------------------------------------------------------------------
 db_flights %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
@@ -89,6 +103,6 @@ db_flights %>%
   add_dummy_variables(origin, values = origins) %>%
   tidypredict_to_column(parsed)
 
-## ------------------------------------------------------------------------
+## ---- echo = FALSE-------------------------------------------------------
 dbDisconnect(con)
 

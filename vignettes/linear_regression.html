@@ -70,15 +70,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
+<div id="intro" class="section level2">
+<h2>Intro</h2>
+<p>The <code>linear_regression()</code> function can be used to fit this kind of model inside a database. It uses <code>dplyr</code> programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.</p>
+</div>
 <div id="example-setup" class="section level2">
 <h2>Example setup</h2>
-<p>A lightweight SQLite database will be used for this article.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)
-RSQLite<span class="op">::</span><span class="kw">initExtension</span>(con)</code></pre></div>
-<p>Copy the <code>flights</code> data set to the new connection, and use <code>head()</code> to prepare a simple sample.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
-db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>)
+<p>A lightweight SQLite database will be used for this article. Additionally, a sample data set is created.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Open a database connection</span>
+con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)
+RSQLite<span class="op">::</span><span class="kw">initExtension</span>(con)
 
+<span class="kw">library</span>(dplyr)
+<span class="co"># Copy data to the database</span>
+db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>)
+<span class="co"># Create a simple sample</span>
 db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(arr_time)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">20000</span>) </code></pre></div>
@@ -90,7 +96,7 @@ db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span
 <span class="st">  </span><span class="kw">select</span>(arr_delay, dep_delay, distance) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">linear_regression</span>(arr_delay)</code></pre></div>
 <pre><code>## # A tibble: 1 x 3
-##   dep_delay distance intercept
+##   dep_delay distance Intercept
 ##       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 ## 1      1.00 -0.00337    -0.659</code></pre>
 </div>
@@ -130,7 +136,7 @@ origins</code></pre></div>
 <span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">linear_regression</span>(arr_delay)</code></pre></div>
 <pre><code>## # A tibble: 1 x 3
-##   origin_JFK origin_LGA intercept
+##   origin_JFK origin_LGA Intercept
 ##        &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
 ## 1      -10.6      -7.79      9.62</code></pre>
 </div>
@@ -153,7 +159,7 @@ origins</code></pre></div>
 <span class="st">  </span><span class="kw">select</span>(arr_delay, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">linear_regression</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</code></pre></div>
 <pre><code>## # A tibble: 1 x 2
-##   distanceXarr_time intercept
+##   distanceXarr_time Intercept
 ##               &lt;dbl&gt;     &lt;dbl&gt;
 ## 1       -0.00000197      6.77</code></pre>
 <p>A more typical model would also include the two original variables:</p>
@@ -202,7 +208,26 @@ parsed</code></pre></div>
 
 <span class="kw">tidypredict_sql</span>(parsed, dbplyr<span class="op">::</span><span class="kw">simulate_dbi</span>())</code></pre></div>
 <pre><code>## &lt;SQL&gt; -3.91880281681301 + (&quot;dep_time&quot;) * (0.0132251596085814) + (&quot;distanceXarr_time&quot;) * (-2.75008443762809e-06) + (&quot;origin_JFK&quot;) * (-10.0912262446948) + (&quot;origin_LGA&quot;) * (-8.04838792899506)</code></pre>
-<p>Actually running predictions can be done by simply taking the same piped data transformations and terminating them into <code>tidypredict_to_column()</code></p>
+<div id="visualize-results" class="section level3">
+<h3>Visualize results</h3>
+<p>Consider using <code>dbplot_raster()</code>, from the <code>dbplot</code> package, together with <code>tidypredict</code> to get an idea of the model’s performance. The <code>dbplot</code> package pushes the calculation of the plot back to the database, so it will make it easier to view results of a really large sample. The <code>tidypredict_to_column()</code> function will calculate the prediction inside the database and return a new variable called <code>fit</code>.</p>
+<p>SQLite does not support <code>min()</code> and <code>max()</code> so in the example there is a <code>collect()</code> step, please remove that step when working with a more sophisticated database back end.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dbplot)
+
+db_sample <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">tidypredict_to_column</span>(parsed) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(fit, arr_delay) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># &lt;----- This step is only needed if working with SQLite!</span>
+<span class="st">  </span><span class="kw">dbplot_raster</span>(fit, arr_delay, <span class="dt">resolution =</span> <span class="dv">50</span>)</code></pre></div>
+<pre><code>## Warning: Removed 25 rows containing missing values (geom_raster).</code></pre>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="predicitions-outside-the-sample" class="section level3">
+<h3>Predicitions outside the sample</h3>
+<p>Running predictions can be done by simply taking the same piped data transformations, starting with a different <code>tbl_sql()</code> variable, such as <code>db_flights</code>, and terminating them into <code>tidypredict_to_column()</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_flights <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -223,8 +248,8 @@ parsed</code></pre></div>
 ##  9       -8.      557           791072.         1.         0.  -8.82 
 ## 10        8.      558           551949.         0.         1.  -6.11 
 ## # ... with more rows</code></pre>
-<p>For database write-back strategies, please refer to this page in the <code>tidypredict</code> website: <a href="https://tidypredict.netlify.com/articles/sql/" class="uri">https://tidypredict.netlify.com/articles/sql/</a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dbDisconnect</span>(con)</code></pre></div>
+<p>For database write-back strategies, also know at “operatioinalizing” or “productionizing”, please refer to this page in the <code>tidypredict</code> website: <a href="https://tidypredict.netlify.com/articles/sql/" class="uri">https://tidypredict.netlify.com/articles/sql/</a></p>
+</div>
 </div>
 
 

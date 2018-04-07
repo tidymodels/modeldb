@@ -21,6 +21,10 @@ library(readr)
 library(nycflights13)
 ```
 
+## Intro
+
+The `simple_kmeans()` function enables running the KMeans model inside the database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+
 ## Example setup
 
 In this example, a simple `RSQlite` database will be use to load the `flights` data from the `nycflights13` library.

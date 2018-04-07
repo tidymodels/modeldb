@@ -10,7 +10,7 @@ googleAnalytics = ""
 [params]
 	# General information
 	author = "Edgar Ruiz"
-	description = "Parses a model to create a predict routine with Tidy Eval."
+	description = "It uses dplyr programming to fit models inside the database."
 	copyright = "Released under the GPL-3 license"
 
 	# Repository
