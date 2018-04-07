@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+  
+  
+  
+  
+   <html class="no-js"> 
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+  <head lang="en-us">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=10" />
+    <title>modeldb - modeldb</title>
+    <meta name="generator" content="Hugo 0.29" />
+
+    
+    <meta name="description" content="It uses dplyr programming to fit models inside the database.">
+    
+    <link rel="canonical" href="/">
+    
+    <meta name="author" content="Edgar Ruiz">
+    
+
+    <meta property="og:url" content="/">
+    <meta property="og:title" content="modeldb">
+    
+    <meta name="apple-mobile-web-app-title" content="modeldb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/logo.png">
+    <link rel="icon" type="image/x-icon" href="/logo.png">
+
+    <style>
+      @font-face {
+        font-family: 'Icon';
+        src: url('/fonts/icon.eot');
+        src: url('/fonts/icon.eot')
+               format('embedded-opentype'),
+             url('/fonts/icon.woff')
+               format('woff'),
+             url('/fonts/icon.ttf')
+               format('truetype'),
+             url('/fonts/icon.svg')
+               format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+    <link rel="stylesheet" href="/stylesheets/application.css">
+    <link rel="stylesheet" href="/stylesheets/temporary.css">
+    <link rel="stylesheet" href="/stylesheets/palettes.css">
+    <link rel="stylesheet" href="/stylesheets/highlight/highlight.css">
+
+    
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ubuntu:400,700|Ubuntu&#43;Mono">
+    <style>
+      body, input {
+        font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+      }
+      pre, code {
+        font-family: 'Ubuntu Mono', 'Courier New', 'Courier', monospace;
+      }
+    </style>
+
+    
+    <script src="/javascripts/modernizr.js"></script>
+
+    
+
+  </head>
+  <body class="palette-primary-blue palette-accent-light-green">
+
+
+
+	
+	
+
+
+<div class="backdrop">
+	<div class="backdrop-paper"></div>
+</div>
+
+<input class="toggle" type="checkbox" id="toggle-drawer">
+<input class="toggle" type="checkbox" id="toggle-search">
+<label class="toggle-button overlay" for="toggle-drawer"></label>
+
+<header class="header">
+	<nav aria-label="Header">
+  <div class="bar default">
+    <div class="button button-menu" role="button" aria-label="Menu">
+      <label class="toggle-button icon icon-menu" for="toggle-drawer">
+        <span></span>
+      </label>
+    </div>
+    <div class="stretch">
+      <div class="title">
+        modeldb
+      </div>
+    </div>
+
+    
+    <div class="button button-twitter" role="button" aria-label="Twitter">
+       <a href="https://twitter.com/theotheredgar" title="@theotheredgar on Twitter" target="_blank" class="toggle-button icon icon-twitter"></a>
+    </div>
+    
+
+    
+    <div class="button button-github" role="button" aria-label="GitHub">
+      <a href="https://github.com/edgararuiz" title="@edgararuiz on GitHub" target="_blank" class="toggle-button icon icon-github"></a>
+    </div>
+    
+    
+        
+  </div>
+  <div class="bar search">
+    <div class="button button-close" role="button" aria-label="Close">
+      <label class="toggle-button icon icon-back" for="toggle-search"></label>
+    </div>
+    <div class="stretch">
+      <div class="field">
+        <input class="query" type="text" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck>
+      </div>
+    </div>
+    <div class="button button-reset" role="button" aria-label="Search">
+      <button class="toggle-button icon icon-close" id="reset-search"></button>
+    </div>
+  </div>
+</nav>
+</header>
+
+<main class="main">
+	<div class="drawer">
+		<nav aria-label="Navigation">
+  <a href="https://github.com/edgararuiz/modeldb" class="project">
+    <div class="banner">
+      
+      <div class="name">
+        <strong>modeldb <span class="version">v.0.0.900</span></strong>
+
+      </div>
+    </div>
+  </a>
+
+  <div class="scrollable">
+    <div class="wrapper">
+      
+        <ul>
+          <li>
+            <p>
+              
+              <a href="https://travis-ci.org/edgararuiz/modeldb">
+                <img src="https://travis-ci.org/edgararuiz/modeldb.svg?branch=master" alt="Build Status" />
+              </a>
+              
+            </p>
+
+          </li>
+        </ul>
+        <hr>
+      
+
+      <div class="toc">
+        
+        <ul>
+          
+
+
+
+
+<li>
+  
+    
+
+
+
+<a class="current" title="Home" href="/">
+	
+	Home
+</a>
+
+
+<ul id="scrollspy">
+</ul>
+
+
+  
+</li>
+
+
+
+<li>
+  
+    <span class="section">Articles</span>
+    <ul>
+      
+        
+        
+
+
+
+<a  title="KMeans Clustering" href="/articles/kmeans/">
+	
+	KMeans Clustering
+</a>
+
+
+
+      
+        
+        
+
+
+
+<a  title="Linear Regression" href="/articles/linear_regression/">
+	
+	Linear Regression
+</a>
+
+
+
+      
+    </ul>
+  
+</li>
+
+
+        </ul>
+        
+
+        
+        <hr>
+        <span class="section">The author</span>
+        
+        <ul>
+          
+          <li>
+            <a href="https://twitter.com/theotheredgar" target="_blank" title="@theotheredgar on Twitter">
+              @theotheredgar on Twitter
+            </a>
+          </li>
+          
+
+          
+          <li>
+            <a href="https://github.com/edgararuiz" target="_blank" title="@edgararuiz on GitHub">
+              @edgararuiz on GitHub
+            </a>
+          </li>
+          
+
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+
+	</div>
+
+	<article class="article">
+		<div class="wrapper">
+			<h1>modeldb </h1>
+
+			<p>Fit models inside the database. <strong><code>modeldb</code> works with several databases back-ends</strong> because it leverages <code>dplyr</code> and <code>dbplyr</code> for the final SQL translation of the algorithm. It currently supports:</p>
+<ul>
+<li><p>K-means clustering</p></li>
+<li><p>Linear regression</p></li>
+</ul>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Install the development version using <code>devtools</code> as follows:</p>
+<pre class="r"><code>devtools::install_github(&quot;edgararuiz/modeldb&quot;)</code></pre>
+</div>
+<div id="linear-regression" class="section level2">
+<h2>Linear regression</h2>
+<p>An easy way to try out the package is by creating a temporary SQLite database, and loading <code>mtcars</code> to it</p>
+<pre class="r"><code>con &lt;- DBI::dbConnect(RSQLite::SQLite(), path = &quot;:memory:&quot;)
+RSQLite::initExtension(con)
+dplyr::copy_to(con, mtcars)</code></pre>
+<pre class="r"><code>library(dplyr)
+
+tbl(con, &quot;mtcars&quot;) %&gt;%
+  select(wt, mpg, qsec) %&gt;%
+  linear_regression(wt)</code></pre>
+<pre><code>## # A tibble: 1 x 3
+##      mpg  qsec Intercept
+##    &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+## 1 -0.156 0.125      4.12</code></pre>
+<p>The model output can be parsed by <code>tidypredict</code> to run the predictions in the database. Please see the <code>Linear Regression</code> article to learn more about how to use <code>linear_regression()</code></p>
+</div>
+<div id="k-means-clustering" class="section level2">
+<h2>K Means clustering</h2>
+<p>To use the <code>simple_kmeans()</code> function, simply pipe the database back end table to the function. This returns a list object that contains two items:</p>
+<ul>
+<li>A sql query table with the final center assignment</li>
+<li>A local table with the information about the centers</li>
+</ul>
+<pre class="r"><code>km &lt;- tbl(con, &quot;mtcars&quot;) %&gt;%
+  simple_kmeans(mpg, wt)
+
+km$centers</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##     mpg    wt
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1  20.6  3.07
+## 2  14.5  4.06
+## 3  30.1  1.87</code></pre>
+<p>To preview the record level center assignment use the <code>tbl</code> item</p>
+<pre class="r"><code>head(km$tbl)</code></pre>
+<pre><code>## # Source:   lazy query [?? x 3]
+## # Database: sqlite 3.22.0 []
+##     mpg    wt center  
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   
+## 1  21.0  2.62 center_1
+## 2  21.0  2.88 center_1
+## 3  22.8  2.32 center_1
+## 4  21.4  3.22 center_1
+## 5  18.7  3.44 center_1
+## 6  18.1  3.46 center_1</code></pre>
+<p>The SQL statement from <code>tbl</code> can be extracted using <code>dbplyr</code>’s <code>remote_query()</code></p>
+<pre class="r"><code>dbplyr::remote_query(km$tbl)</code></pre>
+<pre><code>## &lt;SQL&gt; SELECT `mpg`, `wt`, `center`
+## FROM (SELECT `mpg`, `wt`, `center_1`, `center_2`, `center_3`, CASE
+## WHEN (`center_1` &gt;= `center_1` AND `center_1` &lt; `center_2` AND `center_1` &lt; `center_3`) THEN (&#39;center_1&#39;)
+## WHEN (`center_2` &lt; `center_1` AND `center_2` &gt;= `center_2` AND `center_2` &lt; `center_3`) THEN (&#39;center_2&#39;)
+## WHEN (`center_3` &lt; `center_1` AND `center_3` &lt; `center_2` AND `center_3` &gt;= `center_3`) THEN (&#39;center_3&#39;)
+## END AS `center`
+## FROM (SELECT `mpg`, `wt`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`
+## FROM (SELECT *
+## FROM (SELECT `mpg`, `wt`
+## FROM `mtcars`)
+## WHERE (NOT(((`mpg`) IS NULL)) AND NOT(((`wt`) IS NULL))))))
+## WHERE (NOT(((`center`) IS NULL)))</code></pre>
+<p>More information can be found in the <code>KMeans Clustering</code> article.</p>
+</div>
+<div id="supported-models" class="section level2">
+<h2>Supported models</h2>
+<p>The following R models are currently supported. For more info please review the corresponding vignette:</p>
+<ul>
+<li><a href="http://modeldb.netlify.com/articles/linear_regression/">Linear Regression</a> - <code>linear_regression()</code></li>
+<li><a href="http://modeldb.netlify.com/articles/kmeans/">K-means clustering</a> - <code>simple_kmenas()</code></li>
+</ul>
+</div>
+
+
+			<aside class="copyright" role="note">
+				
+				&copy; 2018 Released under the GPL-3 license &ndash;
+				
+				Documentation built with
+				<a href="https://github.com/r-lib/pkgdown/">pkgdown</a>,
+				<a href="https://github.com/rstudio/blogdown">blogdown</a>, and 
+				<a href="https://www.gohugo.io" target="_blank"> Hugo</a> using the
+				<a href="http://github.com/digitalcraftsman/hugo-material-docs" target="_blank">Material</a> theme.
+				
+			</aside>
+
+			<footer class="footer">
+				
+
+<nav class="pagination" aria-label="Footer">
+  <div class="previous">
+  
+      <a href="/articles/linear_regression/" title="Linear Regression">
+        <span class="direction">
+          Previous
+        </span>
+        <div class="page">
+          <div class="button button-previous" role="button" aria-label="Previous">
+            <i class="icon icon-back"></i>
+          </div>
+          <div class="stretch">
+            <div class="title">
+              Linear Regression
+            </div>
+          </div>
+        </div>
+      </a>
+  
+  </div>
+
+  <div class="next">
+  
+  </div>
+</nav>
+
+
+
+
+
+			</footer>
+		</div>
+	</article>
+
+	<div class="results" role="status" aria-live="polite">
+		<div class="scrollable">
+			<div class="wrapper">
+				<div class="meta"></div>
+				<div class="list"></div>
+			</div>
+		</div>
+	</div>
+</main>
+
+    <script>
+    
+      var base_url = '\/';
+      var repo_id  = 'edgararuiz\/modeldb';
+    
+    </script>
+
+    <script src="/javascripts/application.js"></script>
+    
+
+    <script>
+      /* Add headers to scrollspy */
+      var headers   = document.getElementsByTagName("div");
+      var scrollspy = document.getElementById('scrollspy');
+      if(scrollspy) {
+        if(headers.length > 0) {
+          for(var i = 0; i < headers.length; i++) {
+            if(headers[i].id.length > 0){
+              var li = document.createElement("li");
+              li.setAttribute("class", "anchor");
+  
+              var a  = document.createElement("a");
+              a.setAttribute("href", "#" + headers[i].id);
+              a.setAttribute("title", headers[i].innerHTML);
+              a.innerHTML = headers[i].getElementsByTagName("h2")[0].innerHTML;
+  
+              li.appendChild(a)
+              scrollspy.appendChild(li);
+            }            
+            
+          }
+        } else {
+          scrollspy.parentElement.removeChild(scrollspy)
+        }
+      }
+    </script>
+
+    
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+

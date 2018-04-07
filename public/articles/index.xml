@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Articles on modeldb</title>
+    <link>/articles/</link>
+    <description>Recent content in Articles on modeldb</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Released under the GPL-3 license</copyright>
+    
+	<atom:link href="/articles/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>KMeans Clustering</title>
+      <link>/articles/kmeans/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/articles/kmeans/</guid>
+      <description>IntroThe simple_kmeans() function enables running the KMeans model inside the database. It uses dplyr programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+Example setupIn this example, a simple RSQlite database will be use to load the flights data from the nycflights13 library.
+library(dplyr)con &amp;lt;- DBI::dbConnect(RSQLite::SQLite(), path = &amp;quot;:memory:&amp;quot;)RSQLite::initExtension(con)db_flights &amp;lt;- copy_to(con, nycflights13::flights, &amp;quot;flights&amp;quot;)Running Kmeans clusteringThe function simple_kmeans() can use with local data, or a remote table, such as the db_flights variable that is a pointer to the “flights” table inside the SQLite database.</description>
+    </item>
+    
+    <item>
+      <title>Linear Regression</title>
+      <link>/articles/linear_regression/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/articles/linear_regression/</guid>
+      <description>IntroThe linear_regression() function can be used to fit this kind of model inside a database. It uses dplyr programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+Example setupA lightweight SQLite database will be used for this article. Additionally, a sample data set is created.
+# Open a database connectioncon &amp;lt;- DBI::dbConnect(RSQLite::SQLite(), path = &amp;quot;:memory:&amp;quot;)RSQLite::initExtension(con)library(dplyr)# Copy data to the databasedb_flights &amp;lt;- copy_to(con, nycflights13::flights, &amp;quot;flights&amp;quot;)# Create a simple sampledb_sample &amp;lt;- db_flights %&amp;gt;%filter(!</description>
+    </item>
+    
+  </channel>
+</rss>
