@@ -23,7 +23,8 @@ Suggests:
     nycflights13,
     RSQLite, 
     methods,
-    DBI
+    DBI,
+    tidypredict
 License: GPL-3
 URL: https://github.com/edgararuiz/modeldb
 BugReports: https://github.com/edgararuiz/modeldb/issues
