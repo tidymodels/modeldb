@@ -8,7 +8,7 @@ blogdown_build <- function() {
   if (file.exists("public"))  unlink("public", recursive = TRUE)
   
   if(!file.exists("content")) dir.create("content")
-  if(!file.exists("content/reference")) dir.create("content/reference")
+  #if(!file.exists("content/reference")) dir.create("content/reference")
   if(!file.exists("content/articles")) dir.create("content/articles")
   if(!file.exists("static")) dir.create("static")
   if(!file.exists("layouts")) dir.create("layouts")
