@@ -3,7 +3,7 @@
 .RData
 .Ruserdata
 kmeans.csv
-content
-public
-layouts
-static
+/content
+/public
+/layouts
+/static

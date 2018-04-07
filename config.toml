@@ -30,7 +30,7 @@ googleAnalytics = ""
   highlightjsTheme = "github"
 
 	[params.palette]
-    	primary = "grey"
+    	primary = "blue"
     	accent  = "light-green"
 
     [params.font]
