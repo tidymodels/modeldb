@@ -29,9 +29,13 @@
 #' @export
 linear_regression <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){
   y_var <- enexpr(y_var)
+  
   col_names <- colnames(df)
-  n_cols <- length(col_names)
+  grouped_count <- length(group_vars(df))
+  n_cols <- length(col_names) - grouped_count
+  
   x_vars <- col_names[col_names != expr_text(y_var)]
+  if(grouped_count > 0) x_vars <- setdiff(x_vars, group_vars(df))
   
   if(n_cols == 2){
     m <- simple_linear_regression(
@@ -64,6 +68,8 @@ two_variable_regression <- function(df, y, x1, x2) {
   x1 <- enexpr(x1)
   x2 <- enexpr(x2)
 
+  vars <- group_vars(df)
+  
   df %>%
     summarise(
       x1y = sum(!!x1 * !!y, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
@@ -82,14 +88,18 @@ two_variable_regression <- function(df, y, x1, x2) {
     mutate(
       Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)
     ) %>%
-    select(!!x1, !!x2, Intercept) %>%
-    collect()
+    select(!! vars, Intercept, !!x1, !!x2) %>%
+    collect() %>%
+    rename("(Intercept)" = Intercept) %>%
+    as_tibble()
 }
 
 simple_linear_regression <- function(df, x, y) {
   x <- enexpr(x)
   y <- enexpr(y)
 
+  vars <- group_vars(df)
+  
   df %>%
     summarise(
       sx = sum(!!x, na.rm = TRUE),
@@ -105,19 +115,24 @@ simple_linear_regression <- function(df, x, y) {
     mutate(
       Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)
     ) %>%
-    select(!!x, Intercept) %>%
-    collect()
+    select(!! vars, Intercept, !!x) %>%
+    collect() %>%
+    rename("(Intercept)" = Intercept) %>%
+    as_tibble()
 }
 
 mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   y_var <- enexpr(y_var)
   x_vars <- exprs(...)
 
+  vars <- group_vars(df)
+  
+  
   if (length(x_vars) == 0) {
-    x_vars <- df %>%
-      select(-!!y_var) %>%
-      colnames() %>%
-      syms()
+    x_vars <- colnames(df)
+    x_vars <- setdiff(x_vars, expr_text(y_var))
+    x_vars <- setdiff(x_vars, vars)
+    x_vars <- syms(x_vars)
   }
 
   if (is.null(sample_size)) {
@@ -131,7 +146,7 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   ind_f <- function(x1, x2, n) {
     x1 <- enexpr(x1)
     x2 <- enexpr(x2)
-    expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / !!n))
+    expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / n()))
   }
 
   all_vars <- c(x_vars, y_var)
@@ -169,9 +184,11 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   xm <- ests %>%
     select(
       -contains(expr_text(y_var)),
-      -contains("mean_")
+      -contains("mean_"),
+      -contains(vars)
     ) %>%
-    map_dbl(~ .x) %>%
+    transpose() %>%
+    map_df(~tibble(.x))
     matrix(nrow = length(x_vars))
 
   ym <- ests %>%
