@@ -14,7 +14,7 @@
 #'
 #' @details 
 #' 
-#' The linear_regression() function only calls one of three unexported functions. 
+#' The linear_regression_db() function only calls one of three unexported functions. 
 #' The function used is determined by the number of independent variables.  This is
 #' so any model of one or two variables can use a simplier formula, which in turn
 #' will have less SQL overhead.
@@ -24,10 +24,10 @@
 #' 
 #' mtcars %>%
 #'   select(mpg, wt, qsec) %>%
-#'   linear_regression(mpg)
+#'   linear_regression_db(mpg)
 #'
 #' @export
-linear_regression <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){
+linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){
   y_var <- enexpr(y_var)
   
   col_names <- colnames(df)
@@ -38,7 +38,7 @@ linear_regression <- function(df, y_var = NULL, sample_size = NULL, auto_count =
   if(grouped_count > 0) x_vars <- setdiff(x_vars, group_vars(df))
   
   if(n_cols == 2){
-    m <- simple_linear_regression(
+    m <- simple_linear_regression_db(
       df = df,
       x = !! sym(x_vars[1]),
       y = !! y_var
@@ -94,7 +94,7 @@ two_variable_regression <- function(df, y, x1, x2) {
     as_tibble()
 }
 
-simple_linear_regression <- function(df, x, y) {
+simple_linear_regression_db <- function(df, x, y) {
   x <- enexpr(x)
   y <- enexpr(y)
 

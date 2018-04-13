@@ -19,7 +19,7 @@ db_flights <- copy_to(con, nycflights13::flights, "flights")
 library(modeldb)
 
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance)
+  simple_kmeans_db(dep_time, distance)
 
 ## ------------------------------------------------------------------------
 km$centers
@@ -32,11 +32,11 @@ dbplyr::remote_query(km$tbl)
 
 ## ------------------------------------------------------------------------
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance, max_repeats = 10)
+  simple_kmeans_db(dep_time, distance, max_repeats = 10)
 
 ## ------------------------------------------------------------------------
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
+  simple_kmeans_db(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
 
 ## ------------------------------------------------------------------------
 km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE

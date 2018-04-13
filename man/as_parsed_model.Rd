@@ -19,7 +19,7 @@ library(dplyr)
 
 mtcars \%>\%
   select(mpg, wt) \%>\%
-  linear_regression(mpg) \%>\%
+  linear_regression_db(mpg) \%>\%
   as_parsed_model()
 
 }

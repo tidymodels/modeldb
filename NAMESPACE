@@ -2,9 +2,9 @@
 
 export(add_dummy_variables)
 export(as_parsed_model)
-export(linear_regression)
+export(linear_regression_db)
 export(plot_kmeans)
-export(simple_kmeans)
+export(simple_kmeans_db)
 import(dplyr)
 import(ggplot2)
 import(readr)

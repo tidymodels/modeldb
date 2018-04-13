@@ -18,46 +18,256 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -72,41 +282,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <div id="intro" class="section level2">
 <h2>Intro</h2>
-<p>The <code>linear_regression()</code> function can be used to fit this kind of model inside a database. It uses <code>dplyr</code> programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.</p>
+<p>The <code>linear_regression_db()</code> function can be used to fit this kind of model inside a database. It uses <code>dplyr</code> programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.</p>
 </div>
 <div id="example-setup" class="section level2">
 <h2>Example setup</h2>
 <p>A lightweight SQLite database will be used for this article. Additionally, a sample data set is created.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Open a database connection</span>
-con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)
-RSQLite<span class="op">::</span><span class="kw">initExtension</span>(con)
-
-<span class="kw">library</span>(dplyr)
-<span class="co"># Copy data to the database</span>
-db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>)
-<span class="co"># Create a simple sample</span>
-db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(arr_time)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">20000</span>) </code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Open a database connection</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(RSQLite<span class="op">::</span><span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">RSQLite<span class="op">::</span><span class="kw">initExtension</span>(con)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># Copy data to the database</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">&quot;flights&quot;</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># Create a simple sample</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(arr_time)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span><span class="kw">head</span>(<span class="dv">20000</span>) </a></code></pre></div>
 </div>
 <div id="model-inside-the-database" class="section level2">
 <h2>Model inside the database</h2>
-<p>The <code>linear_regression()</code> function does not use a formula. It uses a table, and a named dependent variable. This means data preparation is needed prior to running the model. The best way to prepare the data for modeling will be using piped <code>dplyr</code> operations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, dep_delay, distance) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">linear_regression</span>(arr_delay)</code></pre></div>
+<p>The <code>linear_regression_db()</code> function does not use a formula. It uses a table, and a named dependent variable. This means data preparation is needed prior to running the model. The best way to prepare the data for modeling will be using piped <code>dplyr</code> operations.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(arr_delay, dep_delay, distance) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw">linear_regression_db</span>(arr_delay)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 3
-##   dep_delay distance Intercept
-##       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-## 1      1.00 -0.00337    -0.659</code></pre>
+##   `(Intercept)` dep_delay distance
+##           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1        -0.659      1.00 -0.00337</code></pre>
 </div>
 <div id="categorical-variables" class="section level2">
 <h2>Categorical variables</h2>
 <p>Adding a categorical a variable to a model requires prior data transformation The <code>add_dummy_variables()</code> appends a set of boolean variables, one for each discrete value. This function creates one-less discrete variable than the possible values. For example: if the categorical variable has three possible values, the function will append two variables. By default, <code>add_dummy_variables()</code> removes the original variable.</p>
 <p>The reason for this approach is to reduce the number of database operations. Without this step, then a fitting function would have to request all of the unique values every time a new model run, which creates unnecessary processing.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, origin) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;EWR&quot;</span>, <span class="st">&quot;JFK&quot;</span>, <span class="st">&quot;LGA&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(arr_delay, origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;EWR&quot;</span>, <span class="st">&quot;JFK&quot;</span>, <span class="st">&quot;LGA&quot;</span>))</a></code></pre></div>
 <pre><code>## # Source:   lazy query [?? x 3]
 ## # Database: sqlite 3.22.0 []
 ##    arr_delay origin_JFK origin_LGA
@@ -123,76 +333,76 @@ db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span
 ## 10        8.         0.         1.
 ## # ... with more rows</code></pre>
 <p>In a real world scenario, the possible values are usually not known at the beginning of the analysis. So it is a good idea to load them into a vector variable so that it can be used any time that variable is added to a model. This can be easily done using the <code>pull()</code> command from <code>dplyr</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">origins &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(origin) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">pull</span>()
-
-origins</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">origins &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">pull</span>()</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">origins</a></code></pre></div>
 <pre><code>## [1] &quot;EWR&quot; &quot;JFK&quot; &quot;LGA&quot;</code></pre>
 <p>The <code>add_dummy_variables()</code> can be used as part of the piped code that terminates in the modeling function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, origin) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">linear_regression</span>(arr_delay)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(arr_delay, origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">linear_regression_db</span>(arr_delay)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 3
-##   origin_JFK origin_LGA Intercept
-##        &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-## 1      -10.6      -7.79      9.62</code></pre>
+##   `(Intercept)` origin_JFK origin_LGA
+##           &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1          9.62      -10.6      -7.79</code></pre>
 </div>
 <div id="multiple-linear-regression" class="section level2">
 <h2>Multiple linear regression</h2>
 <p>One of two arguments is needed to be set when fitting a model with three or more independent variables. The both relate to the size of the data set used for the model. So either the <code>sample_size</code> argument is passed, or <code>auto_count</code> is set to <code>TRUE</code>. When <code>auto_count</code> is set to <code>TRUE</code>, and no sample size is passed, then the function will do a table count as part of the model fitting. This is done in order to prevent unnecessary database operations, especially for cases when multiple models will be tested on top of the same sample data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, arr_time, dep_delay, dep_time) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">linear_regression</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(arr_delay, arr_time, dep_delay, dep_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">linear_regression_db</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 4
-##   Intercept  arr_time dep_delay dep_time
-##       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-## 1     -1.72 -0.000208      1.01 -0.00155</code></pre>
+##   `(Intercept)`  arr_time dep_delay dep_time
+##           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1         -1.72 -0.000208      1.01 -0.00155</code></pre>
 </div>
 <div id="interactions" class="section level2">
 <h2>Interactions</h2>
 <p>Interactions have to be handled manually prior the modeling step.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">linear_regression</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(arr_delay, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">linear_regression_db</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
-##   distanceXarr_time Intercept
-##               &lt;dbl&gt;     &lt;dbl&gt;
-## 1       -0.00000197      6.77</code></pre>
+##   `(Intercept)` distanceXarr_time
+##           &lt;dbl&gt;             &lt;dbl&gt;
+## 1          6.77       -0.00000197</code></pre>
 <p>A more typical model would also include the two original variables:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, distance, arr_time, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">linear_regression</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(arr_delay, distance, arr_time, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw">linear_regression_db</span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 4
-##   Intercept arr_time distance distanceXarr_time
-##       &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;
-## 1     -2.11  0.00650  0.00269       -0.00000435</code></pre>
+##   `(Intercept)` distance arr_time distanceXarr_time
+##           &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;
+## 1         -2.11  0.00269  0.00650       -0.00000435</code></pre>
 </div>
 <div id="full-example" class="section level2">
 <h2>Full example</h2>
 <p>Fitting a model with regular, categorical and interaction variables will look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">remote_model &lt;-<span class="st"> </span>db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">linear_regression</span>(<span class="dt">y_var =</span> arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)
-
-remote_model</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">remote_model &lt;-<span class="st"> </span>db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw">linear_regression_db</span>(<span class="dt">y_var =</span> arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">remote_model</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 5
-##   Intercept dep_time distanceXarr_time origin_JFK origin_LGA
-##       &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1     -3.92   0.0132       -0.00000275      -10.1      -8.05</code></pre>
+##   `(Intercept)` dep_time distanceXarr_time origin_JFK origin_LGA
+##           &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1         -3.92   0.0132       -0.00000275      -10.1      -8.05</code></pre>
 </div>
 <div id="run-predictions-with-tidypredict" class="section level2">
 <h2>Run predictions with tidypredict</h2>
-<p>The <code>as_parsed_model()</code> function will convert the <code>linear_regression()</code> model output to an output that the <code>tidypredict</code> model can read.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">parsed &lt;-<span class="st"> </span><span class="kw">as_parsed_model</span>(remote_model)
-
-parsed</code></pre></div>
+<p>The <code>as_parsed_model()</code> function will convert the <code>linear_regression_db()</code> model output to an output that the <code>tidypredict</code> model can read.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">parsed &lt;-<span class="st"> </span><span class="kw">as_parsed_model</span>(remote_model)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">parsed</a></code></pre></div>
 <pre><code>## # A tibble: 7 x 8
 ##   labels              estimate type  vals  field_1 field_2 field_3 field_4
 ##   &lt;chr&gt;                  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
@@ -204,35 +414,35 @@ parsed</code></pre></div>
 ## 6 origin_JFK          -1.01e+1 term  &lt;NA&gt;  &lt;NA&gt;    &lt;NA&gt;    {{:}}   &lt;NA&gt;   
 ## 7 origin_LGA          -8.05e+0 term  &lt;NA&gt;  &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    {{:}}</code></pre>
 <p>To preview what the prediction SQL statement will look like use <code>tidypredict_sql()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidypredict)
-
-<span class="kw">tidypredict_sql</span>(parsed, dbplyr<span class="op">::</span><span class="kw">simulate_dbi</span>())</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">library</span>(tidypredict)</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw">tidypredict_sql</span>(parsed, dbplyr<span class="op">::</span><span class="kw">simulate_dbi</span>())</a></code></pre></div>
 <pre><code>## &lt;SQL&gt; -3.91880281681301 + (&quot;dep_time&quot;) * (0.0132251596085814) + (&quot;distanceXarr_time&quot;) * (-2.75008443762809e-06) + (&quot;origin_JFK&quot;) * (-10.0912262446948) + (&quot;origin_LGA&quot;) * (-8.04838792899506)</code></pre>
 <div id="visualize-results" class="section level3">
 <h3>Visualize results</h3>
 <p>Consider using <code>dbplot_raster()</code>, from the <code>dbplot</code> package, together with <code>tidypredict</code> to get an idea of the model’s performance. The <code>dbplot</code> package pushes the calculation of the plot back to the database, so it will make it easier to view results of a really large sample. The <code>tidypredict_to_column()</code> function will calculate the prediction inside the database and return a new variable called <code>fit</code>.</p>
 <p>SQLite does not support <code>min()</code> and <code>max()</code> so in the example there is a <code>collect()</code> step, please remove that step when working with a more sophisticated database back end.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dbplot)
-
-db_sample <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">tidypredict_to_column</span>(parsed) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(fit, arr_delay) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># &lt;----- This step is only needed if working with SQLite!</span>
-<span class="st">  </span><span class="kw">dbplot_raster</span>(fit, arr_delay, <span class="dt">resolution =</span> <span class="dv">50</span>)</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">library</span>(dbplot)</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">  </span><span class="kw">tidypredict_to_column</span>(parsed) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="st">  </span><span class="kw">select</span>(fit, arr_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="st">  </span><span class="kw">collect</span>() <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># &lt;----- This step is only needed if working with SQLite!</span></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="st">  </span><span class="kw">dbplot_raster</span>(fit, arr_delay, <span class="dt">resolution =</span> <span class="dv">50</span>)</a></code></pre></div>
 <pre><code>## Warning: Removed 25 rows containing missing values (geom_raster).</code></pre>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="predicitions-outside-the-sample" class="section level3">
 <h3>Predicitions outside the sample</h3>
 <p>Running predictions can be done by simply taking the same piped data transformations, starting with a different <code>tbl_sql()</code> variable, such as <code>db_flights</code>, and terminating them into <code>tidypredict_to_column()</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">db_flights <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">tidypredict_to_column</span>(parsed)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">db_flights <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span><span class="kw">add_dummy_variables</span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="st">  </span><span class="kw">tidypredict_to_column</span>(parsed)</a></code></pre></div>
 <pre><code>## # Source:   lazy query [?? x 6]
 ## # Database: sqlite 3.22.0 []
 ##    arr_delay dep_time distanceXarr_time origin_JFK origin_LGA     fit

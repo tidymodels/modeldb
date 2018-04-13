@@ -23,7 +23,7 @@ library(nycflights13)
 
 ## Intro
 
-The `simple_kmeans()` function enables running the KMeans model inside the database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+The `simple_kmeans_db()` function enables running the KMeans model inside the database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
 
 ## Example setup
 
@@ -40,16 +40,16 @@ db_flights <- copy_to(con, nycflights13::flights, "flights")
 
 ## Running Kmeans clustering
 
-The function `simple_kmeans()` can use with local data, or a remote table, such as the `db_flights` variable that is a pointer to the "flights" table inside the SQLite database.  When piping to the function, the only other required arguments are two or more fields separated by comma.  Because it uses 'tidyeval', the variable name auto-completion will work.
+The function `simple_kmeans_db()` can use with local data, or a remote table, such as the `db_flights` variable that is a pointer to the "flights" table inside the SQLite database.  When piping to the function, the only other required arguments are two or more fields separated by comma.  Because it uses 'tidyeval', the variable name auto-completion will work.
 
 ```{r}
 library(modeldb)
 
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance)
+  simple_kmeans_db(dep_time, distance)
 ```
 
-The `simple_kmeans()` function uses a progress bar to show you the current cycle, the maximum cycles it's expected to run, the current difference between the previous cycle and the current cycle, and the running time.  The loop will stop once it wither has two matching consecutive cycles, or if it reaches the maximum number of cycles, as determined by the `max_repeats` argument.
+The `simple_kmeans_db()` function uses a progress bar to show you the current cycle, the maximum cycles it's expected to run, the current difference between the previous cycle and the current cycle, and the running time.  The loop will stop once it wither has two matching consecutive cycles, or if it reaches the maximum number of cycles, as determined by the `max_repeats` argument.
 
 The final **centers** are are stored in the `centers` variable of the returned object
 ```{r}
@@ -70,27 +70,27 @@ dbplyr::remote_query(km$tbl)
 
 ## Under the hood
 
-The `simple_kmeans()` function uses `dplyr` and 'tidyeval' to run the KMeans algorithm.  This means that when combined with `dbplyr`, the routines can be run inside a database.  
+The `simple_kmeans_db()` function uses `dplyr` and 'tidyeval' to run the KMeans algorithm.  This means that when combined with `dbplyr`, the routines can be run inside a database.  
 
-Unlike other packages that use this same methodology, such as `dbplot` and `tidypredict`, `simple_kmeans()` does not create a single `dplyr` code that can be extracted as SQL.  The function produces multiple, serial and dependent SQL statements that run individually inside the database. Each statement uses the current *centroids*, or centers, to estimate new centroids, and then it uses those centroids in a consecutive SQL statement to see if there was any variance.  Effectively, this approach uses R not only as translation layer, but also as an orchestration layer.
+Unlike other packages that use this same methodology, such as `dbplot` and `tidypredict`, `simple_kmeans_db()` does not create a single `dplyr` code that can be extracted as SQL.  The function produces multiple, serial and dependent SQL statements that run individually inside the database. Each statement uses the current *centroids*, or centers, to estimate new centroids, and then it uses those centroids in a consecutive SQL statement to see if there was any variance.  Effectively, this approach uses R not only as translation layer, but also as an orchestration layer.
 
 ## Safeguards for long running jobs
 
-The`simple_kmeans()` approach of using multiple and consecutive SQL queries to find the optimal centers, additionally, in KMeans clustering, it matters the order in which the each set of centers is passed.  This creates an imperative to find a way to cache the current centers used in a long running job, in case the job is canceled or fails.  Starting from the centers that were calculated last, will mean that re-starting the job will not being from "0", but from a more advanced, read closer, set of centers.  
+The`simple_kmeans_db()` approach of using multiple and consecutive SQL queries to find the optimal centers, additionally, in KMeans clustering, it matters the order in which the each set of centers is passed.  This creates an imperative to find a way to cache the current centers used in a long running job, in case the job is canceled or fails.  Starting from the centers that were calculated last, will mean that re-starting the job will not being from "0", but from a more advanced, read closer, set of centers.  
 
 The safeguard implemented in this function is trough a file, called *kmeans.csv*.  Each cycle will update the file.  The file name can be changed by modifying the `safeguard_file` argument. Setting the argument to NULL will turn off the safeguard.  The file will be saved to the temporary directory of the R session.. 
 
 In this example we will set the `max_repats` to 10, so as to artificially avoid finding the optimal means
 ```{r}
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance, max_repeats = 10)
+  simple_kmeans_db(dep_time, distance, max_repeats = 10)
 ```
 
-In the next run, the "kmeans.csv" file is passed as the `initial_kmeans` argument.  This will make `simple_kmeans()` use those centers as the starting point:
+In the next run, the "kmeans.csv" file is passed as the `initial_kmeans` argument.  This will make `simple_kmeans_db()` use those centers as the starting point:
 
 ```{r}
 km <- db_flights %>%
-  simple_kmeans(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
+  simple_kmeans_db(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
 ```
 
 The second run took 7 cycles to complete, which adds up to the 17 cycles that it initially took in the first example at the top of this article.
