@@ -27,7 +27,7 @@ db_sample <- db_flights %>%
 ## ------------------------------------------------------------------------
 db_sample %>%
   select(arr_delay, dep_delay, distance) %>%
-  linear_regression(arr_delay)
+  linear_regression_db(arr_delay)
 
 ## ------------------------------------------------------------------------
 db_sample %>%
@@ -46,31 +46,31 @@ origins
 db_sample %>%
   select(arr_delay, origin) %>%
   add_dummy_variables(origin, values = origins) %>%
-  linear_regression(arr_delay)
+  linear_regression_db(arr_delay)
 
 ## ------------------------------------------------------------------------
 db_sample %>%
   select(arr_delay, arr_time, dep_delay, dep_time) %>%
-  linear_regression(arr_delay, sample_size = 20000)
+  linear_regression_db(arr_delay, sample_size = 20000)
 
 ## ------------------------------------------------------------------------
 db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, distanceXarr_time) %>% 
-  linear_regression(arr_delay, sample_size = 20000)
+  linear_regression_db(arr_delay, sample_size = 20000)
 
 ## ------------------------------------------------------------------------
 db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, distance, arr_time, distanceXarr_time) %>% 
-  linear_regression(arr_delay, sample_size = 20000)
+  linear_regression_db(arr_delay, sample_size = 20000)
 
 ## ------------------------------------------------------------------------
 remote_model <- db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
   add_dummy_variables(origin, values = origins) %>%
-  linear_regression(y_var = arr_delay, sample_size = 20000)
+  linear_regression_db(y_var = arr_delay, sample_size = 20000)
 
 remote_model
 

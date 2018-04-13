@@ -23,12 +23,12 @@
 #' library(dplyr)
 #'
 #' x <- mtcars %>%
-#'   simple_kmeans(mpg, qsec, wt)
+#'   simple_kmeans_db(mpg, qsec, wt)
 #'   
 #' x$centers
 #'
 #' @export
-simple_kmeans <- function(df,
+simple_kmeans_db <- function(df,
                           ...,
                           centers = 3,
                           max_repeats = 100,

@@ -27,7 +27,7 @@ library(dbplot)
 
 ## Intro
 
-The `linear_regression()` function can be used to fit this kind of model inside a database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+The `linear_regression_db()` function can be used to fit this kind of model inside a database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
 
 ## Example setup
 
@@ -50,12 +50,12 @@ db_sample <- db_flights %>%
 
 ## Model inside the database
 
-The `linear_regression()` function does not use a formula.  It uses a table, and a named dependent variable.  This means data preparation is needed prior to running the model.  The best way to prepare the data for modeling will be using piped `dplyr` operations.
+The `linear_regression_db()` function does not use a formula.  It uses a table, and a named dependent variable.  This means data preparation is needed prior to running the model.  The best way to prepare the data for modeling will be using piped `dplyr` operations.
 
 ```{r}
 db_sample %>%
   select(arr_delay, dep_delay, distance) %>%
-  linear_regression(arr_delay)
+  linear_regression_db(arr_delay)
 ```
 
 ## Categorical variables
@@ -87,7 +87,7 @@ The `add_dummy_variables()` can be used as part of the piped code that terminate
 db_sample %>%
   select(arr_delay, origin) %>%
   add_dummy_variables(origin, values = origins) %>%
-  linear_regression(arr_delay)
+  linear_regression_db(arr_delay)
 ```
 
 ## Multiple linear regression
@@ -97,7 +97,7 @@ One of two arguments is needed to be set when fitting a model with three or more
 ```{r}
 db_sample %>%
   select(arr_delay, arr_time, dep_delay, dep_time) %>%
-  linear_regression(arr_delay, sample_size = 20000)
+  linear_regression_db(arr_delay, sample_size = 20000)
 ```
 
 ## Interactions
@@ -108,7 +108,7 @@ Interactions have to be handled manually prior the modeling step.
 db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, distanceXarr_time) %>% 
-  linear_regression(arr_delay, sample_size = 20000)
+  linear_regression_db(arr_delay, sample_size = 20000)
 ```
 
 A more typical model would also include the two original variables:
@@ -117,7 +117,7 @@ A more typical model would also include the two original variables:
 db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, distance, arr_time, distanceXarr_time) %>% 
-  linear_regression(arr_delay, sample_size = 20000)
+  linear_regression_db(arr_delay, sample_size = 20000)
 ```
 
 ## Full example
@@ -129,14 +129,14 @@ remote_model <- db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
   add_dummy_variables(origin, values = origins) %>%
-  linear_regression(y_var = arr_delay, sample_size = 20000)
+  linear_regression_db(y_var = arr_delay, sample_size = 20000)
 
 remote_model
 ```
 
 ## Run predictions with tidypredict
 
-The `as_parsed_model()` function will convert the `linear_regression()` model output to an output that the `tidypredict` model can read.
+The `as_parsed_model()` function will convert the `linear_regression_db()` model output to an output that the `tidypredict` model can read.
 
 ```{r}
 parsed <- as_parsed_model(remote_model)
