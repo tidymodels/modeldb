@@ -5,7 +5,7 @@ metadataformat = "yaml"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.R$"]
 canonifyurls = true
 # Enable Google Analytics by entering your tracking id
-googleAnalytics = ""
+googleAnalytics = "UA-117488102-1"
 
 [params]
 	# General information
@@ -36,21 +36,16 @@ googleAnalytics = ""
     [params.font]
     	text = "Ubuntu"
     	code = "Ubuntu Mono"
-    	
-
 
 [social]
 	twitter = "theotheredgar"
 	github  = "edgararuiz"
 	linkedin = "edgararuiz"
 
-
-
 [[menu.main]]
 	name   = "Home"
 	url    = "/"
 	weight = 0
-
 
 [blackfriday]
 	smartypants	= true
