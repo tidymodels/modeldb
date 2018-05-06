@@ -3,3 +3,6 @@
 ^README\.Rmd$
 ^README-.*\.png$
 ^README_files$
+travis.yml
+config.toml
+^codecov\.yml$

@@ -12,6 +12,7 @@
 #' @param safeguard_file Each cycle will update a file specified in this argument 
 #' with the current centers.  Defaults to 'kmeans.csv'. Pass NULL if no file is 
 #' desired.
+#' @param verbose Indicates if the progress bar will be displayed during the model's fitting.
 #'
 #' @details
 #' Because each cycle is an indiependent 'dplyr' operation, or SQL operation if using a remote source,
@@ -33,11 +34,12 @@ simple_kmeans_db <- function(df,
                           centers = 3,
                           max_repeats = 100,
                           initial_kmeans = NULL,
-                          safeguard_file = "kmeans.csv") {
+                          safeguard_file = "kmeans.csv",
+                          verbose = TRUE) {
   vars <- exprs(...)
-  df <- df %>%
-    select(!!! vars) %>%
-    filter_all(all_vars(!is.na(.)))
+  
+  if(length(vars) > 0) df <- select(df, !!! vars)
+  df <- filter_all(df, all_vars(!is.na(.)))
 
   if (!is.null(initial_kmeans)) {
     centroids <- initial_kmeans
@@ -46,13 +48,17 @@ simple_kmeans_db <- function(df,
       head(centers) %>%
       collect()
   }
-  pb <- progress::progress_bar$new(
-    format = paste0(
-      " Cycle :current of ", max_repeats, " max. [:bar] [:var][:elapsed]"
+  
+  
+  if(verbose){
+    pb <- progress::progress_bar$new(
+      format = paste0(
+        " Cycle :current of ", max_repeats, " max. [:bar] [:var][:elapsed]"
       ),
-    total = max_repeats, clear = TRUE, width = 80
-  )
-
+      total = max_repeats, clear = TRUE, width = 80
+    )    
+  }
+  
   for (iteration in 1:max_repeats) {
     prev_centroids <- centroids
     new_centroids <- calculate_centers(df, centroids, centers)
@@ -68,14 +74,13 @@ simple_kmeans_db <- function(df,
       write.csv(centroids, sfg, row.names = FALSE) 
     }
     
-    
     variance <- (
       round(
         abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids),
         digits = 4
       ) * 100
     )
-    pb$tick(tokens = list(var = variance))
+    if (verbose) pb$tick(tokens = list(var = variance))
     if (all(prev_centroids == centroids)) break()
   }
   list(

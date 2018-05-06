@@ -5,7 +5,7 @@
 \title{Simple kmeans routine that works in-database}
 \usage{
 simple_kmeans_db(df, ..., centers = 3, max_repeats = 100,
-  initial_kmeans = NULL, safeguard_file = "kmeans.csv")
+  initial_kmeans = NULL, safeguard_file = "kmeans.csv", verbose = TRUE)
 }
 \arguments{
 \item{df}{A Local or remote data frame}
@@ -21,6 +21,8 @@ simple_kmeans_db(df, ..., centers = 3, max_repeats = 100,
 \item{safeguard_file}{Each cycle will update a file specified in this argument 
 with the current centers.  Defaults to 'kmeans.csv'. Pass NULL if no file is 
 desired.}
+
+\item{verbose}{Indicates if the progress bar will be displayed during the model's fitting.}
 }
 \description{
 It uses 'tidyeval' and 'dplyr' to run multiple cycles of kmean
