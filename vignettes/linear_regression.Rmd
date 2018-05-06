@@ -60,7 +60,7 @@ db_sample %>%
 
 ## Categorical variables
 
-Adding a categorical a variable to a model requires prior data transformation  The `add_dummy_variables()` appends a set of boolean variables, one for each discrete value.  This function creates one-less discrete variable than the possible values.  For example: if the categorical variable has three possible values, the function will append two variables.  By default, `add_dummy_variables()` removes the original variable.
+Adding a categorical a variable to a model requires prior data transformation  The `add_dummy_variables()` appends a set of Boolean variables, one for each discrete value.  This function creates one-less discrete variable than the possible values.  For example: if the categorical variable has three possible values, the function will append two variables.  By default, `add_dummy_variables()` removes the original variable.
 
 The reason for this approach is to reduce the number of database operations.  Without this step, then a fitting function would have to request all of the unique values every time a new model run, which creates unnecessary processing. 
 
@@ -118,6 +118,20 @@ db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, distance, arr_time, distanceXarr_time) %>% 
   linear_regression_db(arr_delay, sample_size = 20000)
+```
+
+## Grouping
+
+Groups created by `dplyr` will be recognized by `linear_regression_db()` and added to the calculations sent to the database. **It will fit one model for each of the values in the group**.
+
+**Under the hood**, `modeldb` will not use recursion to create the multiple models.  It will just add groupings to the SQL statement, making it a much streamlined approach.
+
+```{r}
+db_flights %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(month, arr_delay, distance, arr_time, distanceXarr_time) %>% 
+  group_by(month) %>%
+  linear_regression_db(arr_delay, auto_count = TRUE)
 ```
 
 ## Full example
