@@ -66,6 +66,13 @@ db_sample %>%
   linear_regression_db(arr_delay, sample_size = 20000)
 
 ## ------------------------------------------------------------------------
+db_flights %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(month, arr_delay, distance, arr_time, distanceXarr_time) %>% 
+  group_by(month) %>%
+  linear_regression_db(arr_delay, auto_count = TRUE)
+
+## ------------------------------------------------------------------------
 remote_model <- db_sample %>%
   mutate(distanceXarr_time = distance * arr_time) %>%
   select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
