@@ -7,3 +7,4 @@ travis.yml
 config.toml
 ^codecov\.yml$
 ^revdep$
+cran-comments.md
