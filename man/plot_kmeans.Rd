@@ -2,9 +2,12 @@
 % Please edit documentation in R/kmeans-viz.R
 \name{plot_kmeans}
 \alias{plot_kmeans}
+\alias{db_calculate_squares}
 \title{Visualize a KMeans Cluster with lots of data}
 \usage{
 plot_kmeans(df, x, y, resolution = 50, group = center)
+
+db_calculate_squares(df, x, y, group, resolution = 50)
 }
 \arguments{
 \item{df}{A Local or remote data frame with results of KMeans clustering}

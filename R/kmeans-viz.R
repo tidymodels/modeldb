@@ -72,6 +72,8 @@ plot_kmeans <- function(df, x, y, resolution = 50, group = center) {
     )
 }
 
+#' @export
+#' @rdname plot_kmeans
 db_calculate_squares <- function(df, x, y, group, resolution = 50) {
   x <- enexpr(x)
   y <- enexpr(y)
@@ -104,14 +106,10 @@ min_dif <- function(df, field) {
     pull()
 }
 
-db_bin <- function(var, bins = 30, binwidth = NULL) {
+db_bin <- function(var, bins = 30) {
   var <- enexpr(var)
   range <- expr(max(!! var, na.rm = TRUE) - min(!! var, na.rm = TRUE))
-  if (is.null(binwidth)) {
-    binwidth <- expr((!! range) / (!! bins))
-  } else {
-    bins <- expr(as.integer((!! range) / (!! binwidth)))
-  }
+  binwidth <- expr((!! range) / (!! bins))
   bin_number <- expr(as.integer(floor(((!! var) - min(!! var, na.rm = TRUE)) / (!! binwidth))))
   expr(((!! binwidth) *
     ifelse((!! bin_number) == (!! bins), (!! bin_number) - 1,

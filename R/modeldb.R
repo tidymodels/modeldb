@@ -21,4 +21,6 @@
 #'
 "_PACKAGE"
 NULL
-utils::globalVariables(c("."))
+utils::globalVariables(c(".", "Center", "Count", "Intercept", "center", "dif", "mx1", 
+                         "mx2", "my", "sx", "sxx", "sxy", "sy", "val", "var", "x1",
+                         "x1x", "x1y", "x2x", "x2y", "xend", "yend"))
