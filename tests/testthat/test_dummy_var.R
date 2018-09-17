@@ -17,4 +17,6 @@ test_that("Function fails when no values are passed and auto_values is FALSE",{
   expect_error(add_dummy_variables(mtcars, cyl, auto_values = FALSE))
 })
 
-
+test_that("Has error when variable is missing",{
+  expect_error(add_dummy_variables(mtcars, error))
+})
