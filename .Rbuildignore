@@ -8,3 +8,4 @@ config.toml
 ^codecov\.yml$
 ^revdep$
 cran-comments.md
+^tools
