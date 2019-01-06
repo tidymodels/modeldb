@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/edgararuiz/modeldb.svg?branch=master)](https://travis-ci.org/edgararuiz/modeldb) [![Coverage Status](https://img.shields.io/codecov/c/github/edgararuiz/modeldb/master.svg)](https://codecov.io/github/edgararuiz/modeldb?branch=master)
+[![CRAN status](https://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
+
 
 modeldb
 ================
