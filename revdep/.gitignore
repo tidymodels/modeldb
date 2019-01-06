@@ -1,6 +1,4 @@
 checks
+checks.rds
 library
-checks.noindex
-library.noindex
 data.sqlite
-*.html
