@@ -2,7 +2,7 @@
 
 |field    |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.5.1 (2018-07-02) |
+|version  |R version 3.5.2 (2018-12-20) |
 |os       |Windows 10 x64               |
 |system   |x86_64, mingw32              |
 |ui       |RStudio                      |
@@ -10,13 +10,13 @@
 |collate  |English_United States.1252   |
 |ctype    |English_United States.1252   |
 |tz       |America/Chicago              |
-|date     |2019-01-05                   |
+|date     |2019-01-07                   |
 
 # Dependencies
 
 |package      |old      |new      |<U+0394>  |
 |:------------|:--------|:--------|:--|
-|modeldb      |0.1.0    |0.1.1    |*  |
+|modeldb      |0.1.0    |0.1.2    |*  |
 |assertthat   |0.2.0    |0.2.0    |   |
 |BH           |1.66.0-1 |1.66.0-1 |   |
 |bindr        |0.1.1    |0.1.1    |   |
