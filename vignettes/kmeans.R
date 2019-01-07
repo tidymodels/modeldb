@@ -30,19 +30,6 @@ head(km$tbl, 10)
 ## ------------------------------------------------------------------------
 dbplyr::remote_query(km$tbl)
 
-## ------------------------------------------------------------------------
-km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE
-
-## ---- fig.width=10, fig.height=10----------------------------------------
-library(ggplot2)
-
-km$tbl %>%
-  plot_kmeans(dep_time, distance)
-
-## ---- fig.width=10, fig.height=10----------------------------------------
-km$tbl %>%
-  plot_kmeans(dep_time, distance, resolution = 30)
-
 ## ---- include = FALSE----------------------------------------------------
 DBI::dbDisconnect(con)
 

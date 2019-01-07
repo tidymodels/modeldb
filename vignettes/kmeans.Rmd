@@ -74,33 +74,6 @@ The `simple_kmeans_db()` function uses `dplyr` and 'tidyeval' to run the KMeans 
 
 Unlike other packages that use this same methodology, such as `dbplot` and `tidypredict`, `simple_kmeans_db()` does not create a single `dplyr` code that can be extracted as SQL.  The function produces multiple, serial and dependent SQL statements that run individually inside the database. Each statement uses the current *centroids*, or centers, to estimate new centroids, and then it uses those centroids in a consecutive SQL statement to see if there was any variance.  Effectively, this approach uses R not only as translation layer, but also as an orchestration layer.
 
-## Visualizations
-
-Because visualizing a large amount of data may be both compute intensive and visually challenging.  The `modeldb` package offers a helper function to aid with this task.
-
-The `plot_kmeans` function uses 'ggplot2' to display the results of a KMeans routine. Instead of a scatterplot, it uses a square grid that displays the concentration of intersections per square. The number of squares in the grid can be customized for more or less fine grain.
-
-For large result-sets in remote sources, downloading every intersection will be a long running, costly operation. The approach of this function is to divide the x and y plane in a grid and have the remote source figure the total number of intersections, returned as a single number. This reduces the granularity of the visualization, but it speeds up the results.
-
-The calculation operations will take place inside the database.  It requires a database that supports functions like **MIN**, which SQLite does not support, so for this example, we will collect the data into R first (please do not use this step if working with a enterprise grade database)
-
-```{r}
-km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE
-```
-
-```{r, fig.width=10, fig.height=10}
-library(ggplot2)
-
-km$tbl %>%
-  plot_kmeans(dep_time, distance)
-```
-
-Reduce the resolution for faster results and larger squares:
-```{r, fig.width=10, fig.height=10}
-km$tbl %>%
-  plot_kmeans(dep_time, distance, resolution = 30)
-```
-
 ```{r, include = FALSE}
 DBI::dbDisconnect(con)
 ```
