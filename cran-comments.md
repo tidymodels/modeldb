@@ -7,4 +7,6 @@
 
 ## Release summary
 
-Fixes dependency issue with dev version of `tidypredict` by removing `as_parsed_model()`.  The function will be moved to `tidypredict` in its next version.
+- Fixes dependency issue with dev version of `tidypredict` by removing `as_parsed_model()`.  The function will be moved to `tidypredict` in its next version.
+
+- Fixes warning given by CRAN check
