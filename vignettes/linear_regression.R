@@ -8,7 +8,6 @@ library(readr)
 library(nycflights13)
 library(DBI)
 library(modeldb)
-library(tidypredict)
 library(dbplot)
 
 ## ------------------------------------------------------------------------
@@ -81,35 +80,6 @@ remote_model <- db_sample %>%
 
 remote_model
 
-## ------------------------------------------------------------------------
-parsed <- as_parsed_model(remote_model)
-
-parsed
-
-## ------------------------------------------------------------------------
-library(tidypredict)
-
-tidypredict_sql(parsed, dbplyr::simulate_dbi())
-
-## ---- fig.width = 8, fig.height = 5--------------------------------------
-library(dbplot)
-
-db_sample %>%
-  mutate(distanceXarr_time = distance * arr_time) %>%
-  select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
-  add_dummy_variables(origin, values = origins) %>%
-  tidypredict_to_column(parsed) %>%
-  select(fit, arr_delay) %>%
-  collect() %>%   # <----- This step is only needed if working with SQLite!
-  dbplot_raster(fit, arr_delay, resolution = 50)
-
-## ------------------------------------------------------------------------
-db_flights %>%
-  mutate(distanceXarr_time = distance * arr_time) %>%
-  select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
-  add_dummy_variables(origin, values = origins) %>%
-  tidypredict_to_column(parsed)
-
-## ---- echo = FALSE-------------------------------------------------------
-dbDisconnect(con)
+## ---- include = FALSE----------------------------------------------------
+DBI::dbDisconnect(con)
 

@@ -31,14 +31,6 @@ head(km$tbl, 10)
 dbplyr::remote_query(km$tbl)
 
 ## ------------------------------------------------------------------------
-km <- db_flights %>%
-  simple_kmeans_db(dep_time, distance, max_repeats = 10)
-
-## ------------------------------------------------------------------------
-km <- db_flights %>%
-  simple_kmeans_db(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
-
-## ------------------------------------------------------------------------
 km$tbl <- collect(km$tbl) # ONLY USE THIS STEP IF WORKING WITH SQLITE
 
 ## ---- fig.width=10, fig.height=10----------------------------------------
@@ -50,4 +42,7 @@ km$tbl %>%
 ## ---- fig.width=10, fig.height=10----------------------------------------
 km$tbl %>%
   plot_kmeans(dep_time, distance, resolution = 30)
+
+## ---- include = FALSE----------------------------------------------------
+DBI::dbDisconnect(con)
 

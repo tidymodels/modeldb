@@ -148,3 +148,6 @@ remote_model
 ```
 
 
+```{r, include = FALSE}
+DBI::dbDisconnect(con)
+```

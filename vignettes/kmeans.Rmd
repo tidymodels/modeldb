@@ -74,27 +74,6 @@ The `simple_kmeans_db()` function uses `dplyr` and 'tidyeval' to run the KMeans 
 
 Unlike other packages that use this same methodology, such as `dbplot` and `tidypredict`, `simple_kmeans_db()` does not create a single `dplyr` code that can be extracted as SQL.  The function produces multiple, serial and dependent SQL statements that run individually inside the database. Each statement uses the current *centroids*, or centers, to estimate new centroids, and then it uses those centroids in a consecutive SQL statement to see if there was any variance.  Effectively, this approach uses R not only as translation layer, but also as an orchestration layer.
 
-## Safeguards for long running jobs
-
-The`simple_kmeans_db()` approach of using multiple and consecutive SQL queries to find the optimal centers, additionally, in KMeans clustering, it matters the order in which the each set of centers is passed.  This creates an imperative to find a way to cache the current centers used in a long running job, in case the job is canceled or fails.  Starting from the centers that were calculated last, will mean that re-starting the job will not being from "0", but from a more advanced, read closer, set of centers.  
-
-The safeguard implemented in this function is trough a file, called *kmeans.csv*.  Each cycle will update the file.  The file name can be changed by modifying the `safeguard_file` argument. Setting the argument to NULL will turn off the safeguard.  The file will be saved to the temporary directory of the R session.. 
-
-In this example we will set the `max_repats` to 10, so as to artificially avoid finding the optimal means
-```{r}
-km <- db_flights %>%
-  simple_kmeans_db(dep_time, distance, max_repeats = 10)
-```
-
-In the next run, the "kmeans.csv" file is passed as the `initial_kmeans` argument.  This will make `simple_kmeans_db()` use those centers as the starting point:
-
-```{r}
-km <- db_flights %>%
-  simple_kmeans_db(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
-```
-
-The second run took 7 cycles to complete, which adds up to the 17 cycles that it initially took in the first example at the top of this article.
-
 ## Visualizations
 
 Because visualizing a large amount of data may be both compute intensive and visually challenging.  The `modeldb` package offers a helper function to aid with this task.
@@ -121,3 +100,8 @@ Reduce the resolution for faster results and larger squares:
 km$tbl %>%
   plot_kmeans(dep_time, distance, resolution = 30)
 ```
+
+```{r, include = FALSE}
+DBI::dbDisconnect(con)
+```
+
