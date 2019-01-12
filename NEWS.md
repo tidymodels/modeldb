@@ -1,4 +1,4 @@
-# modeldb 0.1.2
+# modeldb 0.1.1
 
 ## Bug fixes
 
