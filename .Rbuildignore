@@ -11,3 +11,4 @@ config.toml
 cran-comments.md
 ^tools
 ^CRAN-RELEASE
+^\.httr-oauth$

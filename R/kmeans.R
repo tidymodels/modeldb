@@ -38,17 +38,22 @@ simple_kmeans_db <- function(df,
                           verbose = TRUE) {
   vars <- exprs(...)
   
-  if(length(vars) > 0) df <- select(df, !!! vars)
-  df <- filter_all(df, all_vars(!is.na(.)))
+  if(length(vars) > 0) {
+      f_df <- select(df, !!! vars)
+    } else {
+      vars <- syms(colnames(df))
+      f_df <- df
+    }
+  
+  f_df <- filter_all(f_df, all_vars(!is.na(.)))
 
   if (!is.null(initial_kmeans)) {
     centroids <- initial_kmeans
   } else {
-    centroids <- df %>%
+    centroids <- f_df %>%
       head(centers) %>%
       collect()
   }
-  
   
   if(verbose){
     pb <- progress::progress_bar$new(
@@ -61,11 +66,14 @@ simple_kmeans_db <- function(df,
   
   for (iteration in 1:max_repeats) {
     prev_centroids <- centroids
-    new_centroids <- calculate_centers(df, centroids, centers)
+    new_centroids <- calculate_centers(df, centroids, centers, vars)
 
-    centroids <- new_centroids %>%
+    centroids_db <- new_centroids %>%
+      select(!!! vars, center) %>%
       group_by(center) %>%
-      summarise_all("mean", na.rm = TRUE) %>%
+      summarise_all("mean", na.rm = TRUE) 
+    
+    centroids <- centroids_db %>%
       select(-center) %>%
       collect()
 
@@ -73,7 +81,6 @@ simple_kmeans_db <- function(df,
       sfg <- file.path(tempdir(), safeguard_file)
       write.csv(centroids, sfg, row.names = FALSE) 
     }
-    
     variance <- (
       round(
         abs(sum(prev_centroids) - sum(centroids)) / sum(prev_centroids),
@@ -83,15 +90,15 @@ simple_kmeans_db <- function(df,
     if (verbose) pb$tick(tokens = list(var = variance))
     if (all(prev_centroids == centroids)) break()
   }
-  list(
-    tbl = new_centroids,
-    centers = centroids
-  )
+  centroids_db %>%
+    rename_all(funs(paste0("k_", .))) %>%
+    right_join(new_centroids, by = c("k_center" = "center"))
 }
 
-calculate_centers <- function(df, center_df, centers) {
+calculate_centers <- function(df, center_df, centers, vars) {
   center_names <- paste0("center_", 1:centers)
-  fields <- length(colnames(df))
+  
+  fields <- length(vars)
 
   f_dist <- center_df %>%
     imap(~{

@@ -13,12 +13,6 @@ test_that("Not specifying variables works", {
   )
 })
 
-test_that("Function returns a 2 length, list class", {
-  x <- simple_kmeans_db(mtcars, wt, mpg)
-  expect_equal(class(x), "list")
-  expect_equal(length(x), 2)
-})
-
 test_that("Centroid argument is accepted", {
   ik <- data.frame(
     wt = c(3.072143, 4.058667, 1.873000),
