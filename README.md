@@ -7,7 +7,7 @@ modeldb
 
 -   [Installation](#installation)
 -   [Linear regression](#linear-regression)
--   [K Means clustering](#k-means-clustering)
+-   [K-Means clustering](#k-means-clustering)
 -   [Supported models](#supported-models)
 
 Fit models inside the database. **`modeldb` works with several databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
@@ -18,6 +18,8 @@ Fit models inside the database. **`modeldb` works with several databases back-en
 
 Installation
 ------------
+
+`modeldb` is available on [CRAN](https://cran.r-project.org/package=modeldb).
 
 Install the development version using `devtools` as follows:
 
@@ -41,7 +43,7 @@ library(dplyr)
 
 tbl(con, "mtcars") %>%
   select(wt, mpg, qsec) %>%
-  linear_regression(wt)
+  linear_regression_db(wt)
 ```
 
     ## # A tibble: 1 x 3
@@ -49,19 +51,19 @@ tbl(con, "mtcars") %>%
     ##    <dbl> <dbl>     <dbl>
     ## 1 -0.156 0.125      4.12
 
-The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the `Linear Regression` article to learn more about how to use `linear_regression()`
+The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the [Linear Regression](https://modeldb.netlify.com/articles/linear_regression/) article to learn more about how to use `linear_regression_db()`
 
-K Means clustering
+K-Means clustering
 ------------------
 
-To use the `simple_kmeans()` function, simply pipe the database back end table to the function. This returns a list object that contains two items:
+To use the `simple_kmeans_db()` function, simply pipe the database back end table to the function. This returns a list object that contains two items:
 
 -   A sql query table with the final center assignment
 -   A local table with the information about the centers
 
 ``` r
 km <- tbl(con, "mtcars") %>%
-  simple_kmeans(mpg, wt)
+  simple_kmeans_db(mpg, wt)
 
 km$centers
 ```
@@ -109,12 +111,12 @@ dbplyr::remote_query(km$tbl)
     ## WHERE (NOT(((`mpg`) IS NULL)) AND NOT(((`wt`) IS NULL))))))
     ## WHERE (NOT(((`center`) IS NULL)))
 
-More information can be found in the `KMeans Clustering` article.
+More information can be found in the [K-Means Clustering](https://modeldb.netlify.com/articles/kmeans/) article.
 
 Supported models
 ----------------
 
 The following R models are currently supported. For more info please review the corresponding vignette:
 
--   [Linear Regression](http://modeldb.netlify.com/articles/linear_regression/) - `linear_regression()`
--   [K-means clustering](http://modeldb.netlify.com/articles/kmeans/) - `simple_kmenas()`
+-   [Linear Regression](https://modeldb.netlify.com/articles/linear_regression/) - `linear_regression_db()`
+-   [K-means clustering](https://modeldb.netlify.com/articles/kmeans/) - `simple_kmeans_db()`
