@@ -122,122 +122,135 @@ simple_linear_regression_db <- function(df, x, y) {
 }
 
 mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
-  y_var <- enexpr(y_var)
-  x_vars <- exprs(...)
-
-  vars <- group_vars(df)
-  vars_count <- length(vars)
-  if(vars_count  == 0) vars <- "         "
   
-  
-  if (length(x_vars) == 0) {
-    x_vars <- colnames(df)
-    x_vars <- setdiff(x_vars, expr_text(y_var))
-    x_vars <- setdiff(x_vars, vars)
-    x_vars <- syms(x_vars)
-  }
-
   if (is.null(sample_size)) {
-    if(auto_count){
-      sample_size <- pull(tally(df))  
+    if (auto_count) {
+      sample_size <- pull(tally(df))
     } else {
-      stop("No sample size provided, and auto_count is set to FALSE") 
+      stop("No sample size provided, and auto_count is set to FALSE")
     }
   }
-
-  ind_f <- function(x1, x2, n) {
-    x1 <- enexpr(x1)
-    x2 <- enexpr(x2)
-    if(vars_count >= 1){
-      expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / n()))
-    } else {
-      expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / !! n))
-    }
-  }
-
-  all_vars <- c(x_vars, y_var)
-
-  all <- all_vars %>%
-    map(~ {
-      y <- .x
-      all_vars %>%
-        map(~ ind_f(!!.x, !!y, sample_size))
-    }) %>%
-    flatten()
-
-  nm <- all_vars %>%
-    map(~ {
-      y <- .x
-      all_vars %>%
-        map(~ paste0(.x, "_", y))
-    }) %>%
-    flatten()
-
-  all <- set_names(all, nm)
-
-  all_means <- all_vars %>%
-    map(~ expr(mean(!!.x, na.rm = TRUE))) %>%
-    set_names(~ paste0("mean_", all_vars))
-
-  all <- c(all, all_means)
-
-  ests <- df %>%
-    summarise(
-      !!!all
-    ) %>%
-    collect()
-
-  xm <- seq_len(nrow(ests)) %>% 
-    map(~{
-      ests[.x,] %>%
-        select(
-          -contains(expr_text(y_var)),
-          -contains("mean_"),
-          -contains(vars)
-        ) %>%
-        map_dbl(~.x) %>%
-        matrix(nrow = length(x_vars))
-        }) 
-
-  ym <- seq_len(nrow(ests)) %>% 
-    map(~{
-      ests[.x,] %>%
-        select(contains(expr_text(y_var))) %>%
-        select(1:length(x_vars)) %>%
-        map_dbl(~.x) %>%
-        matrix(nrow = length(x_vars))
-    }) 
-
-  coefs <- seq_len(nrow(ests)) %>% 
-    map(~as.numeric(solve(xm[[.x]], ym[[.x]])))
-
-
-  ic <- seq_len(nrow(ests)) %>% 
-    map(~{
-      cr <- .x
-      seq_len(length(x_vars)) %>%
-        map(~ expr((!!coefs[[cr]][.x] * !!as.numeric(ests[cr, paste0("mean_", expr_text(x_vars[[.x]]))]))))
-    })
-
-  Intercept <- seq_len(nrow(ests)) %>% 
-    map(~{ c(ests[.x, paste0("mean_", expr_text(y_var))], ic[[.x]]) %>%
-        reduce(function(l, r) expr(!!l - !!r)) %>%
-        eval()
-    })
-
-  coef_table <- transpose(coefs) %>% 
-    set_names(x_vars %>% map_chr(~ expr_text(.x))) %>% 
-    imap(~tibble(!!.y := as.numeric(!!.x))) %>% 
-    bind_cols()
   
-  intercept_table <- Intercept %>% 
-    as.numeric() %>% 
-    tibble("(Intercept)" = .)
-
-  bind_cols(
-    if(vars_count >= 1) select(ests, !!! vars),
-    intercept_table,
-    coef_table
+  y_var <- enquo(y_var)
+  y_text <- as_label(y_var)
+  
+  grouping_vars <- group_vars(df)
+  vars_count <- length(grouping_vars)
+  
+  x_vars <- colnames(df)
+  x_vars <- x_vars[x_vars != y_text] 
+  if (vars_count > 0) x_vars <- map(grouping_vars, ~x_vars[x_vars != .x])[[1]]
+  x_vars <- syms(x_vars)
+  
+  all_vars <- c(x_vars, ensym(y_var))
+  
+  all_f_mapped <- map(
+    all_vars, ~ {
+      y <- .x
+      map(
+        all_vars, ~ {
+          xy <- c(as_label(.x), as_label(y))
+          list(
+            f = ind_f(!!.x, !!y, sample_size, vars_count),
+            name = paste0(xy[order(xy)], collapse = "_")
+          )
+        }
+      )
+    })
+  all_f <- flatten(all_f_mapped)
+  all_f <- set_names(
+    map(all_f, ~.x$f),
+    map(all_f, ~.x$name)
   )
   
+  
+  # Deduping field combos, decreases number of calcs inside DB
+  unique_f <- map(
+    unique(names(all_f)), 
+    ~ all_f[names(all_f) == .x][[1]]
+  )
+  unique_f <- set_names(unique_f, unique(names(all_f)))
+  
+  all_means <- map(all_vars, ~ expr(mean(!!.x, na.rm = TRUE))) 
+  all_means <- set_names(all_means, ~ paste0("mean_", all_vars))
+  
+  all_fm <- c(unique_f, all_means)
+  
+  # Send all operations to the DB simultaneously 
+  ests_df <- summarise(df, !!!all_fm)
+  ests_df <- collect(ests_df)
+  
+  
+  ests_list <- as_list(ests_df)
+  
+  xm_names <- names(all_f)[!grepl(y_text, names(all_f))]
+  xm <- map(
+    xm_names, 
+    ~ests_list[.x]
+  )
+  xm <- flatten(xm)
+  xm <- transpose(xm)
+  xm <- map(xm, ~ matrix(as.numeric(.x), nrow = length(x_vars)))
+  
+  ym_names <- names(all_f)[grepl(y_text, names(all_f))]
+  ym_names <- unique(ym_names)[1:length(x_vars)]
+  ym <- map(
+    ym_names, 
+    ~ests_list[.x]
+  )
+  ym <- flatten(ym)
+  ym <- transpose(ym)
+  ym <- map(ym, ~ matrix(as.numeric(.x), nrow = length(x_vars)))
+  
+  coefs <- map(
+    seq_len(vars_count + 1),
+    ~ as.numeric(solve(xm[[.x]], ym[[.x]]))
+  )
+  
+  intercept <- map(
+    seq_len(vars_count + 1), ~ {
+      y <- .x
+      x_f <- map(
+        seq_len(length(x_vars)),~ {
+          x_name <- paste0("mean_", x_vars[.x])
+          x_mean <- ests_list[names(ests_list) == x_name][[1]][y]
+          expr((!! coefs[[y]][.x] * !! x_mean))
+        }
+      )
+      y_name <- paste0("mean_", y_text)
+      y_mean <- ests_list[names(ests_list) == y_name][[1]][y]
+      int_f <- reduce(
+        c(y_mean, x_f), 
+        function(l, r) expr(!!l - !!r)
+      )
+      eval(int_f)
+    }
+  )
+  
+  res <- transpose(coefs)
+  res <- set_names(res, x_vars)
+  res <- c(
+    list("(Intercept)" = intercept), 
+    res
+  )
+  res <- map_df(
+    transpose(res), 
+    ~.x
+  )
+  
+  bind_cols(
+    ests_df[, grouping_vars],
+    res
+  )
+  
+}
+
+ind_f <- function(x1, x2, n, vars_count) {
+  x1 <- enquo(x1)
+  x2 <- enquo(x2)
+  if (vars_count >= 1) {
+    expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / n()))
+  } else {
+    expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / !!n))
+  }
 }
