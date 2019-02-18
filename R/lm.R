@@ -122,7 +122,6 @@ simple_linear_regression_db <- function(df, x, y) {
 }
 
 mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
-  
   if (is.null(sample_size)) {
     if (auto_count) {
       sample_size <- pull(tally(df))
@@ -130,20 +129,20 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
       stop("No sample size provided, and auto_count is set to FALSE")
     }
   }
-  
+
   y_var <- enquo(y_var)
   y_text <- as_label(y_var)
-  
+
   grouping_vars <- group_vars(df)
   vars_count <- length(grouping_vars)
-  
+
   x_vars <- colnames(df)
-  x_vars <- x_vars[x_vars != y_text] 
-  if (vars_count > 0) x_vars <- map(grouping_vars, ~x_vars[x_vars != .x])[[1]]
+  x_vars <- x_vars[x_vars != y_text]
+  if (vars_count > 0) x_vars <- map(grouping_vars, ~ x_vars[x_vars != .x])[[1]]
   x_vars <- syms(x_vars)
-  
+
   all_vars <- c(x_vars, ensym(y_var))
-  
+
   all_f_mapped <- map(
     all_vars, ~ {
       y <- .x
@@ -156,95 +155,76 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
           )
         }
       )
-    })
+    }
+  )
   all_f <- flatten(all_f_mapped)
   all_f <- set_names(
-    map(all_f, ~.x$f),
-    map(all_f, ~.x$name)
+    map(all_f, ~ .x$f),
+    map(all_f, ~ .x$name)
   )
-  
-  
+
   # Deduping field combos, decreases number of calcs inside DB
   unique_f <- map(
-    unique(names(all_f)), 
+    unique(names(all_f)),
     ~ all_f[names(all_f) == .x][[1]]
   )
   unique_f <- set_names(unique_f, unique(names(all_f)))
-  
-  all_means <- map(all_vars, ~ expr(mean(!!.x, na.rm = TRUE))) 
+
+  all_means <- map(all_vars, ~ expr(mean(!!.x, na.rm = TRUE)))
   all_means <- set_names(all_means, ~ paste0("mean_", all_vars))
-  
+
   all_fm <- c(unique_f, all_means)
-  
-  # Send all operations to the DB simultaneously 
+
+  # Send all operations to the DB simultaneously
   ests_df <- summarise(df, !!!all_fm)
   ests_df <- collect(ests_df)
-  
-  
+
   ests_list <- as_list(ests_df)
-  
+
   xm_names <- names(all_f)[!grepl(y_text, names(all_f))]
-  xm <- map(
-    xm_names, 
-    ~ests_list[.x]
-  )
+  xm <- map(xm_names, ~ ests_list[.x])
   xm <- flatten(xm)
   xm <- transpose(xm)
   xm <- map(xm, ~ matrix(as.numeric(.x), nrow = length(x_vars)))
-  
+
   ym_names <- names(all_f)[grepl(y_text, names(all_f))]
   ym_names <- unique(ym_names)[1:length(x_vars)]
-  ym <- map(
-    ym_names, 
-    ~ests_list[.x]
-  )
+  ym <- map(ym_names, ~ ests_list[.x])
   ym <- flatten(ym)
   ym <- transpose(ym)
   ym <- map(ym, ~ matrix(as.numeric(.x), nrow = length(x_vars)))
-  
+
   coefs <- map(
     seq_len(vars_count + 1),
     ~ as.numeric(solve(xm[[.x]], ym[[.x]]))
   )
-  
+
   intercept <- map(
     seq_len(vars_count + 1), ~ {
       y <- .x
       x_f <- map(
-        seq_len(length(x_vars)),~ {
+        seq_len(length(x_vars)), ~ {
           x_name <- paste0("mean_", x_vars[.x])
           x_mean <- ests_list[names(ests_list) == x_name][[1]][y]
-          expr((!! coefs[[y]][.x] * !! x_mean))
+          expr((!!coefs[[y]][.x] * !!x_mean))
         }
       )
       y_name <- paste0("mean_", y_text)
       y_mean <- ests_list[names(ests_list) == y_name][[1]][y]
       int_f <- reduce(
-        c(y_mean, x_f), 
+        c(y_mean, x_f),
         function(l, r) expr(!!l - !!r)
       )
       eval(int_f)
     }
   )
-  
+
   res <- transpose(coefs)
   res <- set_names(res, x_vars)
-  res <- c(
-    list("(Intercept)" = intercept), 
-    res
-  )
-  res <- map_df(
-    transpose(res), 
-    ~.x
-  )
-  
-  bind_cols(
-    ests_df[, grouping_vars],
-    res
-  )
-  
+  res <- c(list("(Intercept)" = intercept), res)
+  res <- map_df(transpose(res), ~.x)
+  bind_cols(ests_df[, grouping_vars], res)
 }
-
 ind_f <- function(x1, x2, n, vars_count) {
   x1 <- enquo(x1)
   x2 <- enquo(x2)

@@ -1,3 +1,9 @@
+# modeldb 0.1.1.9000
+
+- Removes pipes and other dplyr dependencies from internal `mlr()` function
+
+- Consolidates duplicated database operations in `mlr()`
+
 # modeldb 0.1.1
 
 ## Bug fixes
