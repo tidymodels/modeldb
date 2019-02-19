@@ -149,8 +149,12 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
       map(
         all_vars, ~ {
           xy <- c(as_label(.x), as_label(y))
+          pop <- ifelse(auto_count, expr(n()), sample_size)
           list(
-            f = ind_f(!!.x, !!y, sample_size, vars_count),
+            #f = ind_f(!!.x, !!y, sample_size, vars_count),
+            f = expr(
+              sum(!!.x * !!y, na.rm = TRUE) - ((sum(!!.x, na.rm = TRUE) * sum(!!y, na.rm = TRUE)) / !! pop)
+              ),
             name = paste0(xy[order(xy)], collapse = "_")
           )
         }
@@ -182,17 +186,11 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   ests_list <- as_list(ests_df)
 
   xm_names <- names(all_f)[!grepl(y_text, names(all_f))]
-  xm <- map(xm_names, ~ ests_list[.x])
-  xm <- flatten(xm)
-  xm <- transpose(xm)
-  xm <- map(xm, ~ matrix(as.numeric(.x), nrow = length(x_vars)))
+  xm <- prepare_matrix(ests_list, xm_names, length(x_vars))
 
   ym_names <- names(all_f)[grepl(y_text, names(all_f))]
   ym_names <- unique(ym_names)[1:length(x_vars)]
-  ym <- map(ym_names, ~ ests_list[.x])
-  ym <- flatten(ym)
-  ym <- transpose(ym)
-  ym <- map(ym, ~ matrix(as.numeric(.x), nrow = length(x_vars)))
+  ym <- prepare_matrix(ests_list, ym_names, length(x_vars))
 
   coefs <- map(
     seq_len(vars_count + 1),
@@ -225,12 +223,10 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   res <- map_df(transpose(res), ~.x)
   bind_cols(ests_df[, grouping_vars], res)
 }
-ind_f <- function(x1, x2, n, vars_count) {
-  x1 <- enquo(x1)
-  x2 <- enquo(x2)
-  if (vars_count >= 1) {
-    expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / n()))
-  } else {
-    expr(sum(!!x1 * !!x2, na.rm = TRUE) - ((sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE)) / !!n))
-  }
+
+prepare_matrix <- function(estimates, field_names, matrix_size) {
+  m <- map(field_names, ~ estimates[.x])
+  m <- flatten(m)
+  m <- transpose(m)
+  map(m, ~ matrix(as.numeric(.x), nrow = matrix_size))
 }
