@@ -64,61 +64,56 @@ linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_coun
 }
 
 two_variable_regression <- function(df, y, x1, x2) {
-  y <- enexpr(y)
-  x1 <- enexpr(x1)
-  x2 <- enexpr(x2)
+  y <-  enquo(y)
+  x1 <- enquo(x1)
+  x2 <- enquo(x2)
 
   vars <- group_vars(df)
   
-  df %>%
-    summarise(
-      x1y = sum(!!x1 * !!y, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
-      x2y = sum(!!x2 * !!y, na.rm = TRUE) - (sum(!!x2, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
-      x2x = sum(!!x2 * !!x2, na.rm = TRUE) - (sum(!!x2, na.rm = TRUE) * sum(!!x2, na.rm = TRUE) / n()),
-      x1x = sum(!!x1 * !!x1, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!x1, na.rm = TRUE) / n()),
-      all = sum(!!x1 * !!x2, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE) / n()),
-      my = mean(!!y, na.rm = TRUE),
-      mx1 = mean(!!x1, na.rm = TRUE),
-      mx2 = mean(!!x2, na.rm = TRUE)
-    ) %>%
-    mutate(
-      !!x1 := ((x2x * x1y) - (all * x2y)) / ((x1x * x2x) - (all * all)),
-      !!x2 := ((x1x * x2y) - (all * x1y)) / ((x1x * x2x) - (all * all))
-    ) %>%
-    mutate(
-      Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)
-    ) %>%
-    select(!! vars, Intercept, !!x1, !!x2) %>%
-    collect() %>%
-    rename("(Intercept)" = Intercept) %>%
-    as_tibble()
+  m <- summarise(
+    df,
+    x1y = sum(!!x1 * !!y, na.rm = TRUE)  - (sum(!!x1, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
+    x2y = sum(!!x2 * !!y, na.rm = TRUE)  - (sum(!!x2, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
+    x2x = sum(!!x2 * !!x2, na.rm = TRUE) - (sum(!!x2, na.rm = TRUE) * sum(!!x2, na.rm = TRUE) / n()),
+    x1x = sum(!!x1 * !!x1, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!x1, na.rm = TRUE) / n()),
+    all = sum(!!x1 * !!x2, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE) / n()),
+    my  = mean(!!y,  na.rm = TRUE),
+    mx1 = mean(!!x1, na.rm = TRUE),
+    mx2 = mean(!!x2, na.rm = TRUE)
+    )     
+  m <- mutate(
+    m, 
+    !!x1 := ((x2x * x1y) - (all * x2y)) / ((x1x * x2x) - (all * all)),
+    !!x2 := ((x1x * x2y) - (all * x1y)) / ((x1x * x2x) - (all * all))
+    )
+  m <- mutate(m, Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)) 
+  m <- select(m, !! vars, Intercept, !!x1, !!x2) 
+  m <- collect(m) 
+  m <- rename(m, "(Intercept)" = Intercept) %>%
+  as_tibble(m)
 }
 
 simple_linear_regression_db <- function(df, x, y) {
-  x <- enexpr(x)
-  y <- enexpr(y)
+  x <- enquo(x)
+  y <- enquo(y)
 
   vars <- group_vars(df)
   
-  df %>%
-    summarise(
-      sx = sum(!!x, na.rm = TRUE),
-      sy = sum(!!y, na.rm = TRUE),
-      sxx = sum(!!x * !!x, na.rm = TRUE),
-      syy = sum(!!y * !!y, na.rm = TRUE),
-      sxy = sum(!!x * !!y, na.rm = TRUE),
-      n = n()
-    ) %>%
-    mutate(
-      !!x := ((n * sxy) - (sx * sy)) / ((n * sxx) - (sx * sx))
-    ) %>%
-    mutate(
-      Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)
-    ) %>%
-    select(!! vars, Intercept, !!x) %>%
-    collect() %>%
-    rename("(Intercept)" = Intercept) %>%
-    as_tibble()
+  m <-   summarise(
+    df,
+    sx = sum(!!x, na.rm = TRUE),
+    sy = sum(!!y, na.rm = TRUE),
+    sxx = sum(!!x * !!x, na.rm = TRUE),
+    syy = sum(!!y * !!y, na.rm = TRUE),
+    sxy = sum(!!x * !!y, na.rm = TRUE),
+    n = n()
+    ) 
+  m <- mutate(m, !!x := ((n * sxy) - (sx * sy)) / ((n * sxx) - (sx * sx))) 
+  m <- mutate(m,Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)) 
+  m <- select(m, !! vars, Intercept, !!x) 
+  m <- collect(m)
+  m <- rename(m, "(Intercept)" = Intercept)
+  as_tibble(m)
 }
 
 mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
