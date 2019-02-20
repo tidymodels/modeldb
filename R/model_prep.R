@@ -1,7 +1,7 @@
 #' Creates dummy variables
 #'
 #' It uses 'tidyeval' and 'dplyr' to create dummy variables based for
-#' categorical variables. 
+#' categorical variables.
 #'
 #' @param df A Local or remote data frame
 #' @param x Categorical variable
@@ -22,47 +22,26 @@
 #' 
 #' mtcars %>%
 #'   add_dummy_variables(cyl, auto_values = TRUE)
-#'
 #' @export
-add_dummy_variables <- function(df, x, values = c(), 
-                                auto_values = FALSE, remove_original = TRUE){
-  
-  x <- enexpr(x)
-  
-  var_found <- expr_text(x) %in% colnames(df)
-  if(!var_found) stop("Variable not found")
-  
-  if(length(values) == 0){
-    if(auto_values == TRUE){
-      values <- df %>% 
-        group_by(!! x) %>% 
-        summarise() %>% 
-        pull()
+add_dummy_variables <- function(df, x, values = c(),
+                                auto_values = FALSE, remove_original = TRUE) {
+  x <- enquo(x)
+  var_found <- as_label(x) %in% colnames(df)
+  if (!var_found) stop("Variable not found")
+  if (length(values) == 0) {
+    if (auto_values == TRUE) {
+      values <- group_by(df, !!x)
+      values <- summarise(values)
+      values <- pull(values)
     } else {
       stop("No values provided and auto_values is set to FALSE")
     }
-
   }
-  
- vals <- values %>%
-   map(~expr(ifelse(!! x ==  !! .x, 1 ,0)))
-  
- names <- values %>%
-   map(~paste0(expr_text(x), "_", .x))
- 
- vals <- vals %>%
-   set_names(names)
- 
- vals <- vals[2:length(vals)]
- 
-  df <- df %>%
-    mutate(!!! vals)
-  
-  if(remove_original) df <- select(df, - !! x)
-  
+  vals <- map(values, ~ expr(ifelse(!!x == !!.x, 1, 0)))
+  names <- map(values, ~ paste0(as_label(x), "_", .x))
+  vals <- set_names(vals, names)
+  vals <- vals[2:length(vals)]
+  df <- mutate(df, !!!vals)
+  if (remove_original) df <- select(df, -!!x)
   df
 }
-
-
-
-
