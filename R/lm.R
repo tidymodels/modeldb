@@ -89,7 +89,7 @@ two_variable_regression <- function(df, y, x1, x2) {
   m <- mutate(m, Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)) 
   m <- select(m, !! vars, Intercept, !!x1, !!x2) 
   m <- collect(m) 
-  m <- rename(m, "(Intercept)" = Intercept) %>%
+  m <- rename(m, "(Intercept)" = Intercept) 
   as_tibble(m)
 }
 

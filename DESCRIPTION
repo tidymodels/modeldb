@@ -11,10 +11,8 @@ Imports:
     rlang,
     purrr,  
     tibble,
-    tidyr,
     progress,
-    ggplot2,
-    readr
+    ggplot2
 Suggests: 
     dbplyr,
     testthat,
@@ -24,7 +22,6 @@ Suggests:
     RSQLite,
     methods,
     DBI,
-    dbplot,
     covr
 License: GPL-3
 URL: https://github.com/edgararuiz/modeldb
