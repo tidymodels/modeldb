@@ -35,5 +35,4 @@ mtcars \%>\%
 
 mtcars \%>\%
   add_dummy_variables(cyl, auto_values = TRUE)
-
 }

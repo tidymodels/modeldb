@@ -25,8 +25,8 @@
 #' @export
 add_dummy_variables <- function(df, x, values = c(),
                                 auto_values = FALSE, remove_original = TRUE) {
-  x <- enexpr(x)
-  var_found <- expr_text(x) %in% colnames(df)
+  x <- enquo(x)
+  var_found <- as_label(x) %in% colnames(df)
   if (!var_found) stop("Variable not found")
   if (length(values) == 0) {
     if (auto_values == TRUE) {
@@ -38,7 +38,7 @@ add_dummy_variables <- function(df, x, values = c(),
     }
   }
   vals <- map(values, ~ expr(ifelse(!!x == !!.x, 1, 0)))
-  names <- map(values, ~ paste0(expr_text(x), "_", .x))
+  names <- map(values, ~ paste0(as_label(x), "_", .x))
   vals <- set_names(vals, names)
   vals <- vals[2:length(vals)]
   df <- mutate(df, !!!vals)
