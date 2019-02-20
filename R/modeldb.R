@@ -1,20 +1,16 @@
 #' @import rlang
 #' @import ggplot2
-#' @import tidyr
 #' @import tibble
-#' @import dplyr
-#' @import rlang
-#' @import readr
-#' @importFrom purrr map2
-#' @importFrom purrr map
-#' @importFrom purrr map_df
-#' @importFrom purrr map_chr
-#' @importFrom purrr map_dbl
-#' @importFrom purrr reduce
-#' @importFrom purrr imap
-#' @importFrom purrr pluck
-#' @importFrom purrr transpose
-#' @importFrom tibble tibble
+#' @importFrom dplyr mutate summarise right_join
+#' @importFrom dplyr summarise_all filter_all
+#' @importFrom dplyr pull collect arrange 
+#' @importFrom dplyr contains tally ungroup
+#' @importFrom dplyr group_vars lag bind_cols
+#' @importFrom dplyr all_vars group_by funs
+#' @importFrom dplyr n as_tibble filter select
+#' @importFrom dplyr case_when rename rename_all 
+#' @importFrom purrr map map2 map_df transpose
+#' @importFrom purrr reduce imap pluck
 #' @importFrom utils head
 #' @importFrom utils write.csv
 #' @keywords internal
