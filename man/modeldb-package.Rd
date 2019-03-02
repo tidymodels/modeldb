@@ -6,6 +6,8 @@
 \alias{modeldb-package}
 \title{modeldb: Fits Models Inside the Database}
 \description{
+\if{html}{\figure{logo.png}{options: align='right'}}
+
 Uses 'dplyr' and 'tidyeval' to fit statistical models inside the database. It currently supports KMeans and linear regression models.
 }
 \seealso{

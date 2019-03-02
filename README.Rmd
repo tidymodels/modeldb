@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# modeldb <img src="logo.png" align="right" alt="" width="120" />
+# modeldb <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 ```{r setup, include=FALSE}
 library(dplyr)

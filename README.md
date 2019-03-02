@@ -1,5 +1,5 @@
 
-# modeldb <img src="logo.png" align="right" alt="" width="120" />
+# modeldb <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
 Fit models inside the database. **`modeldb` works with most databases
 back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL
