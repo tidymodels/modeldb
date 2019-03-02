@@ -1,0 +1,137 @@
+---
+title: "Linear regression models"
+author: "Edgar Ruiz"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(dbplyr)
+library(nycflights13)
+library(DBI)
+library(modeldb)
+```
+
+## Intro
+
+The `linear_regression_db()` function can be used to fit this kind of model inside a database.  It uses `dplyr` programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.
+
+## Example setup
+
+A lightweight SQLite database will be used for this article.  Additionally, a sample data set is created.
+
+```{r}
+# Open a database connection
+con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
+RSQLite::initExtension(con)
+
+library(dplyr)
+# Copy data to the database
+db_flights <- copy_to(con, nycflights13::flights, "flights")
+# Create a simple sample
+db_sample <- db_flights %>%
+  filter(!is.na(arr_time)) %>%
+  head(20000) 
+```
+
+
+## Model inside the database
+
+The `linear_regression_db()` function does not use a formula.  It uses a table, and a named dependent variable.  This means data preparation is needed prior to running the model.  The best way to prepare the data for modeling will be using piped `dplyr` operations.
+
+```{r}
+db_sample %>%
+  select(arr_delay, dep_delay, distance) %>%
+  linear_regression_db(arr_delay)
+```
+
+## Categorical variables
+
+Adding a categorical a variable to a model requires prior data transformation  The `add_dummy_variables()` appends a set of boolean variables, one for each discrete value.  This function creates one-less discrete variable than the possible values.  For example: if the categorical variable has three possible values, the function will append two variables.  By default, `add_dummy_variables()` removes the original variable.
+
+The reason for this approach is to reduce the number of database operations.  Without this step, then a fitting function would have to request all of the unique values every time a new model run, which creates unnecessary processing. 
+
+```{r}
+db_sample %>%
+  select(arr_delay, origin) %>%
+  add_dummy_variables(origin, values = c("EWR", "JFK", "LGA"))
+```
+
+In a real world scenario, the possible values are usually not known at the beginning of the analysis. So it is a good idea to load them into a vector variable so that it can be used any time that variable is added to a model.  This can be easily done using the `pull()` command from `dplyr`:
+
+```{r}
+origins <- db_flights %>%
+  group_by(origin) %>%
+  summarise() %>%
+  pull()
+
+origins
+```
+
+The `add_dummy_variables()` can be used as part of the piped code that terminates in the modeling function.
+
+```{r}
+db_sample %>%
+  select(arr_delay, origin) %>%
+  add_dummy_variables(origin, values = origins) %>%
+  linear_regression_db(arr_delay)
+```
+
+## Multiple linear regression
+
+One of two arguments is needed to be set when fitting a model with three or more independent variables.  The both relate to the size of the data set used for the model.  So either the `sample_size` argument is passed, or `auto_count` is set to `TRUE`.  When `auto_count` is set to `TRUE`, and no sample size is passed, then the function will do a table count as part of the model fitting.  This is done in order to prevent unnecessary database operations, especially for cases when multiple models will be tested on top of the same sample data. 
+
+```{r}
+db_sample %>%
+  select(arr_delay, arr_time, dep_delay, dep_time) %>%
+  linear_regression_db(arr_delay, sample_size = 20000)
+```
+
+## Interactions
+
+Interactions have to be handled manually prior the modeling step.  
+
+```{r}
+db_sample %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(arr_delay, distanceXarr_time) %>% 
+  linear_regression_db(arr_delay, sample_size = 20000)
+```
+
+A more typical model would also include the two original variables:
+
+```{r}
+db_sample %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(arr_delay, distance, arr_time, distanceXarr_time) %>% 
+  linear_regression_db(arr_delay, sample_size = 20000)
+```
+
+## Full example
+
+Fitting a model with regular, categorical and interaction variables will look like this:
+
+```{r}
+remote_model <- db_sample %>%
+  mutate(distanceXarr_time = distance * arr_time) %>%
+  select(arr_delay, dep_time, distanceXarr_time, origin) %>% 
+  add_dummy_variables(origin, values = origins) %>%
+  linear_regression_db(y_var = arr_delay, sample_size = 20000)
+
+remote_model
+```
+
+```{r, echo = FALSE}
+dbDisconnect(con)
+```

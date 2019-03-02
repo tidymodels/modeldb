@@ -1,18 +1,15 @@
 ---
-title: "modeldb"
-output:
-  github_document:
-    toc: true
-    toc_depth: 3
+output: github_document
 ---
 
+# modeldb <img src="logo.png" align="right" alt="" width="120" />
 
 ```{r setup, include=FALSE}
 library(dplyr)
 library(modeldb)
 ```
 
-Fit models inside the database. **`modeldb` works with several databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
+Fit models inside the database. **`modeldb` works with most databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
 
 - K-means clustering
 
@@ -20,7 +17,12 @@ Fit models inside the database. **`modeldb` works with several databases back-en
 
 ## Installation
 
-Install the development version using `devtools` as follows:
+Install the CRAN version with:
+```{r, eval = FALSE}
+install.packages("modeldb")
+```
+
+The development version is available using `devtools` as follows:
 ```{r, eval = FALSE}
 devtools::install_github("edgararuiz/modeldb")
 ```
@@ -40,44 +42,27 @@ library(dplyr)
 
 tbl(con, "mtcars") %>%
   select(wt, mpg, qsec) %>%
-  linear_regression(wt)
+  linear_regression_db(wt)
 ```
 
-The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the `Linear Regression` article to learn more about how to use `linear_regression()`
+The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the `Linear Regression` article to learn more about how to use `linear_regression_db()`
 
 ## K Means clustering
 
-To use the `simple_kmeans()` function, simply pipe the database back end table to the function.  This returns a list object that contains two items:
+To use the `simple_kmeans_db()` function, simply pipe the database back end table to the function.  This returns a list object that contains two items:
 
 - A sql query table with the final center assignment
 - A local table with the information about the centers
 
 ```{r}
 km <- tbl(con, "mtcars") %>%
-  simple_kmeans(mpg, wt)
+  simple_kmeans_db(mpg, wt)
 
-km$centers
-```
-
-To preview the record level center assignment use the `tbl` item
-
-```{r}
-head(km$tbl)
+colnames(km)
 ```
 
 The SQL statement from `tbl` can be extracted using `dbplyr`'s `remote_query()`
 
 ```{r}
-dbplyr::remote_query(km$tbl)
+dbplyr::remote_query(km)
 ```
-
-More information can be found in the `KMeans Clustering` article.
-
-## Supported models
-
-The following R models are currently supported. For more info please review the corresponding vignette:
-
-- [Linear Regression](http://modeldb.netlify.com/articles/linear_regression/) - `linear_regression()`
-- [K-means clustering](http://modeldb.netlify.com/articles/kmeans/) - `simple_kmenas()`
-
-
