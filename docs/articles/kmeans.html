@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">modeldb</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
       <h1>K Means models</h1>
                         <h4 class="author">Edgar Ruiz</h4>
             
-            <h4 class="date">2019-03-01</h4>
+            <h4 class="date">2019-03-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/edgararuiz/modeldb/blob/master/vignettes/kmeans.Rmd"><code>vignettes/kmeans.Rmd</code></a></small>
       <div class="hidden name"><code>kmeans.Rmd</code></div>
@@ -176,12 +176,7 @@
 <a class="sourceLine" id="cb5-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(dep_time, distance, <span class="dt">max_repeats =</span> <span class="dv">10</span>)</a></code></pre></div>
 <p>In the next run, the “kmeans.csv” file is passed as the <code>initial_kmeans</code> argument. This will make <code><a href="../reference/simple_kmeans_db.html">simple_kmeans_db()</a></code> use those centers as the starting point:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">km &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(dep_time, distance, <span class="dt">initial_kmeans =</span> <span class="kw">read_csv</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"kmeans.csv"</span>)))</a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="co">#&gt; Parsed with column specification:</span></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; cols(</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;   dep_time = col_double(),</span></a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt;   distance = col_double()</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt; )</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw"><a href="../reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(dep_time, distance, <span class="dt">initial_kmeans =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"kmeans.csv"</span>)))</a></code></pre></div>
 <p>The second run took 7 cycles to complete, which adds up to the 17 cycles that it initially took in the first example at the top of this article.</p>
 </div>
   </div>

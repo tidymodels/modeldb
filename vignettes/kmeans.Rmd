@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(purrr)
 library(rlang)
-library(readr)
 library(nycflights13)
 ```
 
@@ -85,7 +84,7 @@ In the next run, the "kmeans.csv" file is passed as the `initial_kmeans` argumen
 
 ```{r}
 km <- db_flights %>%
-  simple_kmeans_db(dep_time, distance, initial_kmeans = read_csv(file.path(tempdir(), "kmeans.csv")))
+  simple_kmeans_db(dep_time, distance, initial_kmeans = read.csv(file.path(tempdir(), "kmeans.csv")))
 ```
 
 The second run took 7 cycles to complete, which adds up to the 17 cycles that it initially took in the first example at the top of this article.
