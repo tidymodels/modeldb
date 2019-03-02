@@ -1,5 +1,5 @@
 ## Test environments
-* local windows 10 install, R 3.5.1
+* local windows 10 install, R 3.5.2
 * ubuntu 14.04 (on travis-ci)
 
 ## R CMD check results
@@ -7,6 +7,9 @@
 
 ## Release summary
 
-- Fixes dependency issue with dev version of `tidypredict` by removing `as_parsed_model()`.  The function will be moved to `tidypredict` in its next version.
+- Removes pipes and other dplyr dependencies from internal `mlr()` function
 
-- Fixes warning given by CRAN check
+- Consolidates duplicated database operations in `mlr()`
+
+- Fixes an issue in `simple_kmeans_db()` when specifying variables
+
