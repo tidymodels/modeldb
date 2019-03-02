@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Linear regression models"
+author: "Edgar Ruiz"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

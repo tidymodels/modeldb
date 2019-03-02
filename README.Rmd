@@ -1,11 +1,8 @@
 ---
-title: "modeldb"
-output:
-  github_document:
-    toc: true
-    toc_depth: 3
+output: github_document
 ---
 
+# modeldb <img src="logo.png" align="right" alt="" width="120" />
 
 ```{r setup, include=FALSE}
 library(dplyr)
@@ -21,7 +18,7 @@ Fit models inside the database. **`modeldb` works with most databases back-ends*
 ## Installation
 
 Install the CRAN version with:
-```{r}
+```{r, eval = FALSE}
 install.packages("modeldb")
 ```
 

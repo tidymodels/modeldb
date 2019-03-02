@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "K Means models"
+author: "Edgar Ruiz"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -90,29 +90,3 @@ km <- db_flights %>%
 
 The second run took 7 cycles to complete, which adds up to the 17 cycles that it initially took in the first example at the top of this article.
 
-## Visualizations
-
-Because visualizing a large amount of data may be both compute intensive and visually challenging.  The `modeldb` package offers a helper function to aid with this task.
-
-The `plot_kmeans` function uses 'ggplot2' to display the results of a KMeans routine. Instead of a scatterplot, it uses a square grid that displays the concentration of intersections per square. The number of squares in the grid can be customized for more or less fine grain.
-
-For large result-sets in remote sources, downloading every intersection will be a long running, costly operation. The approach of this function is to divide the x and y plane in a grid and have the remote source figure the total number of intersections, returned as a single number. This reduces the granularity of the visualization, but it speeds up the results.
-
-The calculation operations will take place inside the database.  It requires a database that supports functions like **MIN**, which SQLite does not support, so for this example, we will collect the data into R first (please do not use this step if working with a enterprise grade database)
-
-```{r}
-km <- collect(km) # ONLY USE THIS STEP IF WORKING WITH SQLITE
-```
-
-```{r, fig.width=10, fig.height=10}
-library(ggplot2)
-
-km %>%
-  plot_kmeans(dep_time, distance)
-```
-
-Reduce the resolution for faster results and larger squares:
-```{r, fig.width=10, fig.height=10}
-km %>%
-  plot_kmeans(dep_time, distance, resolution = 30)
-```
