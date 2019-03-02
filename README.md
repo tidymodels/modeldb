@@ -1,25 +1,15 @@
-[![Build Status](https://travis-ci.org/edgararuiz/modeldb.svg?branch=master)](https://travis-ci.org/edgararuiz/modeldb) [![Coverage Status](https://img.shields.io/codecov/c/github/edgararuiz/modeldb/master.svg)](https://codecov.io/github/edgararuiz/modeldb?branch=master)
-[![CRAN status](https://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
-
-
 modeldb
 ================
 
--   [Installation](#installation)
--   [Linear regression](#linear-regression)
--   [K-Means clustering](#k-means-clustering)
--   [Supported models](#supported-models)
+Fit models inside the database. **`modeldb` works with several databases
+back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL
+translation of the algorithm. It currently supports:
 
-Fit models inside the database. **`modeldb` works with several databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
+  - K-means clustering
 
--   K-means clustering
+  - Linear regression
 
--   Linear regression
-
-Installation
-------------
-
-`modeldb` is available on [CRAN](https://cran.r-project.org/package=modeldb).
+## Installation
 
 Install the development version using `devtools` as follows:
 
@@ -27,10 +17,10 @@ Install the development version using `devtools` as follows:
 devtools::install_github("edgararuiz/modeldb")
 ```
 
-Linear regression
------------------
+## Linear regression
 
-An easy way to try out the package is by creating a temporary SQLite database, and loading `mtcars` to it
+An easy way to try out the package is by creating a temporary SQLite
+database, and loading `mtcars` to it
 
 ``` r
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
@@ -47,76 +37,64 @@ tbl(con, "mtcars") %>%
 ```
 
     ## # A tibble: 1 x 3
-    ##      mpg  qsec Intercept
-    ##    <dbl> <dbl>     <dbl>
-    ## 1 -0.156 0.125      4.12
+    ##   `(Intercept)`    mpg  qsec
+    ##           <dbl>  <dbl> <dbl>
+    ## 1          4.12 -0.156 0.125
 
-The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the [Linear Regression](https://modeldb.netlify.com/articles/linear_regression/) article to learn more about how to use `linear_regression_db()`
+The model output can be parsed by `tidypredict` to run the predictions
+in the database. Please see the `Linear Regression` article to learn
+more about how to use `linear_regression_db()`
 
-K-Means clustering
-------------------
+## K Means clustering
 
-To use the `simple_kmeans_db()` function, simply pipe the database back end table to the function. This returns a list object that contains two items:
+To use the `simple_kmeans_db()` function, simply pipe the database back
+end table to the function. This returns a list object that contains two
+items:
 
--   A sql query table with the final center assignment
--   A local table with the information about the centers
+  - A sql query table with the final center assignment
+  - A local table with the information about the centers
+
+<!-- end list -->
 
 ``` r
 km <- tbl(con, "mtcars") %>%
   simple_kmeans_db(mpg, wt)
 
-km$centers
+colnames(km)
 ```
 
-    ## # A tibble: 3 x 2
-    ##     mpg    wt
-    ##   <dbl> <dbl>
-    ## 1  20.6  3.07
-    ## 2  14.5  4.06
-    ## 3  30.1  1.87
+    ##  [1] "k_center" "k_mpg"    "k_wt"     "mpg"      "cyl"      "disp"    
+    ##  [7] "hp"       "drat"     "wt"       "qsec"     "vs"       "am"      
+    ## [13] "gear"     "carb"
 
-To preview the record level center assignment use the `tbl` item
+The SQL statement from `tbl` can be extracted using `dbplyr`’s
+`remote_query()`
 
 ``` r
-head(km$tbl)
+dbplyr::remote_query(km)
 ```
 
-    ## # Source:   lazy query [?? x 3]
-    ## # Database: sqlite 3.22.0 []
-    ##     mpg    wt center  
-    ##   <dbl> <dbl> <chr>   
-    ## 1  21.0  2.62 center_1
-    ## 2  21.0  2.88 center_1
-    ## 3  22.8  2.32 center_1
-    ## 4  21.4  3.22 center_1
-    ## 5  18.7  3.44 center_1
-    ## 6  18.1  3.46 center_1
-
-The SQL statement from `tbl` can be extracted using `dbplyr`'s `remote_query()`
-
-``` r
-dbplyr::remote_query(km$tbl)
-```
-
-    ## <SQL> SELECT `mpg`, `wt`, `center`
-    ## FROM (SELECT `mpg`, `wt`, `center_1`, `center_2`, `center_3`, CASE
+    ## <SQL> SELECT `RHS`.`center` AS `k_center`, `LHS`.`k_mpg` AS `k_mpg`, `LHS`.`k_wt` AS `k_wt`, `RHS`.`mpg` AS `mpg`, `RHS`.`cyl` AS `cyl`, `RHS`.`disp` AS `disp`, `RHS`.`hp` AS `hp`, `RHS`.`drat` AS `drat`, `RHS`.`wt` AS `wt`, `RHS`.`qsec` AS `qsec`, `RHS`.`vs` AS `vs`, `RHS`.`am` AS `am`, `RHS`.`gear` AS `gear`, `RHS`.`carb` AS `carb`
+    ## FROM (SELECT `center` AS `k_center`, `mpg` AS `k_mpg`, `wt` AS `k_wt`
+    ## FROM (SELECT `center`, AVG(`mpg`) AS `mpg`, AVG(`wt`) AS `wt`
+    ## FROM (SELECT `mpg`, `wt`, `center`
+    ## FROM (SELECT *
+    ## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center_1`, `center_2`, `center_3`, CASE
     ## WHEN (`center_1` >= `center_1` AND `center_1` < `center_2` AND `center_1` < `center_3`) THEN ('center_1')
     ## WHEN (`center_2` < `center_1` AND `center_2` >= `center_2` AND `center_2` < `center_3`) THEN ('center_2')
     ## WHEN (`center_3` < `center_1` AND `center_3` < `center_2` AND `center_3` >= `center_3`) THEN ('center_3')
     ## END AS `center`
-    ## FROM (SELECT `mpg`, `wt`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`
-    ## FROM (SELECT *
-    ## FROM (SELECT `mpg`, `wt`
-    ## FROM `mtcars`)
-    ## WHERE (NOT(((`mpg`) IS NULL)) AND NOT(((`wt`) IS NULL))))))
-    ## WHERE (NOT(((`center`) IS NULL)))
-
-More information can be found in the [K-Means Clustering](https://modeldb.netlify.com/articles/kmeans/) article.
-
-Supported models
-----------------
-
-The following R models are currently supported. For more info please review the corresponding vignette:
-
--   [Linear Regression](https://modeldb.netlify.com/articles/linear_regression/) - `linear_regression_db()`
--   [K-means clustering](https://modeldb.netlify.com/articles/kmeans/) - `simple_kmeans_db()`
+    ## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`
+    ## FROM `mtcars`))
+    ## WHERE (NOT(((`center`) IS NULL)))))
+    ## GROUP BY `center`)) AS `LHS`
+    ## RIGHT JOIN (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center`
+    ## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center_1`, `center_2`, `center_3`, CASE
+    ## WHEN (`center_1` >= `center_1` AND `center_1` < `center_2` AND `center_1` < `center_3`) THEN ('center_1')
+    ## WHEN (`center_2` < `center_1` AND `center_2` >= `center_2` AND `center_2` < `center_3`) THEN ('center_2')
+    ## WHEN (`center_3` < `center_1` AND `center_3` < `center_2` AND `center_3` >= `center_3`) THEN ('center_3')
+    ## END AS `center`
+    ## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`
+    ## FROM `mtcars`))
+    ## WHERE (NOT(((`center`) IS NULL)))) AS `RHS`
+    ## ON (`LHS`.`k_center` = `RHS`.`center`)
