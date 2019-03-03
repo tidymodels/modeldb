@@ -1,6 +1,12 @@
 
 # modeldb <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
+[![Build
+Status](https://travis-ci.org/edgararuiz/modeldb.svg?branch=master)](https://travis-ci.org/edgararuiz/modeldb)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/modeldb)](http://cran.r-project.org/package=modeldb)
+[![Coverage
+status](https://codecov.io/gh/edgararuiz/modeldb/branch/master/graph/badge.svg)](https://codecov.io/github/edgararuiz/modeldb?branch=master)
+
 Fit models inside the database. **`modeldb` works with most databases
 back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL
 translation of the algorithm. It currently supports:
