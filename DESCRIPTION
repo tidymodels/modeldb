@@ -12,7 +12,8 @@ Imports:
     purrr,  
     tibble,
     progress,
-    ggplot2
+    ggplot2,
+    vctrs
 Suggests: 
     dbplyr,
     testthat,

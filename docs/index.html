@@ -6,23 +6,24 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fits Models Inside the Database • modeldb</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="tidyverse.css" rel="stylesheet">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Fits Models Inside the Database">
+<script src="pkgdown.js"></script><link href="tidyverse-2.css" rel="stylesheet">
+<meta property="og:title" content="Fits Models Inside the Database">
 <meta property="og:description" content="Uses 'dplyr' and 'tidyeval' to fit statistical models inside the database. It currently supports KMeans and linear regression models.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<![endif]--><!-- google analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script><script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'UA-115082821-1');
+</script>
 </head>
 <body>
     <div class="container template-article">
@@ -35,14 +36,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">modeldb</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
-      </span>
-    </div>
 
+      <div class="navbar-brand-container">
+        <a class="navbar-brand" href="index.html">modeldb</a>
+        <div class="info">
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        </div>
+      </div>
+    </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
@@ -70,9 +74,7 @@
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
+        <li>
   <a href="https://github.com/edgararuiz/modeldb">
     <span class="fa fa-github fa-lg"></span>
      
@@ -107,22 +109,22 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the CRAN version with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"modeldb"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"modeldb"</span>)</a></code></pre></div>
 <p>The development version is available using <code>devtools</code> as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"edgararuiz/modeldb"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"edgararuiz/modeldb"</span>)</a></code></pre></div>
 </div>
 <div id="linear-regression" class="section level2">
 <h2 class="hasAnchor">
 <a href="#linear-regression" class="anchor"></a>Linear regression</h2>
 <p>An easy way to try out the package is by creating a temporary SQLite database, and loading <code>mtcars</code> to it</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), <span class="dt">path =</span> <span class="st">":memory:"</span>)</a>
-<a class="sourceLine" id="cb3-2" title="2">RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(con)</a>
-<a class="sourceLine" id="cb3-3" title="3">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(con, mtcars)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb4-2" title="2"></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="st">  </span><span class="kw">select</span>(wt, mpg, qsec) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="st">  </span><span class="kw"><a href="reference/linear_regression_db.html">linear_regression_db</a></span>(wt)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), <span class="dt">path =</span> <span class="st">":memory:"</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(con)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(con, mtcars)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(wt, mpg, qsec) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="reference/linear_regression_db.html">linear_regression_db</a></span>(wt)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 3
 ##   `(Intercept)`    mpg  qsec
 ##           &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
@@ -137,15 +139,15 @@
 <li>A sql query table with the final center assignment</li>
 <li>A local table with the information about the centers</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">km &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="st">  </span><span class="kw"><a href="reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(mpg, wt)</a>
-<a class="sourceLine" id="cb6-3" title="3"></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(km)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">km &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(mpg, wt)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(km)</a></code></pre></div>
 <pre><code>##  [1] "k_center" "k_mpg"    "k_wt"     "mpg"      "cyl"      "disp"    
 ##  [7] "hp"       "drat"     "wt"       "qsec"     "vs"       "am"      
 ## [13] "gear"     "carb"</code></pre>
 <p>The SQL statement from <code>tbl</code> can be extracted using <code>dbplyr</code>’s <code>remote_query()</code></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">dbplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dbplyr/topics/remote_name">remote_query</a></span>(km)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dbplyr<span class="op">::</span><span class="kw"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html">remote_query</a></span>(km)</a></code></pre></div>
 <pre><code>## &lt;SQL&gt; SELECT `RHS`.`center` AS `k_center`, `LHS`.`k_mpg` AS `k_mpg`, `LHS`.`k_wt` AS `k_wt`, `RHS`.`mpg` AS `mpg`, `RHS`.`cyl` AS `cyl`, `RHS`.`disp` AS `disp`, `RHS`.`hp` AS `hp`, `RHS`.`drat` AS `drat`, `RHS`.`wt` AS `wt`, `RHS`.`qsec` AS `qsec`, `RHS`.`vs` AS `vs`, `RHS`.`am` AS `am`, `RHS`.`gear` AS `gear`, `RHS`.`carb` AS `carb`
 ## FROM (SELECT `center` AS `k_center`, `mpg` AS `k_mpg`, `wt` AS `k_wt`
 ## FROM (SELECT `center`, AVG(`mpg`) AS `mpg`, AVG(`wt`) AS `wt`
@@ -202,9 +204,9 @@
       <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/edgararuiz/modeldb"><img src="https://travis-ci.org/edgararuiz/modeldb.svg?branch=master" alt="Build Status"></a></li>
-<li><a href="http://cran.r-project.org/package=modeldb"><img src="http://www.r-pkg.org/badges/version/modeldb" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://codecov.io/github/edgararuiz/modeldb?branch=master"><img src="https://codecov.io/gh/edgararuiz/modeldb/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://travis-ci.org/tidymodels/modeldb"><img src="https://travis-ci.org/tidymodels/modeldb.svg?branch=master" alt="Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=modeldb"><img src="http://www.r-pkg.org/badges/version/modeldb" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://codecov.io/github/tidymodels/modeldb?branch=master"><img src="https://img.shields.io/codecov/c/github/tidymodels/modeldb/master.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
 </div>
@@ -212,12 +214,15 @@
 </div>
 
 
-      <footer><div class="copyright">
-  <p>Developed by Edgar Ruiz.</p>
+      <footer><div class="tidyverse">
+  <p><code>modeldb</code> is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+<div class="author">
+  <p>
+    Developed by Edgar Ruiz.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+  </p>
 </div>
       </footer>
 </div>

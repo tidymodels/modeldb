@@ -1,8 +1,9 @@
 context("kmeans")
 
 test_that("Specifying variables works", {
-  expect_silent(
-    simple_kmeans_db(mtcars, wt, mpg)
+  expect_is(
+    simple_kmeans_db(mtcars, wt, mpg),
+    "data.frame"
   )
 })
 

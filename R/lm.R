@@ -178,7 +178,7 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   ests_df <- summarise(df, !!!all_fm)
   ests_df <- collect(ests_df)
 
-  ests_list <- as_list(ests_df)
+  ests_list <- as.list(ests_df)
 
   xm_names <- names(all_f)[!grepl(y_text, names(all_f))]
   xm <- prepare_matrix(ests_list, xm_names, length(x_vars))

@@ -23,10 +23,9 @@
 #' @examples
 #' library(dplyr)
 #'
-#' x <- mtcars %>%
-#'   simple_kmeans_db(mpg, qsec, wt)
-#'   
-#' x$centers
+#' mtcars %>%
+#'   simple_kmeans_db(mpg, qsec, wt) %>%
+#'   glimpse()
 #'
 #' @export
 simple_kmeans_db <- function(df,
@@ -87,7 +86,7 @@ simple_kmeans_db <- function(df,
     if (verbose) pb$tick(tokens = list(var = variance))
     if (all(prev_centroids == centroids)) break()
   }
-  centroids_db <- rename_all(centroids_db, funs(paste0("k_", .))) 
+  centroids_db <- rename_all(centroids_db, ~paste0("k_", .))
   right_join(
     centroids_db,
     new_centroids, 

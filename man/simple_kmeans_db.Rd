@@ -39,9 +39,8 @@ will allow the operation to pick up where it left off.
 \examples{
 library(dplyr)
 
-x <- mtcars \%>\%
-  simple_kmeans_db(mpg, qsec, wt)
-  
-x$centers
+mtcars \%>\%
+  simple_kmeans_db(mpg, qsec, wt) \%>\%
+  glimpse()
 
 }
