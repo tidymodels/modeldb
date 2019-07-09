@@ -1,3 +1,7 @@
+# modeldb 0.1.2.9000
+
+- Fixes compatability issues with `rlang` and `dplyr` 
+
 # modeldb 0.1.2
 
 - Removes pipes and other dplyr dependencies from internal `mlr()` function
