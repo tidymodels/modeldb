@@ -23,12 +23,13 @@ Fit models inside the database. **`modeldb` works with most databases back-ends*
 
 Install the CRAN version with:
 ```{r, eval = FALSE}
-install.packages("modeldb")
+# install.packages("modeldb")
 ```
 
 The development version is available using `devtools` as follows:
 ```{r, eval = FALSE}
-devtools::install_github("edgararuiz/modeldb")
+# install.packages("remotes")
+# remotes::install_github("tidymodels/modeldb")
 ```
 
 ## Linear regression

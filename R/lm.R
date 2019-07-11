@@ -60,6 +60,7 @@ linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_coun
       auto_count = auto_count
     )
   }
+  class(m) <- c("modeldb_lm", class(m))
   m
 }
 

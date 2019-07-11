@@ -20,13 +20,14 @@ translation of the algorithm. It currently supports:
 Install the CRAN version with:
 
 ``` r
-install.packages("modeldb")
+# install.packages("modeldb")
 ```
 
 The development version is available using `devtools` as follows:
 
 ``` r
-devtools::install_github("edgararuiz/modeldb")
+# install.packages("remotes")
+# remotes::install_github("tidymodels/modeldb")
 ```
 
 ## Linear regression

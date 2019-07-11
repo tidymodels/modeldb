@@ -13,8 +13,8 @@ Uses 'dplyr' and 'tidyeval' to fit statistical models inside the database. It cu
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/edgararuiz/modeldb}
-  \item Report bugs at \url{https://github.com/edgararuiz/modeldb/issues}
+  \item \url{https://github.com/tidymodels/modeldb}
+  \item Report bugs at \url{https://github.com/tidymodels/modeldb/issues}
 }
 
 }
