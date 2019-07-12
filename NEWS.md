@@ -1,4 +1,6 @@
-# modeldb 0.1.2.9000
+# modeldb 0.1.2.9001
+
+- Adds `as_parsed_model()` support for regression models
 
 - Fixes compatability issues with `rlang` and `dplyr` 
 

@@ -12,7 +12,6 @@
 #' @importFrom purrr map map2 map_df transpose
 #' @importFrom purrr reduce imap pluck
 #' @importFrom tidypredict as_parsed_model
-#' @importFrom vctrs vec_cast
 #' @importFrom utils head
 #' @importFrom utils write.csv
 #' @keywords internal
