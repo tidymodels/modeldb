@@ -9,7 +9,7 @@
 #' @param x A numeric variable for the x axis
 #' @param y A numeric variable for the y axis
 #' @param resolution The number of squares in the grid. Defaults to 50. 
-#' Meaining a 50 x 50 grid.
+#' Meaning a 50 x 50 grid.
 #' @param group A discrete variable containing the grouping for the KMeans. It defaults to 'center'
 #'
 #' @details

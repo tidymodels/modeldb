@@ -16,7 +16,7 @@
 #' 
 #' The linear_regression_db() function only calls one of three unexported functions. 
 #' The function used is determined by the number of independent variables.  This is
-#' so any model of one or two variables can use a simplier formula, which in turn
+#' so any model of one or two variables can use a simpler formula, which in turn
 #' will have less SQL overhead.
 #'
 #' @examples

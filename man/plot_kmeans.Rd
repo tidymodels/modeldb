@@ -17,7 +17,7 @@ db_calculate_squares(df, x, y, group, resolution = 50)
 \item{y}{A numeric variable for the y axis}
 
 \item{resolution}{The number of squares in the grid. Defaults to 50. 
-Meaining a 50 x 50 grid.}
+Meaning a 50 x 50 grid.}
 
 \item{group}{A discrete variable containing the grouping for the KMeans. It defaults to 'center'}
 }
