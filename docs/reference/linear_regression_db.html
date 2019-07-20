@@ -77,7 +77,7 @@ regression model." />
         <a class="navbar-brand" href="../index.html">modeldb</a>
         <div class="info">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
         </div>
       </div>
     </div>
@@ -111,7 +111,7 @@ regression model." />
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/edgararuiz/modeldb">
+  <a href="https://github.com/tidymodels/modeldb">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -129,7 +129,7 @@ regression model." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Fits a Linear Regression model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/edgararuiz/modeldb/blob/master/R/lm.R'><code>R/lm.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/modeldb/blob/master/R/lm.R'><code>R/lm.R</code></a></small>
     <div class="hidden name"><code>linear_regression_db.Rd</code></div>
     </div>
 
@@ -181,10 +181,10 @@ will have less SQL overhead.</p>
 
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>mpg</span>, <span class='no'>wt</span>, <span class='no'>qsec</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>linear_regression_db</span>(<span class='no'>mpg</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
+  <span class='fu'>linear_regression_db</span>(<span class='no'>mpg</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
 #&gt;   `(Intercept)`    wt  qsec
-#&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>          19.7 -</span><span style='color: #BB0000;'>5.05</span><span> 0.929</div><div class='input'>
+#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>          19.7 -</span><span style='color: #BB0000;'>5.05</span><span> 0.929</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

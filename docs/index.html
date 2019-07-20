@@ -41,7 +41,7 @@
         <a class="navbar-brand" href="index.html">modeldb</a>
         <div class="info">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@
   <a href="news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/edgararuiz/modeldb">
+  <a href="https://github.com/tidymodels/modeldb">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -109,22 +109,23 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the CRAN version with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"modeldb"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># install.packages("modeldb")</span></span></code></pre></div>
 <p>The development version is available using <code>devtools</code> as follows:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"edgararuiz/modeldb"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages("remotes")</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># remotes::install_github("tidymodels/modeldb")</span></span></code></pre></div>
 </div>
 <div id="linear-regression" class="section level2">
 <h2 class="hasAnchor">
 <a href="#linear-regression" class="anchor"></a>Linear regression</h2>
 <p>An easy way to try out the package is by creating a temporary SQLite database, and loading <code>mtcars</code> to it</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), <span class="dt">path =</span> <span class="st">":memory:"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(con)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(con, mtcars)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(wt, mpg, qsec) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="reference/linear_regression_db.html">linear_regression_db</a></span>(wt)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), <span class="dt">path =</span> <span class="st">":memory:"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(con)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(con, mtcars)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="st">  </span><span class="kw">select</span>(wt, mpg, qsec) <span class="op">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="st">  </span><span class="kw"><a href="reference/linear_regression_db.html">linear_regression_db</a></span>(wt)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 3
 ##   `(Intercept)`    mpg  qsec
 ##           &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
@@ -139,15 +140,15 @@
 <li>A sql query table with the final center assignment</li>
 <li>A local table with the information about the centers</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">km &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(mpg, wt)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(km)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>km &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">"mtcars"</span>) <span class="op">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw"><a href="reference/simple_kmeans_db.html">simple_kmeans_db</a></span>(mpg, wt)</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(km)</span></code></pre></div>
 <pre><code>##  [1] "k_center" "k_mpg"    "k_wt"     "mpg"      "cyl"      "disp"    
 ##  [7] "hp"       "drat"     "wt"       "qsec"     "vs"       "am"      
 ## [13] "gear"     "carb"</code></pre>
 <p>The SQL statement from <code>tbl</code> can be extracted using <code>dbplyr</code>’s <code>remote_query()</code></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dbplyr<span class="op">::</span><span class="kw"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html">remote_query</a></span>(km)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dbplyr<span class="op">::</span><span class="kw"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html">remote_query</a></span>(km)</span></code></pre></div>
 <pre><code>## &lt;SQL&gt; SELECT `RHS`.`center` AS `k_center`, `LHS`.`k_mpg` AS `k_mpg`, `LHS`.`k_wt` AS `k_wt`, `RHS`.`mpg` AS `mpg`, `RHS`.`cyl` AS `cyl`, `RHS`.`disp` AS `disp`, `RHS`.`hp` AS `hp`, `RHS`.`drat` AS `drat`, `RHS`.`wt` AS `wt`, `RHS`.`qsec` AS `qsec`, `RHS`.`vs` AS `vs`, `RHS`.`am` AS `am`, `RHS`.`gear` AS `gear`, `RHS`.`carb` AS `carb`
 ## FROM (SELECT `center` AS `k_center`, `mpg` AS `k_mpg`, `wt` AS `k_wt`
 ## FROM (SELECT `center`, AVG(`mpg`) AS `mpg`, AVG(`wt`) AS `wt`
@@ -182,9 +183,9 @@
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=modeldb">https://​cloud.r-project.org/​package=modeldb</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/edgararuiz/modeldb">https://​github.com/​edgararuiz/​modeldb</a>
+<li>Browse source code at <br><a href="https://github.com/tidymodels/modeldb">https://​github.com/​tidymodels/​modeldb</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/edgararuiz/modeldb/issues">https://​github.com/​edgararuiz/​modeldb/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/tidymodels/modeldb/issues">https://​github.com/​tidymodels/​modeldb/​issues</a>
 </li>
 </ul>
 </div>
