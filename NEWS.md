@@ -1,4 +1,4 @@
-# modeldb 0.1.2.9001
+# modeldb 0.2.0
 
 - Adds `as_parsed_model()` support for regression models
 

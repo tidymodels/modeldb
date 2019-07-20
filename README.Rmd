@@ -10,8 +10,9 @@ library(modeldb)
 ```
 
 [![Build Status](https://travis-ci.org/tidymodels/modeldb.svg?branch=master)](https://travis-ci.org/tidymodels/modeldb)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
 [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/modeldb/master.svg)](https://codecov.io/github/tidymodels/modeldb?branch=master)
+
 
 Fit models inside the database. **`modeldb` works with most databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
 
