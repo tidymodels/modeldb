@@ -1,15 +1,20 @@
-## Test environments
-* local windows 10 install, R 3.5.2
-* ubuntu 14.04 (on travis-ci)
-
-## R CMD check results
-* 0 errors | 0 warnings | 0 notes
-
 ## Release summary
 
-- Removes pipes and other dplyr dependencies from internal `mlr()` function
+* Adds tidypredict's as_parsed_model() support for regression models
 
-- Consolidates duplicated database operations in `mlr()`
+* Fixes compatability issues with rlang and dplyr
 
-- Fixes an issue in `simple_kmeans_db()` when specifying variables
+## Test environments
+
+* Local windows 10 install, R 3.6.0
+
+* Ubuntu 18.04.2 LTS, R 3.6.1
+
+* Ubuntu 14.04 (on travis-ci)
+
+## R CMD check results
+
+* 0 errors | 0 warnings | 0 notes
+
+
 
