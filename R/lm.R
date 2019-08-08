@@ -30,7 +30,7 @@
 linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){
   y_var <- enexpr(y_var)
   
-  col_names <- colnames(df)
+  col_names <- tbl_vars(df)
   grouped_count <- length(group_vars(df))
   n_cols <- length(col_names) - grouped_count
   
@@ -90,8 +90,8 @@ two_variable_regression <- function(df, y, x1, x2) {
   m <- mutate(m, Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)) 
   m <- select(m, !! vars, Intercept, !!x1, !!x2) 
   m <- collect(m) 
-  m <- rename(m, "(Intercept)" = Intercept) 
-  as_tibble(m)
+  m <- as_tibble(m)
+  rename(m, "(Intercept)" = Intercept) 
 }
 
 simple_linear_regression_db <- function(df, x, y) {
@@ -113,8 +113,8 @@ simple_linear_regression_db <- function(df, x, y) {
   m <- mutate(m,Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)) 
   m <- select(m, !! vars, Intercept, !!x) 
   m <- collect(m)
-  m <- rename(m, "(Intercept)" = Intercept)
-  as_tibble(m)
+  m <- as_tibble(m)
+  rename(m, "(Intercept)" = Intercept)
 }
 
 mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
@@ -132,7 +132,7 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
   grouping_vars <- group_vars(df)
   vars_count <- length(grouping_vars)
 
-  x_vars <- colnames(df)
+  x_vars <- tbl_vars(df)
   x_vars <- x_vars[x_vars != y_text]
   if (vars_count > 0) x_vars <- map(grouping_vars, ~ x_vars[x_vars != .x])[[1]]
   x_vars <- syms(x_vars)

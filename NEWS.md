@@ -1,3 +1,7 @@
+# modeldb (dev)
+
+- Moves column name extraction to `dplyr::tbl_vars()` instead of `colnames()`
+
 # modeldb 0.2.0
 
 - Adds `as_parsed_model()` support for regression models

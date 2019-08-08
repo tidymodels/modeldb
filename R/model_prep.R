@@ -26,7 +26,7 @@
 add_dummy_variables <- function(df, x, values = c(),
                                 auto_values = FALSE, remove_original = TRUE) {
   x <- enquo(x)
-  var_found <- as_label(x) %in% colnames(df)
+  var_found <- as_label(x) %in% tbl_vars(df)
   if (!var_found) stop("Variable not found")
   if (length(values) == 0) {
     if (auto_values == TRUE) {
