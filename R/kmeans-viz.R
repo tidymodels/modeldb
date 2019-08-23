@@ -68,7 +68,7 @@ plot_kmeans <- function(df, x, y, resolution = 50, group = center) {
     panel.grid.minor = element_blank()
   ) +
   labs(
-    title = "Kmeans Cluters",
+    title = "Kmeans Clusters",
     subtitle = paste0(expr_text(y), " ~ ", expr_text(x)),
     x = expr_text(x),
     y = expr_text(y)
