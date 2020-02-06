@@ -32,13 +32,12 @@
 
 
 <meta property="og:title" content="Simple kmeans routine that works in-database — simple_kmeans_db" />
-
 <meta property="og:description" content="It uses 'tidyeval' and 'dplyr' to run multiple cycles of kmean
 calculations, expressed in dplyr formulas until an the optimal
 centers are found." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -59,6 +58,7 @@ centers are found." />
 
  gtag('config', 'UA-115082821-1');
 </script>
+
   </head>
 
   <body>
@@ -78,7 +78,7 @@ centers are found." />
         <a class="navbar-brand" href="../index.html">modeldb</a>
         <div class="info">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ centers are found." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -113,7 +113,7 @@ centers are found." />
 </li>
         <li>
   <a href="https://github.com/tidymodels/modeldb">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,6 +124,7 @@ centers are found." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -135,17 +136,21 @@ centers are found." />
     </div>
 
     <div class="ref-description">
-    
     <p>It uses 'tidyeval' and 'dplyr' to run multiple cycles of kmean
 calculations, expressed in dplyr formulas until an the optimal
 centers are found.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>simple_kmeans_db</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>centers</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>max_repeats</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>initial_kmeans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>safeguard_file</span> <span class='kw'>=</span> <span class='st'>"kmeans.csv"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>simple_kmeans_db</span>(
+  <span class='no'>df</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>centers</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>max_repeats</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>initial_kmeans</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>safeguard_file</span> <span class='kw'>=</span> <span class='st'>"kmeans.csv"</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -180,51 +185,49 @@ desired.</p></td>
       <td><p>Indicates if the progress bar will be displayed during the model's fitting.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Because each cycle is an independent 'dplyr' operation, or SQL operation if using a remote source,
 the latest centroid data frame is saved to the parent environment in case the process needs to be
 canceled and then restarted at a later point.  Passing the `current_kmeans` as the `initial_kmeans`
 will allow the operation to pick up where it left off.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>simple_kmeans_db</span>(<span class='no'>mpg</span>, <span class='no'>qsec</span>, <span class='no'>wt</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>glimpse</a></span>()</div><div class='output co'>#&gt; Observations: 32
 #&gt; Variables: 15
-#&gt; $ k_center <span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> "center_1", "center_1", "center_1", "center_1", "center_1"...
-#&gt; $ k_mpg    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 20.64286, 20.64286, 20.64286, 20.64286, 20.64286, 20.64286...
-#&gt; $ k_qsec   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 18.57357, 18.57357, 18.57357, 18.57357, 18.57357, 18.57357...
-#&gt; $ k_wt     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 3.072143, 3.072143, 3.072143, 3.072143, 3.072143, 3.072143...
-#&gt; $ mpg      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2...
-#&gt; $ cyl      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4...
-#&gt; $ disp     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 160.0, 160.0, 108.0, 258.0, 360.0, 225.0, 360.0, 146.7, 14...
-#&gt; $ hp       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 110, 110, 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 1...
-#&gt; $ drat     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 3.90, 3.90, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92...
-#&gt; $ wt       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 2.620, 2.875, 2.320, 3.215, 3.440, 3.460, 3.570, 3.190, 3....
-#&gt; $ qsec     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 20.00, 22...
-#&gt; $ vs       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1...
-#&gt; $ am       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1...
-#&gt; $ gear     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4...
-#&gt; $ carb     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> 4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1...</div><div class='input'>
+#&gt; $ k_center <span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> "center_1", "center_1", "center_1", "center_1", "center_1", …
+#&gt; $ k_mpg    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 20.64286, 20.64286, 20.64286, 20.64286, 20.64286, 20.64286, …
+#&gt; $ k_qsec   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 18.57357, 18.57357, 18.57357, 18.57357, 18.57357, 18.57357, …
+#&gt; $ k_wt     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 3.072143, 3.072143, 3.072143, 3.072143, 3.072143, 3.072143, …
+#&gt; $ mpg      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 21.0, 21.0, 22.8, 21.4, 18.7, 18.1, 14.3, 24.4, 22.8, 19.2, …
+#&gt; $ cyl      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 6, 6, 4, 6, 8, 6, 8, 4, 4, 6, 6, 8, 8, 8, 8, 8, 8, 4, 4, 4, …
+#&gt; $ disp     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 160.0, 160.0, 108.0, 258.0, 360.0, 225.0, 360.0, 146.7, 140.…
+#&gt; $ hp       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 110, 110, 93, 110, 175, 105, 245, 62, 95, 123, 123, 180, 180…
+#&gt; $ drat     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 3.90, 3.90, 3.85, 3.08, 3.15, 2.76, 3.21, 3.69, 3.92, 3.92, …
+#&gt; $ wt       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 2.620, 2.875, 2.320, 3.215, 3.440, 3.460, 3.570, 3.190, 3.15…
+#&gt; $ qsec     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 16.46, 17.02, 18.61, 19.44, 17.02, 20.22, 15.84, 20.00, 22.9…
+#&gt; $ vs       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, …
+#&gt; $ am       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, …
+#&gt; $ gear     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 4, 4, 4, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 4, 4, 4, …
+#&gt; $ carb     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> 4, 4, 1, 1, 2, 1, 4, 2, 2, 4, 4, 3, 3, 3, 4, 4, 4, 1, 2, 1, …</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="tidyverse">
@@ -237,11 +240,14 @@ will allow the operation to pick up where it left off.</p>
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

@@ -41,7 +41,7 @@
         <a class="navbar-brand" href="../index.html">modeldb</a>
         <div class="info">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
       <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -76,7 +76,7 @@
 </li>
         <li>
   <a href="https://github.com/tidymodels/modeldb">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -89,13 +89,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Linear regression models</h1>
                         <h4 class="author">Edgar Ruiz</h4>
             
-            <h4 class="date">2019-07-21</h4>
+            <h4 class="date">2020-02-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tidymodels/modeldb/blob/master/vignettes/linear-regression.Rmd"><code>vignettes/linear-regression.Rmd</code></a></small>
       <div class="hidden name"><code>linear-regression.Rmd</code></div>
@@ -113,124 +114,125 @@
 <h2 class="hasAnchor">
 <a href="#example-setup" class="anchor"></a>Example setup</h2>
 <p>A lightweight SQLite database will be used for this article. Additionally, a sample data set is created.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Open a database connection</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/SQLite">SQLite</a></span>(), <span class="dt">path =</span> <span class="st">":memory:"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>RSQLite<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/RSQLite/topics/initExtension">initExtension</a></span>(con)</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># Copy data to the database</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>db_flights &lt;-<span class="st"> </span><span class="kw">copy_to</span>(con, nycflights13<span class="op">::</span>flights, <span class="st">"flights"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Create a simple sample</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(arr_time)) <span class="op">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dv">20000</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Open a database connection</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span>(RSQLite<span class="op">::</span><span class="kw"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span>(), <span class="dt">path =</span> <span class="st">":memory:"</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">RSQLite<span class="op">::</span><span class="kw"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html">initExtension</a></span>(con)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># Copy data to the database</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">db_flights &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span>(con, nycflights13<span class="op">::</span>flights, <span class="st">"flights"</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># Create a simple sample</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">db_sample &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(arr_time)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">20000</span>) </a></code></pre></div>
 </div>
 <div id="model-inside-the-database" class="section level2">
 <h2 class="hasAnchor">
 <a href="#model-inside-the-database" class="anchor"></a>Model inside the database</h2>
 <p>The <code><a href="../reference/linear_regression_db.html">linear_regression_db()</a></code> function does not use a formula. It uses a table, and a named dependent variable. This means data preparation is needed prior to running the model. The best way to prepare the data for modeling will be using piped <code>dplyr</code> operations.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, dep_delay, distance) <span class="op">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; # A tibble: 1 x 3</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;   `(Intercept)` dep_delay distance</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; 1        -0.659      1.00 -0.00337</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, dep_delay, distance) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;   `(Intercept)` dep_delay distance</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 1        -0.659      1.00 -0.00337</span></a></code></pre></div>
 </div>
 <div id="categorical-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#categorical-variables" class="anchor"></a>Categorical variables</h2>
 <p>Adding a categorical a variable to a model requires prior data transformation The <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> appends a set of boolean variables, one for each discrete value. This function creates one-less discrete variable than the possible values. For example: if the categorical variable has three possible values, the function will append two variables. By default, <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> removes the original variable.</p>
 <p>The reason for this approach is to reduce the number of database operations. Without this step, then a fitting function would have to request all of the unique values every time a new model run, which creates unnecessary processing.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, origin) <span class="op">%&gt;%</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span>(origin, <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"EWR"</span>, <span class="st">"JFK"</span>, <span class="st">"LGA"</span>))</span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; # Source:   lazy query [?? x 3]</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; # Database: sqlite 3.22.0 []</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;    arr_delay origin_JFK origin_LGA</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt;  1        11          0          0</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt;  2        20          0          1</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt;  3        33          1          0</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt;  4       -18          1          0</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt;  5       -25          0          1</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt;  6        12          0          0</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt;  7        19          0          0</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt;  8       -14          0          1</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt;  9        -8          1          0</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; 10         8          0          1</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt; # ... with more rows</span></span></code></pre></div>
-<p>In a real world scenario, the possible values are usually not known at the beginning of the analysis. So it is a good idea to load them into a vector variable so that it can be used any time that variable is added to a model. This can be easily done using the <code>pull()</code> command from <code>dplyr</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>origins &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span><span class="kw">group_by</span>(origin) <span class="op">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span><span class="kw">summarise</span>() <span class="op">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="st">  </span><span class="kw">pull</span>()</span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a>origins</span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; [1] "EWR" "JFK" "LGA"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span>(origin, <span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"EWR"</span>, <span class="st">"JFK"</span>, <span class="st">"LGA"</span>))</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; # Source:   lazy query [?? x 3]</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; # Database: sqlite 3.30.1 []</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;    arr_delay origin_JFK origin_LGA</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  1        11          0          0</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  2        20          0          1</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  3        33          1          0</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  4       -18          1          0</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  5       -25          0          1</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  6        12          0          0</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  7        19          0          0</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;  8       -14          0          1</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt;  9        -8          1          0</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 10         8          0          1</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; # … with more rows</span></a></code></pre></div>
+<p>In a real world scenario, the possible values are usually not known at the beginning of the analysis. So it is a good idea to load them into a vector variable so that it can be used any time that variable is added to a model. This can be easily done using the <code><a href="https://dplyr.tidyverse.org/reference/pull.html">pull()</a></code> command from <code>dplyr</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">origins &lt;-<span class="st"> </span>db_flights <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">origins</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; [1] "EWR" "JFK" "LGA"</span></a></code></pre></div>
 <p>The <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> can be used as part of the piped code that terminates in the modeling function.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, origin) <span class="op">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay)</span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt; # A tibble: 1 x 3</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;   `(Intercept)` origin_JFK origin_LGA</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;           &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; 1          9.62      -10.6      -7.79</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   `(Intercept)` origin_JFK origin_LGA</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;           &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; 1          9.62      -10.6      -7.79</span></a></code></pre></div>
 </div>
 <div id="multiple-linear-regression" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multiple-linear-regression" class="anchor"></a>Multiple linear regression</h2>
 <p>One of two arguments is needed to be set when fitting a model with three or more independent variables. The both relate to the size of the data set used for the model. So either the <code>sample_size</code> argument is passed, or <code>auto_count</code> is set to <code>TRUE</code>. When <code>auto_count</code> is set to <code>TRUE</code>, and no sample size is passed, then the function will do a table count as part of the model fitting. This is done in order to prevent unnecessary database operations, especially for cases when multiple models will be tested on top of the same sample data.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, arr_time, dep_delay, dep_time) <span class="op">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; # A tibble: 1 x 4</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   `(Intercept)`  arr_time dep_delay dep_time</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 1         -1.72 -0.000208      1.01 -0.00155</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, arr_time, dep_delay, dep_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;   `(Intercept)`  arr_time dep_delay dep_time</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 1         -1.72 -0.000208      1.01 -0.00155</span></a></code></pre></div>
 </div>
 <div id="interactions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#interactions" class="anchor"></a>Interactions</h2>
 <p>Interactions have to be handled manually prior the modeling step.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;   `(Intercept)` distanceXarr_time</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;           &lt;dbl&gt;             &lt;dbl&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; 1          6.77       -0.00000197</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;   `(Intercept)` distanceXarr_time</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;           &lt;dbl&gt;             &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 1          6.77       -0.00000197</span></a></code></pre></div>
 <p>A more typical model would also include the two original variables:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, distance, arr_time, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; # A tibble: 1 x 4</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;   `(Intercept)` distance arr_time distanceXarr_time</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; 1         -2.11  0.00269  0.00650       -0.00000435</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, distance, arr_time, distanceXarr_time) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;   `(Intercept)` distance arr_time distanceXarr_time</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 1         -2.11  0.00269  0.00650       -0.00000435</span></a></code></pre></div>
 </div>
 <div id="full-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#full-example" class="anchor"></a>Full example</h2>
 <p>Fitting a model with regular, categorical and interaction variables will look like this:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>remote_model &lt;-<span class="st"> </span>db_sample <span class="op">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw">select</span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(<span class="dt">y_var =</span> arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a>remote_model</span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; # A tibble: 1 x 5</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;   `(Intercept)` dep_time distanceXarr_time origin_JFK origin_LGA</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt; 1         -3.92   0.0132       -0.00000275      -10.1      -8.05</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">remote_model &lt;-<span class="st"> </span>db_sample <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">distanceXarr_time =</span> distance <span class="op">*</span><span class="st"> </span>arr_time) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, dep_time, distanceXarr_time, origin) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span>(origin, <span class="dt">values =</span> origins) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span>(<span class="dt">y_var =</span> arr_delay, <span class="dt">sample_size =</span> <span class="dv">20000</span>)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">remote_model</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; # A tibble: 1 x 5</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;   `(Intercept)` dep_time distanceXarr_time origin_JFK origin_LGA</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 1         -3.92   0.0132       -0.00000275      -10.1      -8.05</span></a></code></pre></div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -249,6 +251,7 @@
 </div>
 
 
+
       <footer><div class="tidyverse">
   <p><code>modeldb</code> is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
@@ -259,10 +262,12 @@
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

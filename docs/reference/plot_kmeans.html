@@ -32,14 +32,13 @@
 
 
 <meta property="og:title" content="Visualize a KMeans Cluster with lots of data — plot_kmeans" />
-
 <meta property="og:description" content="It uses 'ggplot2' to display the results of a KMeans routine. Instead
 of a scatterplot, it uses a square grid that displays the concentration
 of intersections per square.  The number of squares in the grid can 
 be customized for more or less fine grain." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -60,6 +59,7 @@ be customized for more or less fine grain." />
 
  gtag('config', 'UA-115082821-1');
 </script>
+
   </head>
 
   <body>
@@ -79,7 +79,7 @@ be customized for more or less fine grain." />
         <a class="navbar-brand" href="../index.html">modeldb</a>
         <div class="info">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
         </div>
       </div>
     </div>
@@ -87,7 +87,7 @@ be customized for more or less fine grain." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -114,7 +114,7 @@ be customized for more or less fine grain." />
 </li>
         <li>
   <a href="https://github.com/tidymodels/modeldb">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -125,6 +125,7 @@ be customized for more or less fine grain." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -136,18 +137,16 @@ be customized for more or less fine grain." />
     </div>
 
     <div class="ref-description">
-    
     <p>It uses 'ggplot2' to display the results of a KMeans routine. Instead
 of a scatterplot, it uses a square grid that displays the concentration
 of intersections per square.  The number of squares in the grid can 
 be customized for more or less fine grain.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>plot_kmeans</span>(<span class='no'>df</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>center</span>)
 
 <span class='fu'>db_calculate_squares</span>(<span class='no'>df</span>, <span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>group</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='fl'>50</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -173,7 +172,7 @@ Meaning a 50 x 50 grid.</p></td>
       <td><p>A discrete variable containing the grouping for the KMeans. It defaults to 'center'</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>For large result-sets in remote sources, downloading every intersection will 
@@ -181,7 +180,6 @@ be a long running, costly operation.  The approach of this function is to
 devide the x and y plane in a grid and have the remote source figure the 
 total number of intersections, returned as a single number.  This reduces the
 granularity of the visualization, but it speeds up the results.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>plot_kmeans</span>(<span class='no'>mtcars</span>, <span class='no'>mpg</span>, <span class='no'>wt</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='no'>am</span>)</div><div class='img'><img src='plot_kmeans-1.png' alt='' width='700' height='433' /></div></pre>
@@ -190,14 +188,13 @@ granularity of the visualization, but it speeds up the results.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="tidyverse">
@@ -210,11 +207,14 @@ granularity of the visualization, but it speeds up the results.</p>
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

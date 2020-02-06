@@ -32,12 +32,11 @@
 
 
 <meta property="og:title" content="Fits a Linear Regression model — linear_regression_db" />
-
 <meta property="og:description" content="It uses 'tidyeval' and 'dplyr' to create a linear
 regression model." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -58,6 +57,7 @@ regression model." />
 
  gtag('config', 'UA-115082821-1');
 </script>
+
   </head>
 
   <body>
@@ -77,7 +77,7 @@ regression model." />
         <a class="navbar-brand" href="../index.html">modeldb</a>
         <div class="info">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
         </div>
       </div>
     </div>
@@ -85,7 +85,7 @@ regression model." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -112,7 +112,7 @@ regression model." />
 </li>
         <li>
   <a href="https://github.com/tidymodels/modeldb">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -123,6 +123,7 @@ regression model." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -134,15 +135,12 @@ regression model." />
     </div>
 
     <div class="ref-description">
-    
     <p>It uses 'tidyeval' and 'dplyr' to create a linear
 regression model.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>linear_regression_db</span>(<span class='no'>df</span>, <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sample_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>auto_count</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>linear_regression_db</span>(<span class='no'>df</span>, <span class='kw'>y_var</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sample_size</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>auto_count</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -167,38 +165,36 @@ function to count how many records are in the sample, then set to
 TRUE.  It is only used for models with three or more independent variables</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The linear_regression_db() function only calls one of three unexported functions. 
 The function used is determined by the number of independent variables.  This is
 so any model of one or two variables can use a simpler formula, which in turn
 will have less SQL overhead.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>mpg</span>, <span class='no'>wt</span>, <span class='no'>qsec</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>linear_regression_db</span>(<span class='no'>mpg</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
+  <span class='fu'>linear_regression_db</span>(<span class='no'>mpg</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
 #&gt;   `(Intercept)`    wt  qsec
-#&gt;           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>          19.7 -</span><span style='color: #BB0000;'>5.05</span><span> 0.929</div><div class='input'>
+#&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>          19.7 -</span><span style='color: #BB0000;'>5.05</span><span> 0.929</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="tidyverse">
@@ -211,11 +207,14 @@ will have less SQL overhead.</p>
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
