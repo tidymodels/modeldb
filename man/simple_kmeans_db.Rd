@@ -4,9 +4,15 @@
 \alias{simple_kmeans_db}
 \title{Simple kmeans routine that works in-database}
 \usage{
-simple_kmeans_db(df, ..., centers = 3, max_repeats = 100,
-  initial_kmeans = NULL, safeguard_file = "kmeans.csv",
-  verbose = TRUE)
+simple_kmeans_db(
+  df,
+  ...,
+  centers = 3,
+  max_repeats = 100,
+  initial_kmeans = NULL,
+  safeguard_file = "kmeans.csv",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{df}{A Local or remote data frame}

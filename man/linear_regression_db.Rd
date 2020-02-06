@@ -4,8 +4,7 @@
 \alias{linear_regression_db}
 \title{Fits a Linear Regression model}
 \usage{
-linear_regression_db(df, y_var = NULL, sample_size = NULL,
-  auto_count = FALSE)
+linear_regression_db(df, y_var = NULL, sample_size = NULL, auto_count = FALSE)
 }
 \arguments{
 \item{df}{A Local or remote data frame}

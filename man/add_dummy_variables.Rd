@@ -4,8 +4,13 @@
 \alias{add_dummy_variables}
 \title{Creates dummy variables}
 \usage{
-add_dummy_variables(df, x, values = c(), auto_values = FALSE,
-  remove_original = TRUE)
+add_dummy_variables(
+  df,
+  x,
+  values = c(),
+  auto_values = FALSE,
+  remove_original = TRUE
+)
 }
 \arguments{
 \item{df}{A Local or remote data frame}

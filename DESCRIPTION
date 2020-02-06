@@ -1,9 +1,9 @@
 Package: modeldb
-Version: 0.2.0.9000
+Version: 0.2.1
 Title: Fits Models Inside the Database
 Description: Uses 'dplyr' and 'tidyeval' to fit statistical models inside the database. It currently supports KMeans and linear regression models.
 Authors@R:
-    person("Edgar", "Ruiz", email = "edgar@rstudio.com", role = c("aut", "cre"))
+    person("Edgar", "Ruiz", email = "edgararuiz@gmail.com", role = c("aut", "cre"))
 Depends:
     R (>= 3.1)
 Imports:
@@ -27,6 +27,6 @@ Suggests:
 License: GPL-3
 URL: https://github.com/tidymodels/modeldb
 BugReports: https://github.com/tidymodels/modeldb/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Encoding: UTF-8
 VignetteBuilder: knitr

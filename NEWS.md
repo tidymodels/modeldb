@@ -1,6 +1,6 @@
 # modeldb (dev)
 
-- Moves column name extraction to `dplyr::tbl_vars()` instead of `colnames()`
+- Uses `dplyr::tbl_vars()` for column name extraction to instead of `colnames()`
 
 # modeldb 0.2.0
 

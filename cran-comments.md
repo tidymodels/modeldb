@@ -1,14 +1,10 @@
 ## Release summary
 
-* Adds tidypredict's as_parsed_model() support for regression models
-
-* Fixes compatability issues with rlang and dplyr
+* Uses `dplyr::tbl_vars()` for column name extraction to instead of `colnames()`
 
 ## Test environments
 
-* Local windows 10 install, R 3.6.0
-
-* Ubuntu 18.04.2 LTS, R 3.6.1
+* Ubuntu 18.04.2 LTS, R 3.6.2
 
 * Ubuntu 14.04 (on travis-ci)
 

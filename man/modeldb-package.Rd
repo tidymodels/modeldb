@@ -6,7 +6,7 @@
 \alias{modeldb-package}
 \title{modeldb: Fits Models Inside the Database}
 \description{
-\if{html}{\figure{logo.png}{options: align='right'}}
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
 Uses 'dplyr' and 'tidyeval' to fit statistical models inside the database. It currently supports KMeans and linear regression models.
 }
@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Edgar Ruiz \email{edgar@rstudio.com}
+\strong{Maintainer}: Edgar Ruiz \email{edgararuiz@gmail.com}
 
 }
 \keyword{internal}
