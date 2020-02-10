@@ -1,3 +1,7 @@
+# modeldb 0.2.2
+
+- Switches maintainer to Max Kuhn
+
 # modeldb 0.2.1
 
 - Uses `dplyr::tbl_vars()` for column name extraction to instead of `colnames()`
