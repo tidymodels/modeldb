@@ -1,5 +1,7 @@
+url: https://modeldb.tidymodels.org
+
 template:
   package: tidytemplate
   params:
-    part_of: <a href="https://github.com/tidymodels">tidymodels</a>
-    footer: <code>modeldb</code> is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.
+    part_of: <a href="https://tidymodels.org">tidymodels</a>
+    footer: modeldb is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.
