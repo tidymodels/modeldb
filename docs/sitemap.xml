@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://modeldb.tidymodels.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/add_dummy_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/as_parsed_model.modeldb_lm.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/linear_regression_db.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/modeldb-package.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/plot_kmeans.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/reference/simple_kmeans_db.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/articles/kmeans.html</loc>
+  </url>
+  <url>
+    <loc>https://modeldb.tidymodels.org/articles/linear-regression.html</loc>
+  </url>
+</urlset>

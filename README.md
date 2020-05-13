@@ -1,11 +1,12 @@
 
 # modeldb <img src="man/figures/logo.png" align="right" alt="" width="120" />
 
-[![Build
-Status](https://travis-ci.org/tidymodels/modeldb.svg?branch=master)](https://travis-ci.org/tidymodels/modeldb)
+[![R build
+status](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/tidymodels/modeldb/master.svg)](https://codecov.io/github/tidymodels/modeldb?branch=master)
+[![Codecov test
+coverage](https://codecov.io/gh/tidymodels/modeldb/branch/master/graph/badge.svg)](https://codecov.io/gh/tidymodels/modeldb?branch=master)
+[![Downloads](http://cranlogs.r-pkg.org/badges/modeldb)](http://cran.rstudio.com/package=modeldb)
 
 Fit models inside the database. **`modeldb` works with most databases
 back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL
