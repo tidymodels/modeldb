@@ -13,6 +13,7 @@ Uses 'dplyr' and 'tidyeval' to fit statistical models inside the database. It cu
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://modeldb.tidymodels.org}
   \item \url{https://github.com/tidymodels/modeldb}
   \item Report bugs at \url{https://github.com/tidymodels/modeldb/issues}
 }

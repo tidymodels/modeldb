@@ -1,7 +1,7 @@
 #' @import rlang
 #' @import ggplot2
 #' @import tibble
-#' @importFrom dplyr mutate summarise right_join
+#' @importFrom dplyr mutate summarise left_join
 #' @importFrom dplyr summarise_all filter_all
 #' @importFrom dplyr pull collect arrange 
 #' @importFrom dplyr contains tally ungroup
@@ -9,7 +9,7 @@
 #' @importFrom dplyr all_vars group_by funs
 #' @importFrom dplyr n as_tibble filter select
 #' @importFrom dplyr case_when rename rename_all 
-#' @importFrom dplyr tbl_vars
+#' @importFrom dplyr tbl_vars everything
 #' @importFrom purrr map map2 map_df transpose
 #' @importFrom purrr reduce imap pluck
 #' @importFrom tidypredict as_parsed_model
