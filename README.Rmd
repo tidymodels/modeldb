@@ -14,7 +14,7 @@ library(modeldb)
 [![Codecov test coverage](https://codecov.io/gh/tidymodels/modeldb/branch/master/graph/badge.svg)](https://codecov.io/gh/tidymodels/modeldb?branch=master)
 [![Downloads](http://cranlogs.r-pkg.org/badges/modeldb)](http://cran.rstudio.com/package=modeldb)
 
-Fit models inside the database. **`modeldb` works with most databases back-ends** because it leverages `dplyr` and `dbplyr` for the final SQL translation of the algorithm. It currently supports:
+Fit models inside the database! **modeldb works with most database back-ends** because it leverages [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dbplyr.tidyverse.org/) for the final SQL translation of the algorithm. It currently supports:
 
 - K-means clustering
 
@@ -23,19 +23,21 @@ Fit models inside the database. **`modeldb` works with most databases back-ends*
 ## Installation
 
 Install the CRAN version with:
+
 ```{r, eval = FALSE}
-# install.packages("modeldb")
+install.packages("modeldb")
 ```
 
-The development version is available using `devtools` as follows:
+The development version is available from GitHub using remotes:
+
 ```{r, eval = FALSE}
 # install.packages("remotes")
-# remotes::install_github("tidymodels/modeldb")
+remotes::install_github("tidymodels/modeldb")
 ```
 
 ## Linear regression
 
-An easy way to try out the package is by creating a temporary SQLite database, and loading `mtcars` to it
+An easy way to try out the package is by creating a temporary SQLite database, and loading `mtcars` to it.
 
 ```{r}
 con <- DBI::dbConnect(RSQLite::SQLite(), path = ":memory:")
@@ -51,7 +53,7 @@ tbl(con, "mtcars") %>%
   linear_regression_db(wt)
 ```
 
-The model output can be parsed by `tidypredict` to run the predictions in the database. Please see the `Linear Regression` article to learn more about how to use `linear_regression_db()`
+The model output can be parsed by [tidypredict](https://tidypredict.tidymodels.org/) to run the predictions in the database. Please see the "Linear Regression" article to learn more about how to use `linear_regression_db()`
 
 ## K Means clustering
 
@@ -67,8 +69,21 @@ km <- tbl(con, "mtcars") %>%
 colnames(km)
 ```
 
-The SQL statement from `tbl` can be extracted using `dbplyr`'s `remote_query()`
+The SQL statement from `tbl` can be extracted using dbplyr's `remote_query()`
 
 ```{r}
 dbplyr::remote_query(km)
 ```
+
+## Contributing
+
+This project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+
+- For questions and discussions about tidymodels packages, modeling, and machine learning, [join us on RStudio Community](https://rstd.io/tidymodels-community).
+
+- If you think you have encountered a bug, please [submit an issue](https://github.com/tidymodels/modeldb/issues).
+
+- Either way, learn how to create and share a [reprex](https://rstd.io/reprex) (a minimal, reproducible example), to clearly communicate about your code. Check out [this helpful article on how to create reprexes](https://dbplyr.tidyverse.org/articles/reprex.html) for problems involving a database.
+
+- Check out further details on [contributing guidelines for tidymodels packages](https://www.tidymodels.org/contribute/) and [how to get help](https://www.tidymodels.org/help/).
+
