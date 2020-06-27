@@ -16,3 +16,4 @@ cran-comments.md
 ^CRAN-RELEASE
 ^\.httr-oauth$
 ^\.github$
+^CODE_OF_CONDUCT\.md$
