@@ -27,6 +27,6 @@ Suggests:
 License: GPL-3
 URL: https://modeldb.tidymodels.org, https://github.com/tidymodels/modeldb
 BugReports: https://github.com/tidymodels/modeldb/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0.9000
 Encoding: UTF-8
 VignetteBuilder: knitr

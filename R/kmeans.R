@@ -87,11 +87,12 @@ simple_kmeans_db <- function(df,
     if (all(prev_centroids == centroids)) break()
   }
   centroids_db <- rename_all(centroids_db, ~paste0("k_", .))
-  right_join(
+  joined <- left_join(
+    rename(new_centroids, k_center = center), 
     centroids_db,
-    new_centroids, 
-    by = c("k_center" = "center")
+    by = "k_center"
     )
+  select(joined, contains("k_"), everything())
 }
 
 calculate_centers <- function(df, center_df, centers, vars) {
