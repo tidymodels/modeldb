@@ -24,7 +24,7 @@ Suggests:
     methods,
     DBI,
     covr
-License: GPL-3
+License: MIT + file LICENSE
 URL: https://modeldb.tidymodels.org, https://github.com/tidymodels/modeldb
 BugReports: https://github.com/tidymodels/modeldb/issues
 RoxygenNote: 7.1.0.9000
