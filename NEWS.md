@@ -1,3 +1,7 @@
+# modeldb (development version)
+
+* Re-licensed package from GPL-3 to MIT. All copyright holders are RStudio employees and give consent.
+
 # modeldb 0.2.2
 
 - Switches maintainer to Max Kuhn
