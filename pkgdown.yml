@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   kmeans: kmeans.html
   linear-regression: linear-regression.html
-last_built: 2021-10-28T17:17Z
+last_built: 2021-10-28T17:42Z
 urls:
   reference: https://modeldb.tidymodels.org/reference
   article: https://modeldb.tidymodels.org/articles
