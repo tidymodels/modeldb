@@ -5,7 +5,7 @@
 status](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
 [![Codecov test
-coverage](https://codecov.io/gh/tidymodels/modeldb/branch/master/graph/badge.svg)](https://codecov.io/gh/tidymodels/modeldb?branch=master)
+coverage](https://codecov.io/gh/tidymodels/modeldb/branch/main/graph/badge.svg)](https://codecov.io/gh/tidymodels/modeldb?branch=main)
 [![Downloads](http://cranlogs.r-pkg.org/badges/modeldb)](http://cran.rstudio.com/package=modeldb)
 
 Fit models inside the database\! **modeldb works with most database
