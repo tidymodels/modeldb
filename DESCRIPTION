@@ -31,7 +31,6 @@ Suggests:
     testthat (>= 2.1.0)
 VignetteBuilder: 
     knitr
-Config/Needs/website: 
-    tidyverse/tidytemplate
+Config/Needs/website: tidyverse/tidytemplate
 Encoding: UTF-8
 RoxygenNote: 7.2.1.9000
