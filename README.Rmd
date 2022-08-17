@@ -9,7 +9,7 @@ library(dplyr)
 library(modeldb)
 ```
 
-[![R build status](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
+[![R-CMD-check](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://CRAN.R-project.org/package=modeldb)
 [![Codecov test coverage](https://codecov.io/gh/tidymodels/modeldb/branch/main/graph/badge.svg)](https://app.codecov.io/gh/tidymodels/modeldb?branch=main)
 [![Downloads](http://cranlogs.r-pkg.org/badges/modeldb)](https://CRAN.R-project.org/package=modeldb)
