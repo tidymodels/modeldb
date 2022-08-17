@@ -9,10 +9,10 @@ library(dplyr)
 library(modeldb)
 ```
 
-[![R build status](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://cran.r-project.org/package=modeldb)
-[![Codecov test coverage](https://codecov.io/gh/tidymodels/modeldb/branch/main/graph/badge.svg)](https://codecov.io/gh/tidymodels/modeldb?branch=main)
-[![Downloads](http://cranlogs.r-pkg.org/badges/modeldb)](http://cran.rstudio.com/package=modeldb)
+[![R-CMD-check](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://CRAN.R-project.org/package=modeldb)
+[![Codecov test coverage](https://codecov.io/gh/tidymodels/modeldb/branch/main/graph/badge.svg)](https://app.codecov.io/gh/tidymodels/modeldb?branch=main)
+[![Downloads](http://cranlogs.r-pkg.org/badges/modeldb)](https://CRAN.R-project.org/package=modeldb)
 
 Fit models inside the database! **modeldb works with most database back-ends** because it leverages [dplyr](https://dplyr.tidyverse.org/) and [dbplyr](https://dbplyr.tidyverse.org/) for the final SQL translation of the algorithm. It currently supports:
 
@@ -79,11 +79,11 @@ dbplyr::remote_query(km)
 
 This project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
 
-- For questions and discussions about tidymodels packages, modeling, and machine learning, please [post on RStudio Community](https://rstd.io/tidymodels-community).
+- For questions and discussions about tidymodels packages, modeling, and machine learning, please [post on RStudio Community](https://community.rstudio.com/new-topic?category_id=15&tags=tidymodels,question).
 
 - If you think you have encountered a bug, please [submit an issue](https://github.com/tidymodels/modeldb/issues).
 
-- Either way, learn how to create and share a [reprex](https://rstd.io/reprex) (a minimal, reproducible example), to clearly communicate about your code. Check out [this helpful article on how to create reprexes](https://dbplyr.tidyverse.org/articles/reprex.html) for problems involving a database.
+- Either way, learn how to create and share a [reprex](https://reprex.tidyverse.org/articles/articles/learn-reprex.html) (a minimal, reproducible example), to clearly communicate about your code. Check out [this helpful article on how to create reprexes](https://dbplyr.tidyverse.org/articles/reprex.html) for problems involving a database.
 
 - Check out further details on [contributing guidelines for tidymodels packages](https://www.tidymodels.org/contribute/) and [how to get help](https://www.tidymodels.org/help/).
 
