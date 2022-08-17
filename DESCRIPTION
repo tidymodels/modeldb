@@ -1,6 +1,6 @@
 Package: modeldb
 Title: Fits Models Inside the Database
-Version: 0.2.3
+Version: 0.2.3.9000
 Authors@R:
     person("Max", "Kuhn", , "max@rstudio.com", role = c("aut", "cre"))
 Description: Uses 'dplyr' and 'tidyeval' to fit statistical models inside
