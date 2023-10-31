@@ -52,7 +52,8 @@ test_that("MLR failes when auto_count set to FALSE and no sample_size is passed"
   expect_error(
     mtcars %>%
       select(wt, mpg, qsec, hp) %>%
-      linear_regression_db(wt, auto_count = FALSE))
+      linear_regression_db(wt, auto_count = FALSE)
+  )
   expect_error(
     mtcars %>%
       select(wt, mpg, qsec, hp) %>%
@@ -67,10 +68,9 @@ test_that("mlr with grouping matches lm()", {
       group_by(am) %>%
       linear_regression_db(wt, auto_count = TRUE) %>%
       transpose() %>%
-      map(~as.numeric(.x)),
-    
+      map(~ as.numeric(.x)),
     0:1 %>%
-      map(~{
+      map(~ {
         mtcars %>%
           filter(am == .x) %>%
           lm(wt ~ mpg + qsec + hp, data = .) %>%

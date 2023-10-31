@@ -5,57 +5,57 @@
 #'
 #' @param df A Local or remote data frame
 #' @param y_var Dependent variable
-#' @param sample_size Prevents a table count. It is only used for models 
+#' @param sample_size Prevents a table count. It is only used for models
 #' with three or more independent variables
 #' @param auto_count Serves as a safeguard in case sample_size is not
 #' passed inadvertently.  Defaults to FALSE.  If it is ok for the
 #' function to count how many records are in the sample, then set to
 #' TRUE.  It is only used for models with three or more independent variables
 #'
-#' @details 
-#' 
-#' The linear_regression_db() function only calls one of three unexported functions. 
+#' @details
+#'
+#' The linear_regression_db() function only calls one of three unexported functions.
 #' The function used is determined by the number of independent variables.  This is
 #' so any model of one or two variables can use a simpler formula, which in turn
 #' will have less SQL overhead.
 #'
 #' @examples
 #' library(dplyr)
-#' 
+#'
 #' mtcars %>%
 #'   select(mpg, wt, qsec) %>%
 #'   linear_regression_db(mpg)
 #'
 #' @export
-linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE){
+linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_count = FALSE) {
   y_var <- enexpr(y_var)
-  
+
   col_names <- tbl_vars(df)
   grouped_count <- length(group_vars(df))
   n_cols <- length(col_names) - grouped_count
-  
+
   x_vars <- col_names[col_names != expr_text(y_var)]
-  if(grouped_count > 0) x_vars <- setdiff(x_vars, group_vars(df))
-  
-  if(n_cols == 2){
+  if (grouped_count > 0) x_vars <- setdiff(x_vars, group_vars(df))
+
+  if (n_cols == 2) {
     m <- simple_linear_regression_db(
       df = df,
-      x = !! sym(x_vars[1]),
-      y = !! y_var
+      x = !!sym(x_vars[1]),
+      y = !!y_var
     )
   }
-  if(n_cols == 3){
+  if (n_cols == 3) {
     m <- two_variable_regression(
       df = df,
-      y = !! y_var,
-      x1 = !! sym(x_vars[1]),
-      x2 = !! sym(x_vars[2])
+      y = !!y_var,
+      x1 = !!sym(x_vars[1]),
+      x2 = !!sym(x_vars[2])
     )
   }
-  if(n_cols > 3){
+  if (n_cols > 3) {
     m <- mlr(
       df = df,
-      y_var = !! y_var,
+      y_var = !!y_var,
       sample_size = sample_size,
       auto_count = auto_count
     )
@@ -65,33 +65,33 @@ linear_regression_db <- function(df, y_var = NULL, sample_size = NULL, auto_coun
 }
 
 two_variable_regression <- function(df, y, x1, x2) {
-  y <-  enquo(y)
+  y <- enquo(y)
   x1 <- enquo(x1)
   x2 <- enquo(x2)
 
   vars <- group_vars(df)
-  
+
   m <- summarise(
     df,
-    x1y = sum(!!x1 * !!y, na.rm = TRUE)  - (sum(!!x1, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
-    x2y = sum(!!x2 * !!y, na.rm = TRUE)  - (sum(!!x2, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
+    x1y = sum(!!x1 * !!y, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
+    x2y = sum(!!x2 * !!y, na.rm = TRUE) - (sum(!!x2, na.rm = TRUE) * sum(!!y, na.rm = TRUE) / n()),
     x2x = sum(!!x2 * !!x2, na.rm = TRUE) - (sum(!!x2, na.rm = TRUE) * sum(!!x2, na.rm = TRUE) / n()),
     x1x = sum(!!x1 * !!x1, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!x1, na.rm = TRUE) / n()),
     all = sum(!!x1 * !!x2, na.rm = TRUE) - (sum(!!x1, na.rm = TRUE) * sum(!!x2, na.rm = TRUE) / n()),
-    my  = mean(!!y,  na.rm = TRUE),
+    my  = mean(!!y, na.rm = TRUE),
     mx1 = mean(!!x1, na.rm = TRUE),
     mx2 = mean(!!x2, na.rm = TRUE)
-    )     
+  )
   m <- mutate(
-    m, 
+    m,
     !!x1 := ((x2x * x1y) - (all * x2y)) / ((x1x * x2x) - (all * all)),
     !!x2 := ((x1x * x2y) - (all * x1y)) / ((x1x * x2x) - (all * all))
-    )
-  m <- mutate(m, Intercept = my - (!!x1 * mx1) - (!!x2 * mx2)) 
-  m <- select(m, !! vars, Intercept, !!x1, !!x2) 
-  m <- collect(m) 
+  )
+  m <- mutate(m, Intercept = my - (!!x1 * mx1) - (!!x2 * mx2))
+  m <- select(m, !!vars, Intercept, !!x1, !!x2)
+  m <- collect(m)
   m <- as_tibble(m)
-  rename(m, "(Intercept)" = Intercept) 
+  rename(m, "(Intercept)" = Intercept)
 }
 
 simple_linear_regression_db <- function(df, x, y) {
@@ -99,8 +99,8 @@ simple_linear_regression_db <- function(df, x, y) {
   y <- enquo(y)
 
   vars <- group_vars(df)
-  
-  m <-   summarise(
+
+  m <- summarise(
     df,
     sx = sum(!!x, na.rm = TRUE),
     sy = sum(!!y, na.rm = TRUE),
@@ -108,10 +108,10 @@ simple_linear_regression_db <- function(df, x, y) {
     syy = sum(!!y * !!y, na.rm = TRUE),
     sxy = sum(!!x * !!y, na.rm = TRUE),
     n = n()
-    ) 
-  m <- mutate(m, !!x := ((n * sxy) - (sx * sy)) / ((n * sxx) - (sx * sx))) 
-  m <- mutate(m,Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx)) 
-  m <- select(m, !! vars, Intercept, !!x) 
+  )
+  m <- mutate(m, !!x := ((n * sxy) - (sx * sy)) / ((n * sxx) - (sx * sx)))
+  m <- mutate(m, Intercept = ((1 / n) * sy) - (!!x * (1 / n) * sx))
+  m <- select(m, !!vars, Intercept, !!x)
   m <- collect(m)
   m <- as_tibble(m)
   rename(m, "(Intercept)" = Intercept)
@@ -147,10 +147,10 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
           xy <- c(as_label(.x), as_label(y))
           pop <- ifelse(auto_count, expr(n()), sample_size)
           list(
-            #f = ind_f(!!.x, !!y, sample_size, vars_count),
+            # f = ind_f(!!.x, !!y, sample_size, vars_count),
             f = expr(
-              sum(!!.x * !!y, na.rm = TRUE) - ((sum(!!.x, na.rm = TRUE) * sum(!!y, na.rm = TRUE)) / !! pop)
-              ),
+              sum(!!.x * !!y, na.rm = TRUE) - ((sum(!!.x, na.rm = TRUE) * sum(!!y, na.rm = TRUE)) / !!pop)
+            ),
             name = paste0(xy[order(xy)], collapse = "_")
           )
         }

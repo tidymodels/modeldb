@@ -16,10 +16,10 @@
 #'
 #' @examples
 #' library(dplyr)
-#' 
+#'
 #' mtcars %>%
 #'   add_dummy_variables(cyl, values = c(4, 6, 8))
-#' 
+#'
 #' mtcars %>%
 #'   add_dummy_variables(cyl, auto_values = TRUE)
 #' @export
