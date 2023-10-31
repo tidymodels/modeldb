@@ -122,7 +122,7 @@ mlr <- function(df, ..., y_var, sample_size = NULL, auto_count = FALSE) {
     if (auto_count) {
       sample_size <- pull(tally(df))
     } else {
-      stop("No sample size provided, and auto_count is set to FALSE")
+      cli::cli_abort("No sample size provided, and auto_count is set to FALSE")
     }
   }
 
