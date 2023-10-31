@@ -10,7 +10,7 @@ License: MIT + file LICENSE
 URL: https://modeldb.tidymodels.org, https://github.com/tidymodels/modeldb
 BugReports: https://github.com/tidymodels/modeldb/issues
 Depends:
-    R (>= 3.61)
+    R (>= 3.6)
 Imports:
     cli,
     dplyr (>= 0.7),
