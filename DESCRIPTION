@@ -28,9 +28,11 @@ Suggests:
     nycflights13,
     rmarkdown,
     RSQLite,
-    testthat (>= 2.1.0)
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Config/Needs/website: tidyverse/tidytemplate
 Encoding: UTF-8
-RoxygenNote: 7.2.1.9000
+RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3
