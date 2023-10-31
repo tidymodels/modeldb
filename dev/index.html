@@ -38,6 +38,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -52,24 +54,18 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="index.html">modeldb</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://tidymodels.org">tidymodels</a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.2.9000</span>
+          <span class="partof">part of <a href="https://tidymodels.org" class="external-link">tidymodels</a></span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.3.9000</span>
         </div>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,7 +83,7 @@
   <a href="news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/modeldb/">
+  <a href="https://github.com/tidymodels/modeldb/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -104,102 +100,100 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="modeldb-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#modeldb-" class="anchor"></a>modeldb <img src="reference/figures/logo.png" align="right" alt="" width="120">
+<div class="section level1">
+<div class="page-header"><h1 id="modeldb-">modeldb <img src="reference/figures/logo.png" align="right" alt="" width="120"><a class="anchor" aria-label="anchor" href="#modeldb-"></a>
 </h1></div>
-
-<p>Fit models inside the database! <strong>modeldb works with most database back-ends</strong> because it leverages <a href="https://dplyr.tidyverse.org/">dplyr</a> and <a href="https://dbplyr.tidyverse.org/">dbplyr</a> for the final SQL translation of the algorithm. It currently supports:</p>
+<p><a href="https://github.com/tidymodels/modeldb/actions" class="external-link"><img src="https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a> <a href="https://CRAN.R-project.org/package=modeldb" class="external-link"><img src="http://www.r-pkg.org/badges/version/modeldb" alt="CRAN_Status_Badge"></a> <a href="https://app.codecov.io/gh/tidymodels/modeldb?branch=main" class="external-link"><img src="https://codecov.io/gh/tidymodels/modeldb/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://CRAN.R-project.org/package=modeldb" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/modeldb" alt="Downloads"></a></p>
+<p>Fit models inside the database! <strong>modeldb works with most database back-ends</strong> because it leverages <a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> and <a href="https://dbplyr.tidyverse.org/" class="external-link">dbplyr</a> for the final SQL translation of the algorithm. It currently supports:</p>
 <ul>
 <li><p>K-means clustering</p></li>
 <li><p>Linear regression</p></li>
 </ul>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>Install the CRAN version with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"modeldb"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"modeldb"</span><span class="op">)</span></span></code></pre></div>
 <p>The development version is available from GitHub using remotes:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"tidymodels/modeldb"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"tidymodels/modeldb"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="linear-regression" class="section level2">
-<h2 class="hasAnchor">
-<a href="#linear-regression" class="anchor"></a>Linear regression</h2>
+<div class="section level2">
+<h2 id="linear-regression">Linear regression<a class="anchor" aria-label="anchor" href="#linear-regression"></a>
+</h2>
 <p>An easy way to try out the package is by creating a temporary SQLite database, and loading <code>mtcars</code> to it.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span>, path <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span>
-<span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html">initExtension</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">mtcars</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, path <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span>
+<span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html" class="external-link">initExtension</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">mtcars</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"mtcars"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, <span class="va">qsec</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">wt</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co">## # A tibble: 1 x 3</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="co">##   `(Intercept)`    mpg  qsec</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="co">##           &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">## 1          4.12 -0.156 0.125</span></span></code></pre></div>
-<p>The model output can be parsed by <a href="https://tidypredict.tidymodels.org/">tidypredict</a> to run the predictions in the database. Please see the “Linear Regression” article to learn more about how to use <code><a href="reference/linear_regression_db.html">linear_regression_db()</a></code></p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"mtcars"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, <span class="va">qsec</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">wt</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   `(Intercept)`    mpg  qsec</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">##           &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1          4.12 -0.156 0.125</span></span></code></pre></div>
+<p>The model output can be parsed by <a href="https://tidypredict.tidymodels.org/" class="external-link">tidypredict</a> to run the predictions in the database. Please see the “Linear Regression” article to learn more about how to use <code><a href="reference/linear_regression_db.html">linear_regression_db()</a></code></p>
 </div>
-<div id="k-means-clustering" class="section level2">
-<h2 class="hasAnchor">
-<a href="#k-means-clustering" class="anchor"></a>K Means clustering</h2>
+<div class="section level2">
+<h2 id="k-means-clustering">K Means clustering<a class="anchor" aria-label="anchor" href="#k-means-clustering"></a>
+</h2>
 <p>To use the <code><a href="reference/simple_kmeans_db.html">simple_kmeans_db()</a></code> function, simply pipe the database back end table to the function. This returns a list object that contains two items:</p>
 <ul>
 <li>A sql query table with the final center assignment</li>
 <li>A local table with the information about the centers</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"mtcars"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="reference/simple_kmeans_db.html">simple_kmeans_db</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">wt</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">km</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">##  [1] "k_center" "k_mpg"    "k_wt"     "mpg"      "cyl"      "disp"    </span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="co">##  [7] "hp"       "drat"     "wt"       "qsec"     "vs"       "am"      </span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">## [13] "gear"     "carb"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">km</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/tbl.html" class="external-link">tbl</a></span><span class="op">(</span><span class="va">con</span>, <span class="st">"mtcars"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/simple_kmeans_db.html">simple_kmeans_db</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">wt</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">km</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">##  [1] "k_center" "k_mpg"    "k_wt"     "mpg"      "cyl"      "disp"    </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">##  [7] "hp"       "drat"     "wt"       "qsec"     "vs"       "am"      </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [13] "gear"     "carb"</span></span></code></pre></div>
 <p>The SQL statement from <code>tbl</code> can be extracted using dbplyr’s <code>remote_query()</code></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html">remote_query</a></span><span class="op">(</span><span class="va">km</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">## &lt;SQL&gt; SELECT `k_center`, `k_mpg`, `k_wt`, `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">## FROM (SELECT `LHS`.`mpg` AS `mpg`, `LHS`.`cyl` AS `cyl`, `LHS`.`disp` AS `disp`, `LHS`.`hp` AS `hp`, `LHS`.`drat` AS `drat`, `LHS`.`wt` AS `wt`, `LHS`.`qsec` AS `qsec`, `LHS`.`vs` AS `vs`, `LHS`.`am` AS `am`, `LHS`.`gear` AS `gear`, `LHS`.`carb` AS `carb`, `LHS`.`k_center` AS `k_center`, `RHS`.`k_mpg` AS `k_mpg`, `RHS`.`k_wt` AS `k_wt`</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="co">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center` AS `k_center`</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center_1`, `center_2`, `center_3`, CASE</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">## WHEN (`center_1` &gt;= `center_1` AND `center_1` &lt; `center_2` AND `center_1` &lt; `center_3`) THEN ('center_1')</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">## WHEN (`center_2` &lt; `center_1` AND `center_2` &gt;= `center_2` AND `center_2` &lt; `center_3`) THEN ('center_2')</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">## WHEN (`center_3` &lt; `center_1` AND `center_3` &lt; `center_2` AND `center_3` &gt;= `center_3`) THEN ('center_3')</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">## </span><span class="re">END</span><span class="co"> AS `center`</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">## FROM `mtcars`))</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">## WHERE (NOT(((`center`) IS NULL)))) AS `LHS`</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">## LEFT JOIN (SELECT `center` AS `k_center`, `mpg` AS `k_mpg`, `wt` AS `k_wt`</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">## FROM (SELECT `center`, AVG(`mpg`) AS `mpg`, AVG(`wt`) AS `wt`</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="co">## FROM (SELECT `mpg`, `wt`, `center`</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a><span class="co">## FROM (SELECT *</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="co">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center_1`, `center_2`, `center_3`, CASE</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a><span class="co">## WHEN (`center_1` &gt;= `center_1` AND `center_1` &lt; `center_2` AND `center_1` &lt; `center_3`) THEN ('center_1')</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">## WHEN (`center_2` &lt; `center_1` AND `center_2` &gt;= `center_2` AND `center_2` &lt; `center_3`) THEN ('center_2')</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="co">## WHEN (`center_3` &lt; `center_1` AND `center_3` &lt; `center_2` AND `center_3` &gt;= `center_3`) THEN ('center_3')</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">## </span><span class="re">END</span><span class="co"> AS `center`</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="co">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="co">## FROM `mtcars`))</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="co">## WHERE (NOT(((`center`) IS NULL)))))</span></span>
-<span id="cb9-24"><a href="#cb9-24"></a><span class="co">## GROUP BY `center`)) AS `RHS`</span></span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="co">## ON (`LHS`.`k_center` = `RHS`.`k_center`)</span></span>
-<span id="cb9-26"><a href="#cb9-26"></a><span class="co">## )</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">dbplyr</span><span class="fu">::</span><span class="fu"><a href="https://dbplyr.tidyverse.org/reference/remote_name.html" class="external-link">remote_query</a></span><span class="op">(</span><span class="va">km</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;SQL&gt; SELECT `k_center`, `k_mpg`, `k_wt`, `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `LHS`.`k_center` AS `k_center`, `k_mpg`, `k_wt`</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center` AS `k_center`</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center_1`, `center_2`, `center_3`, CASE</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## WHEN (`center_1` &gt;= `center_1` AND `center_1` &lt; `center_2` AND `center_1` &lt; `center_3`) THEN ('center_1')</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">## WHEN (`center_2` &lt; `center_1` AND `center_2` &gt;= `center_2` AND `center_2` &lt; `center_3`) THEN ('center_2')</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## WHEN (`center_3` &lt; `center_1` AND `center_3` &lt; `center_2` AND `center_3` &gt;= `center_3`) THEN ('center_3')</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span><span class="re">END</span><span class="do"> AS `center`</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM `mtcars`))</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">## WHERE (NOT(((`center`) IS NULL)))) AS `LHS`</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">## LEFT JOIN (SELECT `center` AS `k_center`, `mpg` AS `k_mpg`, `wt` AS `k_wt`</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `center`, AVG(`mpg`) AS `mpg`, AVG(`wt`) AS `wt`</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `wt`, `center`</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, `center_1`, `center_2`, `center_3`, CASE</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## WHEN (`center_1` &gt;= `center_1` AND `center_1` &lt; `center_2` AND `center_1` &lt; `center_3`) THEN ('center_1')</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="do">## WHEN (`center_2` &lt; `center_1` AND `center_2` &gt;= `center_2` AND `center_2` &lt; `center_3`) THEN ('center_2')</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="do">## WHEN (`center_3` &lt; `center_1` AND `center_3` &lt; `center_2` AND `center_3` &gt;= `center_3`) THEN ('center_3')</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span><span class="re">END</span><span class="do"> AS `center`</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM (SELECT `mpg`, `cyl`, `disp`, `hp`, `drat`, `wt`, `qsec`, `vs`, `am`, `gear`, `carb`, SQRT(((20.6428571428571 - `mpg`) * (20.6428571428571 - `mpg`)) + ((3.07214285714286 - `wt`) * (3.07214285714286 - `wt`))) AS `center_1`, SQRT(((14.4583333333333 - `mpg`) * (14.4583333333333 - `mpg`)) + ((4.05866666666667 - `wt`) * (4.05866666666667 - `wt`))) AS `center_2`, SQRT(((30.0666666666667 - `mpg`) * (30.0666666666667 - `mpg`)) + ((1.873 - `wt`) * (1.873 - `wt`))) AS `center_3`</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="do">## FROM `mtcars`))</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="do">## WHERE (NOT(((`center`) IS NULL))))</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="do">## GROUP BY `center`)) AS `RHS`</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="do">## ON (`LHS`.`k_center` = `RHS`.`k_center`)</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="do">## )</span></span></code></pre></div>
 </div>
-<div id="contributing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h2>
-<p>This project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<div class="section level2">
+<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h2>
+<p>This project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 <ul>
-<li><p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community">post on RStudio Community</a>.</p></li>
-<li><p>If you think you have encountered a bug, please <a href="https://github.com/tidymodels/modeldb/issues">submit an issue</a>.</p></li>
-<li><p>Either way, learn how to create and share a <a href="https://rstd.io/reprex">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out <a href="https://dbplyr.tidyverse.org/articles/reprex.html">this helpful article on how to create reprexes</a> for problems involving a database.</p></li>
-<li><p>Check out further details on <a href="https://www.tidymodels.org/contribute/">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/">how to get help</a>.</p></li>
+<li><p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://community.rstudio.com/new-topic?category_id=15&amp;tags=tidymodels,question" class="external-link">post on Posit Community</a>.</p></li>
+<li><p>If you think you have encountered a bug, please <a href="https://github.com/tidymodels/modeldb/issues" class="external-link">submit an issue</a>.</p></li>
+<li><p>Either way, learn how to create and share a <a href="https://reprex.tidyverse.org/articles/articles/learn-reprex.html" class="external-link">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out <a href="https://dbplyr.tidyverse.org/articles/reprex.html" class="external-link">this helpful article on how to create reprexes</a> for problems involving a database.</p></li>
+<li><p>Check out further details on <a href="https://www.tidymodels.org/contribute/" class="external-link">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/" class="external-link">how to get help</a>.</p></li>
 </ul>
 </div>
 </div>
@@ -207,46 +201,46 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=modeldb">https://​cloud.r-project.org/​package=modeldb</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/tidymodels/modeldb/">https://​github.com/​tidymodels/​modeldb/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/tidymodels/modeldb/issues">https://​github.com/​tidymodels/​modeldb/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=modeldb" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/tidymodels/modeldb/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/tidymodels/modeldb/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing modeldb</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Max Kuhn <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/tidymodels/modeldb/actions"><img src="https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://cran.r-project.org/package=modeldb"><img src="http://www.r-pkg.org/badges/version/modeldb" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://codecov.io/gh/tidymodels/modeldb?branch=main"><img src="https://codecov.io/gh/tidymodels/modeldb/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="http://cran.rstudio.com/package=modeldb"><img src="http://cranlogs.r-pkg.org/badges/modeldb" alt="Downloads"></a></li>
-</ul>
-</div>
-</div>
+
+
+  </div>
 </div>
 
 
@@ -256,8 +250,8 @@
 
 <div class="author">
   <p>
-    Developed by Max Kuhn.
-    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+    Developed by .
+    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
   </p>
 </div>
 
@@ -266,6 +260,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -36,6 +36,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -50,24 +52,18 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">modeldb</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://tidymodels.org">tidymodels</a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.2.9000</span>
+          <span class="partof">part of <a href="https://tidymodels.org" class="external-link">tidymodels</a></span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.2.3.9000</span>
         </div>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -85,7 +81,7 @@
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/modeldb/">
+  <a href="https://github.com/tidymodels/modeldb/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -100,153 +96,185 @@
 
       
 
-      </header><script src="linear-regression_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Linear regression models</h1>
-                        <h4 class="author">Edgar Ruiz</h4>
+                        <h4 data-toc-skip class="author">Edgar Ruiz</h4>
             
-            <h4 class="date">2021-10-28</h4>
+            <h4 data-toc-skip class="date">2023-10-31</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/modeldb/blob/master/vignettes/linear-regression.Rmd"><code>vignettes/linear-regression.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/modeldb/blob/HEAD/vignettes/linear-regression.Rmd" class="external-link"><code>vignettes/linear-regression.Rmd</code></a></small>
       <div class="hidden name"><code>linear-regression.Rmd</code></div>
 
     </div>
 
     
     
-<div id="intro" class="section level2">
-<h2 class="hasAnchor">
-<a href="#intro" class="anchor"></a>Intro</h2>
-<p>The <code><a href="../reference/linear_regression_db.html">linear_regression_db()</a></code> function can be used to fit this kind of model inside a database. It uses <code>dplyr</code> programming to abstract the steps needed produce a model, so that it can then be translated into SQL statements in the background.</p>
+<div class="section level2">
+<h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
+</h2>
+<p>The <code><a href="../reference/linear_regression_db.html">linear_regression_db()</a></code> function can be used to fit
+this kind of model inside a database. It uses <code>dplyr</code>
+programming to abstract the steps needed produce a model, so that it can
+then be translated into SQL statements in the background.</p>
 </div>
-<div id="example-setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-setup" class="anchor"></a>Example setup</h2>
-<p>A lightweight SQLite database will be used for this article. Additionally, a sample data set is created.</p>
+<div class="section level2">
+<h2 id="example-setup">Example setup<a class="anchor" aria-label="anchor" href="#example-setup"></a>
+</h2>
+<p>A lightweight SQLite database will be used for this article.
+Additionally, a sample data set is created.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Open a database connection</span>
-<span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span>, path <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span>
-<span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html">initExtension</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="co"># Copy data to the database</span>
-<span class="va">db_flights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html">copy_to</a></span><span class="op">(</span><span class="va">con</span>, <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html">flights</a></span>, <span class="st">"flights"</span><span class="op">)</span>
-<span class="co"># Create a simple sample</span>
-<span class="va">db_sample</span> <span class="op">&lt;-</span> <span class="va">db_flights</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">arr_time</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">20000</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Open a database connection</span></span>
+<span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">DBI</span><span class="fu">::</span><span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, path <span class="op">=</span> <span class="st">":memory:"</span><span class="op">)</span></span>
+<span><span class="fu">RSQLite</span><span class="fu">::</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/initExtension.html" class="external-link">initExtension</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co"># Copy data to the database</span></span>
+<span><span class="va">db_flights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/copy_to.html" class="external-link">copy_to</a></span><span class="op">(</span><span class="va">con</span>, <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span>, <span class="st">"flights"</span><span class="op">)</span></span>
+<span><span class="co"># Create a simple sample</span></span>
+<span><span class="va">db_sample</span> <span class="op">&lt;-</span> <span class="va">db_flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">arr_time</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">20000</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="model-inside-the-database" class="section level2">
-<h2 class="hasAnchor">
-<a href="#model-inside-the-database" class="anchor"></a>Model inside the database</h2>
-<p>The <code><a href="../reference/linear_regression_db.html">linear_regression_db()</a></code> function does not use a formula. It uses a table, and a named dependent variable. This means data preparation is needed prior to running the model. The best way to prepare the data for modeling will be using piped <code>dplyr</code> operations.</p>
+<div class="section level2">
+<h2 id="model-inside-the-database">Model inside the database<a class="anchor" aria-label="anchor" href="#model-inside-the-database"></a>
+</h2>
+<p>The <code><a href="../reference/linear_regression_db.html">linear_regression_db()</a></code> function does not use a
+formula. It uses a table, and a named dependent variable. This means
+data preparation is needed prior to running the model. The best way to
+prepare the data for modeling will be using piped <code>dplyr</code>
+operations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">dep_delay</span>, <span class="va">distance</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 3</span>
-<span class="co">#&gt;   `(Intercept)` dep_delay distance</span>
-<span class="co">#&gt;           &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        -0.659      1.00 -0.00337</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">dep_delay</span>, <span class="va">distance</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">#&gt;   `(Intercept)` dep_delay distance</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        -<span style="color: #BB0000;">0.659</span>      1.00 -<span style="color: #BB0000;">0.003</span><span style="color: #BB0000; text-decoration: underline;">37</span></span></span></code></pre></div>
 </div>
-<div id="categorical-variables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#categorical-variables" class="anchor"></a>Categorical variables</h2>
-<p>Adding a categorical a variable to a model requires prior data transformation The <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> appends a set of boolean variables, one for each discrete value. This function creates one-less discrete variable than the possible values. For example: if the categorical variable has three possible values, the function will append two variables. By default, <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> removes the original variable.</p>
-<p>The reason for this approach is to reduce the number of database operations. Without this step, then a fitting function would have to request all of the unique values every time a new model run, which creates unnecessary processing.</p>
+<div class="section level2">
+<h2 id="categorical-variables">Categorical variables<a class="anchor" aria-label="anchor" href="#categorical-variables"></a>
+</h2>
+<p>Adding a categorical a variable to a model requires prior data
+transformation The <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> appends a set of
+boolean variables, one for each discrete value. This function creates
+one-less discrete variable than the possible values. For example: if the
+categorical variable has three possible values, the function will append
+two variables. By default, <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> removes
+the original variable.</p>
+<p>The reason for this approach is to reduce the number of database
+operations. Without this step, then a fitting function would have to
+request all of the unique values every time a new model run, which
+creates unnecessary processing.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">origin</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span><span class="op">(</span><span class="va">origin</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"EWR"</span>, <span class="st">"JFK"</span>, <span class="st">"LGA"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # Source:   lazy query [?? x 3]</span>
-<span class="co">#&gt; # Database: sqlite 3.36.0 []</span>
-<span class="co">#&gt;    arr_delay origin_JFK origin_LGA</span>
-<span class="co">#&gt;        &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt;  1        11          0          0</span>
-<span class="co">#&gt;  2        20          0          1</span>
-<span class="co">#&gt;  3        33          1          0</span>
-<span class="co">#&gt;  4       -18          1          0</span>
-<span class="co">#&gt;  5       -25          0          1</span>
-<span class="co">#&gt;  6        12          0          0</span>
-<span class="co">#&gt;  7        19          0          0</span>
-<span class="co">#&gt;  8       -14          0          1</span>
-<span class="co">#&gt;  9        -8          1          0</span>
-<span class="co">#&gt; 10         8          0          1</span>
-<span class="co">#&gt; # … with more rows</span></code></pre></div>
-<p>In a real world scenario, the possible values are usually not known at the beginning of the analysis. So it is a good idea to load them into a vector variable so that it can be used any time that variable is added to a model. This can be easily done using the <code><a href="https://dplyr.tidyverse.org/reference/pull.html">pull()</a></code> command from <code>dplyr</code>:</p>
+<code class="sourceCode R"><span><span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span><span class="op">(</span><span class="va">origin</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"EWR"</span>, <span class="st">"JFK"</span>, <span class="st">"LGA"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Source:   SQL [?? x 3]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Database: sqlite 3.42.0 []</span></span></span>
+<span><span class="co">#&gt;    arr_delay origin_JFK origin_LGA</span></span>
+<span><span class="co">#&gt;        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        11          0          0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        20          0          1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        33          1          0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>       -<span style="color: #BB0000;">18</span>          1          0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>       -<span style="color: #BB0000;">25</span>          0          1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        12          0          0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        19          0          0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>       -<span style="color: #BB0000;">14</span>          0          1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        -<span style="color: #BB0000;">8</span>          1          0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>         8          0          1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ more rows</span></span></span></code></pre></div>
+<p>In a real world scenario, the possible values are usually not known
+at the beginning of the analysis. So it is a good idea to load them into
+a vector variable so that it can be used any time that variable is added
+to a model. This can be easily done using the <code><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull()</a></code>
+command from <code>dplyr</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">origins</span> <span class="op">&lt;-</span> <span class="va">db_flights</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">origin</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">origins</span>
-<span class="co">#&gt; [1] "EWR" "JFK" "LGA"</span></code></pre></div>
-<p>The <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> can be used as part of the piped code that terminates in the modeling function.</p>
+<code class="sourceCode R"><span><span class="va">origins</span> <span class="op">&lt;-</span> <span class="va">db_flights</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">origins</span></span>
+<span><span class="co">#&gt; [1] "EWR" "JFK" "LGA"</span></span></code></pre></div>
+<p>The <code><a href="../reference/add_dummy_variables.html">add_dummy_variables()</a></code> can be used as part of the
+piped code that terminates in the modeling function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">origin</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span><span class="op">(</span><span class="va">origin</span>, values <span class="op">=</span> <span class="va">origins</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 3</span>
-<span class="co">#&gt;   `(Intercept)` origin_JFK origin_LGA</span>
-<span class="co">#&gt;           &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1          9.62      -10.6      -7.79</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span><span class="op">(</span><span class="va">origin</span>, values <span class="op">=</span> <span class="va">origins</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">#&gt;   `(Intercept)` origin_JFK origin_LGA</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>          9.62      -<span style="color: #BB0000;">10.6</span>      -<span style="color: #BB0000;">7.79</span></span></span></code></pre></div>
 </div>
-<div id="multiple-linear-regression" class="section level2">
-<h2 class="hasAnchor">
-<a href="#multiple-linear-regression" class="anchor"></a>Multiple linear regression</h2>
-<p>One of two arguments is needed to be set when fitting a model with three or more independent variables. The both relate to the size of the data set used for the model. So either the <code>sample_size</code> argument is passed, or <code>auto_count</code> is set to <code>TRUE</code>. When <code>auto_count</code> is set to <code>TRUE</code>, and no sample size is passed, then the function will do a table count as part of the model fitting. This is done in order to prevent unnecessary database operations, especially for cases when multiple models will be tested on top of the same sample data.</p>
+<div class="section level2">
+<h2 id="multiple-linear-regression">Multiple linear regression<a class="anchor" aria-label="anchor" href="#multiple-linear-regression"></a>
+</h2>
+<p>One of two arguments is needed to be set when fitting a model with
+three or more independent variables. The both relate to the size of the
+data set used for the model. So either the <code>sample_size</code>
+argument is passed, or <code>auto_count</code> is set to
+<code>TRUE</code>. When <code>auto_count</code> is set to
+<code>TRUE</code>, and no sample size is passed, then the function will
+do a table count as part of the model fitting. This is done in order to
+prevent unnecessary database operations, especially for cases when
+multiple models will be tested on top of the same sample data.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">arr_time</span>, <span class="va">dep_delay</span>, <span class="va">dep_time</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 4</span>
-<span class="co">#&gt;   `(Intercept)`  arr_time dep_delay dep_time</span>
-<span class="co">#&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1         -1.72 -0.000208      1.01 -0.00155</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">arr_time</span>, <span class="va">dep_delay</span>, <span class="va">dep_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
+<span><span class="co">#&gt;   `(Intercept)`  arr_time dep_delay dep_time</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         -<span style="color: #BB0000;">1.72</span> -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">208</span>      1.01 -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">55</span></span></span></code></pre></div>
 </div>
-<div id="interactions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#interactions" class="anchor"></a>Interactions</h2>
+<div class="section level2">
+<h2 id="interactions">Interactions<a class="anchor" aria-label="anchor" href="#interactions"></a>
+</h2>
 <p>Interactions have to be handled manually prior the modeling step.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>distanceXarr_time <span class="op">=</span> <span class="va">distance</span> <span class="op">*</span> <span class="va">arr_time</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">distanceXarr_time</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 2</span>
-<span class="co">#&gt;   `(Intercept)` distanceXarr_time</span>
-<span class="co">#&gt;           &lt;dbl&gt;             &lt;dbl&gt;</span>
-<span class="co">#&gt; 1          6.77       -0.00000197</span></code></pre></div>
-<p>A more typical model would also include the two original variables:</p>
+<code class="sourceCode R"><span><span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>distanceXarr_time <span class="op">=</span> <span class="va">distance</span> <span class="op">*</span> <span class="va">arr_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">distanceXarr_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
+<span><span class="co">#&gt;   `(Intercept)` distanceXarr_time</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>          6.77       -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">001</span><span style="color: #BB0000;">97</span></span></span></code></pre></div>
+<p>A more typical model would also include the two original
+variables:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>distanceXarr_time <span class="op">=</span> <span class="va">distance</span> <span class="op">*</span> <span class="va">arr_time</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">distance</span>, <span class="va">arr_time</span>, <span class="va">distanceXarr_time</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 4</span>
-<span class="co">#&gt;   `(Intercept)` distance arr_time distanceXarr_time</span>
-<span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;</span>
-<span class="co">#&gt; 1         -2.11  0.00269  0.00650       -0.00000435</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>distanceXarr_time <span class="op">=</span> <span class="va">distance</span> <span class="op">*</span> <span class="va">arr_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">distance</span>, <span class="va">arr_time</span>, <span class="va">distanceXarr_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span><span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
+<span><span class="co">#&gt;   `(Intercept)` distance arr_time distanceXarr_time</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         -<span style="color: #BB0000;">2.11</span>  0.002<span style="text-decoration: underline;">69</span>  0.006<span style="text-decoration: underline;">50</span>       -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">004</span><span style="color: #BB0000;">35</span></span></span></code></pre></div>
 </div>
-<div id="full-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#full-example" class="anchor"></a>Full example</h2>
-<p>Fitting a model with regular, categorical and interaction variables will look like this:</p>
+<div class="section level2">
+<h2 id="full-example">Full example<a class="anchor" aria-label="anchor" href="#full-example"></a>
+</h2>
+<p>Fitting a model with regular, categorical and interaction variables
+will look like this:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">remote_model</span> <span class="op">&lt;-</span> <span class="va">db_sample</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>distanceXarr_time <span class="op">=</span> <span class="va">distance</span> <span class="op">*</span> <span class="va">arr_time</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">dep_time</span>, <span class="va">distanceXarr_time</span>, <span class="va">origin</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span><span class="op">(</span><span class="va">origin</span>, values <span class="op">=</span> <span class="va">origins</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span>y_var <span class="op">=</span> <span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span>
-
-<span class="va">remote_model</span>
-<span class="co">#&gt; # A tibble: 1 × 5</span>
-<span class="co">#&gt;   `(Intercept)` dep_time distanceXarr_time origin_JFK origin_LGA</span>
-<span class="co">#&gt;           &lt;dbl&gt;    &lt;dbl&gt;             &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1         -3.92   0.0132       -0.00000275      -10.1      -8.05</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">remote_model</span> <span class="op">&lt;-</span> <span class="va">db_sample</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>distanceXarr_time <span class="op">=</span> <span class="va">distance</span> <span class="op">*</span> <span class="va">arr_time</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">arr_delay</span>, <span class="va">dep_time</span>, <span class="va">distanceXarr_time</span>, <span class="va">origin</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/add_dummy_variables.html">add_dummy_variables</a></span><span class="op">(</span><span class="va">origin</span>, values <span class="op">=</span> <span class="va">origins</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/linear_regression_db.html">linear_regression_db</a></span><span class="op">(</span>y_var <span class="op">=</span> <span class="va">arr_delay</span>, sample_size <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">remote_model</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
+<span><span class="co">#&gt;   `(Intercept)` dep_time distanceXarr_time origin_JFK origin_LGA</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>         -<span style="color: #BB0000;">3.92</span>   0.013<span style="text-decoration: underline;">2</span>       -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">002</span><span style="color: #BB0000;">75</span>      -<span style="color: #BB0000;">10.1</span>      -<span style="color: #BB0000;">8.05</span></span></span></code></pre></div>
 </div>
   </div>
 
@@ -266,8 +294,8 @@
 
 <div class="author">
   <p>
-    Developed by Max Kuhn.
-    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+    Developed by .
+    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
   </p>
 </div>
 
@@ -276,6 +304,8 @@
 
   
 
+
+  
 
   </body>
 </html>
