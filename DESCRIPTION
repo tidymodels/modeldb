@@ -10,13 +10,13 @@ License: MIT + file LICENSE
 URL: https://modeldb.tidymodels.org, https://github.com/tidymodels/modeldb
 BugReports: https://github.com/tidymodels/modeldb/issues
 Depends:
-    R (>= 3.1)
+    R (>= 3.61)
 Imports:
-    dplyr(>= 0.7),
+    dplyr (>= 0.7),
     ggplot2,
     progress,
     purrr,
-    rlang,
+    rlang (>= 1.1.1),
     tibble,
     tidypredict
 Suggests: 
@@ -28,7 +28,7 @@ Suggests:
     nycflights13,
     rmarkdown,
     RSQLite,
-    testthat (>= 3.0.0)
+    testthat (>= 3.2.0)
 VignetteBuilder: 
     knitr
 Config/Needs/website: tidyverse/tidytemplate
