@@ -25,8 +25,8 @@ simple_kmeans_db(
 
 \item{initial_kmeans}{A local dataframe with initial centroid values. Defaults to NULL.}
 
-\item{safeguard_file}{Each cycle will update a file specified in this argument 
-with the current centers.  Defaults to 'kmeans.csv'. Pass NULL if no file is 
+\item{safeguard_file}{Each cycle will update a file specified in this argument
+with the current centers.  Defaults to 'kmeans.csv'. Pass NULL if no file is
 desired.}
 
 \item{verbose}{Indicates if the progress bar will be displayed during the model's fitting.}
@@ -39,7 +39,7 @@ centers are found.
 \details{
 Because each cycle is an independent 'dplyr' operation, or SQL operation if using a remote source,
 the latest centroid data frame is saved to the parent environment in case the process needs to be
-canceled and then restarted at a later point.  Passing the `current_kmeans` as the `initial_kmeans`
+canceled and then restarted at a later point.  Passing the \code{current_kmeans} as the \code{initial_kmeans}
 will allow the operation to pick up where it left off.
 }
 \examples{

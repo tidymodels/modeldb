@@ -11,7 +11,7 @@ linear_regression_db(df, y_var = NULL, sample_size = NULL, auto_count = FALSE)
 
 \item{y_var}{Dependent variable}
 
-\item{sample_size}{Prevents a table count. It is only used for models 
+\item{sample_size}{Prevents a table count. It is only used for models
 with three or more independent variables}
 
 \item{auto_count}{Serves as a safeguard in case sample_size is not
@@ -24,7 +24,7 @@ It uses 'tidyeval' and 'dplyr' to create a linear
 regression model.
 }
 \details{
-The linear_regression_db() function only calls one of three unexported functions. 
+The linear_regression_db() function only calls one of three unexported functions.
 The function used is determined by the number of independent variables.  This is
 so any model of one or two variables can use a simpler formula, which in turn
 will have less SQL overhead.

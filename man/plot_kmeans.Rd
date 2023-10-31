@@ -16,7 +16,7 @@ db_calculate_squares(df, x, y, group, resolution = 50)
 
 \item{y}{A numeric variable for the y axis}
 
-\item{resolution}{The number of squares in the grid. Defaults to 50. 
+\item{resolution}{The number of squares in the grid. Defaults to 50.
 Meaning a 50 x 50 grid.}
 
 \item{group}{A discrete variable containing the grouping for the KMeans. It defaults to 'center'}
@@ -24,13 +24,13 @@ Meaning a 50 x 50 grid.}
 \description{
 It uses 'ggplot2' to display the results of a KMeans routine. Instead
 of a scatterplot, it uses a square grid that displays the concentration
-of intersections per square.  The number of squares in the grid can 
+of intersections per square.  The number of squares in the grid can
 be customized for more or less fine grain.
 }
 \details{
-For large result-sets in remote sources, downloading every intersection will 
-be a long running, costly operation.  The approach of this function is to 
-devide the x and y plane in a grid and have the remote source figure the 
+For large result-sets in remote sources, downloading every intersection will
+be a long running, costly operation.  The approach of this function is to
+devide the x and y plane in a grid and have the remote source figure the
 total number of intersections, returned as a single number.  This reduces the
 granularity of the visualization, but it speeds up the results.
 }
