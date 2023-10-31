@@ -50,9 +50,9 @@ km <- db_flights %>%
 
 The `simple_kmeans_db()` function uses a progress bar to show you the current cycle, the maximum cycles it's expected to run, the current difference between the previous cycle and the current cycle, and the running time.  The loop will stop once it wither has two matching consecutive cycles, or if it reaches the maximum number of cycles, as determined by the `max_repeats` argument.
 
-The final **centers** are are stored in the `centers` variable of the returned object
+The final **centers** are are stored in the `k_center` variable of the returned object
 ```{r}
-km$centers
+km %>% pull(k_center)
 ```
 
 The latest results are stored in the `tbl` variable of the returned object.  The type of the returned table will match the type of the original source, so if it is a remote source, such as database table, then `tbl` will be a class `tbl_sql`.  This will allow us to do two thing:
