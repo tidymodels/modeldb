@@ -2,7 +2,7 @@ Package: modeldb
 Title: Fits Models Inside the Database
 Version: 0.2.3.9000
 Authors@R:
-    person("Max", "Kuhn", , "max@rstudio.com", role = c("aut", "cre"))
+    person("Max", "Kuhn", , "max@posit.co", role = c("aut", "cre"))
 Description: Uses 'dplyr' and 'tidyeval' to fit statistical models inside
     the database. It currently supports KMeans and linear regression
     models.
@@ -10,13 +10,14 @@ License: MIT + file LICENSE
 URL: https://modeldb.tidymodels.org, https://github.com/tidymodels/modeldb
 BugReports: https://github.com/tidymodels/modeldb/issues
 Depends:
-    R (>= 3.1)
+    R (>= 3.6)
 Imports:
-    dplyr(>= 0.7),
+    cli,
+    dplyr (>= 0.7),
     ggplot2,
     progress,
     purrr,
-    rlang,
+    rlang (>= 1.1.1),
     tibble,
     tidypredict
 Suggests: 
@@ -28,9 +29,11 @@ Suggests:
     nycflights13,
     rmarkdown,
     RSQLite,
-    testthat (>= 2.1.0)
+    testthat (>= 3.2.0)
 VignetteBuilder: 
     knitr
 Config/Needs/website: tidyverse/tidytemplate
+Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.2.1.9000
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

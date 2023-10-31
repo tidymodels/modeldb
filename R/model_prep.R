@@ -16,10 +16,10 @@
 #'
 #' @examples
 #' library(dplyr)
-#' 
+#'
 #' mtcars %>%
 #'   add_dummy_variables(cyl, values = c(4, 6, 8))
-#' 
+#'
 #' mtcars %>%
 #'   add_dummy_variables(cyl, auto_values = TRUE)
 #' @export
@@ -27,14 +27,14 @@ add_dummy_variables <- function(df, x, values = c(),
                                 auto_values = FALSE, remove_original = TRUE) {
   x <- enquo(x)
   var_found <- as_label(x) %in% tbl_vars(df)
-  if (!var_found) stop("Variable not found")
+  if (!var_found) cli::cli_abort("Variable not found")
   if (length(values) == 0) {
     if (auto_values == TRUE) {
       values <- group_by(df, !!x)
       values <- summarise(values)
       values <- pull(values)
     } else {
-      stop("No values provided and auto_values is set to FALSE")
+      cli::cli_abort("No values provided and auto_values is set to FALSE")
     }
   }
   vals <- map(values, ~ expr(ifelse(!!x == !!.x, 1, 0)))

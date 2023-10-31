@@ -19,11 +19,8 @@ test_that("Centroid argument is accepted", {
     wt = c(3.072143, 4.058667, 1.873000),
     mpg = c(20.64286, 14.45833, 30.06667)
   )
-  
+
   expect_silent(
-    simple_kmeans_db(mtcars, mpg, wt, initial_kmeans = ik)  
+    simple_kmeans_db(mtcars, mpg, wt, initial_kmeans = ik)
   )
 })
-
-
-
