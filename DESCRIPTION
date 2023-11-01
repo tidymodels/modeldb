@@ -1,6 +1,6 @@
 Package: modeldb
 Title: Fits Models Inside the Database
-Version: 0.3.0
+Version: 0.3.0.9000
 Authors@R: c(
     person("Edgar", "Ruiz", , "edgar@posit.co", role = "aut"),
     person("Max", "Kuhn", , "max@posit.co", role = c("aut", "cre"))
