@@ -2,10 +2,10 @@ context("kmeans_viz")
 
 
 test_that("plot_kmeans() returns a ggplot2 object", {
-  expect_equal(
-    class(plot_kmeans(mtcars, mpg, wt, group = am)),
-    c("gg", "ggplot")
-  )
+  p <- plot_kmeans(mtcars, mpg, wt, group = am)
+  # "ggplot" is for ggplot2 3.5.2 and lower
+  # "ggplot2::ggplot" is for ggplot2 4.0.0 and above
+  expect_true(inherits(p, c("ggplot", "ggplot2::ggplot")))
 })
 
 test_that("plot_kmeans() returns error when no group is passed", {
