@@ -1,5 +1,3 @@
-context("kmeans")
-
 test_that("Specifying variables works", {
   expect_is(
     simple_kmeans_db(mtcars, wt, mpg),

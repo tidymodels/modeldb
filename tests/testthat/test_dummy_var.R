@@ -1,5 +1,3 @@
-context("add_dummy_variables")
-
 test_that("Function create the correct columns", {
   cols_expected <- c("mpg", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb", "cyl_6", "cyl_8")
   expect_equal(

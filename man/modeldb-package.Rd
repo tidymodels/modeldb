@@ -22,5 +22,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Max Kuhn \email{max@posit.co}
 
+Authors:
+\itemize{
+  \item Edgar Ruiz \email{edgar@posit.co}
+}
+
 }
 \keyword{internal}
