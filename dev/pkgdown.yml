@@ -1,11 +1,10 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   kmeans: kmeans.html
   linear-regression: linear-regression.html
-last_built: 2024-01-04T23:24Z
+last_built: 2025-08-22T17:29Z
 urls:
   reference: https://modeldb.tidymodels.org/reference
   article: https://modeldb.tidymodels.org/articles
-

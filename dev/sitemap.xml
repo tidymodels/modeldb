@@ -1,54 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/articles/kmeans.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/articles/linear-regression.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/add_dummy_variables.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/as_parsed_model.modeldb_lm.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/linear_regression_db.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/modeldb-package.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/plot_kmeans.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://modeldb.tidymodels.org/dev/reference/simple_kmeans_db.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://modeldb.tidymodels.org/dev/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/LICENSE-text.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/LICENSE.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/articles/index.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/articles/kmeans.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/articles/linear-regression.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/authors.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/index.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/news/index.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/add_dummy_variables.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/as_parsed_model.modeldb_lm.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/index.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/linear_regression_db.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/modeldb-package.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/plot_kmeans.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/reexports.html</loc></url>
+<url><loc>https://modeldb.tidymodels.org/dev/reference/simple_kmeans_db.html</loc></url>
 </urlset>
+
