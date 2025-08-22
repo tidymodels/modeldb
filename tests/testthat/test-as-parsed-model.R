@@ -1,5 +1,3 @@
-context("parsed model")
-
 test_that("Simple linear regression matches lm()", {
   expect_is(
     as_parsed_model(

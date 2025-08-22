@@ -1,5 +1,3 @@
-context("Linear Regression")
-
 test_that("Simple linear regression matches lm()", {
   expect_equal(
     lm(wt ~ mpg, data = mtcars) %>%

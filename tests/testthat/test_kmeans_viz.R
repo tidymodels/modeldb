@@ -1,10 +1,7 @@
-context("kmeans_viz")
-
 
 test_that("plot_kmeans() returns a ggplot2 object", {
-  expect_equal(
-    class(plot_kmeans(mtcars, mpg, wt, group = am)),
-    c("gg", "ggplot")
+  expect_true(
+    inherits(plot_kmeans(mtcars, mpg, wt, group = am), "ggplot")
   )
 })
 
