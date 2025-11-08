@@ -1,5 +1,5 @@
 
-# modeldb <img src="man/figures/logo.png" align="right" alt="" width="120" />
+# modeldb <a href="https://modeldb.tidymodels.org"><img src="man/figures/logo.png" align="right" height="138" alt="modeldb website" /></a>
 
 [![R-CMD-check](https://github.com/tidymodels/modeldb/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/modeldb/actions)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/modeldb)](https://CRAN.R-project.org/package=modeldb)

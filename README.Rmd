@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# modeldb <img src="man/figures/logo.png" align="right" alt="" width="120" />
+# modeldb <a href="https://modeldb.tidymodels.org"><img src="man/figures/logo.png" align="right" height="138" alt="modeldb website" /></a>
 
 ```{r setup, include=FALSE}
 library(dplyr)
